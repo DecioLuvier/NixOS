@@ -33,7 +33,6 @@ in
       "${cfg.user}" = { pkgs, ... }: {
         services.mako = {
           enable = true;
-          user = "luvier";
           settings = {
             max-visible = 10;
             layer = "top";
