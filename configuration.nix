@@ -42,6 +42,11 @@
     terminal = "alacritty";
     fileManager = "nautilus";
     wallpaper = "/home/luvier/wallpaper.jpg";
+
+    iconTheme = {
+      name = "Papirus-Dark";
+      package = pkgs.papirus-icon-theme;
+    };
   };
 
   home-manager.users.luvier = {
