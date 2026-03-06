@@ -128,7 +128,7 @@ in
             bind = , escape, submap, reset
             submap = reset
 
-            windowrule = float,class:nm-connection-editor
+            windowrule = float class:^(nm-connection-editor)$
           '';
 
           settings = {
