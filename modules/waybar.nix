@@ -34,20 +34,15 @@
               "custom/rofi"
               "clock#date"
               "hyprland/workspaces"
-              "temperature"
-              "custom/pacman"
               "custom/spotify"
             ];
-            
+
             modules-right = [
-              "backlight"
               "custom/storage"
               "memory"
               "cpu"
               "battery"
-              "network"
               "wireplumber"
-              #"custom/screenshot_t"
               "tray"
               "custom/power"
             ];
