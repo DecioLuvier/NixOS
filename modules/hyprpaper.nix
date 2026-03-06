@@ -38,8 +38,6 @@ in
     environment.systemPackages = with pkgs; [
       hyprpaper
       papirus-icon-theme
-      adwaita-icon-theme
-      hicolor-icon-theme
     ];
 
     # Configure home-manager for the user
