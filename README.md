@@ -15,5 +15,6 @@ sudo git add /mnt/etc/nixos/hardware-configuration.nix -f
 sudo nixos-install --flake /mnt/etc/nixos#default
 ```
 
-sudo git -C /etc/nixos pull
-sudo nixos-rebuild switch --flake etc/nixos#default
+cd /etc/nixos
+sudo git pull
+sudo nixos-rebuild switch --flake /etc/nixos#default
