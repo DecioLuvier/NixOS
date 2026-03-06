@@ -34,10 +34,9 @@ in
       }
     ];
 
-    # Add hyprpaper and icon themes to system packages
+    # Add hyprpaper to system packages
     environment.systemPackages = with pkgs; [
       hyprpaper
-      papirus-icon-theme
     ];
 
     # Configure home-manager for the user
