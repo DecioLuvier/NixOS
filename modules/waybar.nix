@@ -55,20 +55,15 @@ in
               "custom/rofi"
               "clock#date"
               "hyprland/workspaces"
-              "temperature"
-              "custom/pacman"
               "custom/spotify"
             ];
             
             modules-right = [
-              "backlight"
               "custom/storage"
               "memory"
               "cpu"
               "battery"
-              "network"
               "wireplumber"
-              #"custom/screenshot_t"
               "tray"
               "custom/power"
             ];
@@ -92,16 +87,7 @@ in
               tooltip-format = "<big>{:%Y %B}</big>\n<tt><small>{calendar}</small></tt>";
               today-format = "<b>{}</b>";
             };
-            
-            temperature = {
-              interval = 4;
-              critical-threshold = 80;
-              format-critical = " {temperatureC}°C";
-              format = "  {temperatureC}°C";
-              format-icons = ["" "" ""];
-              max-length = 7;
-              min-length = 7;
-            };
+          
             
             memory = {
               interval = 30;
@@ -122,20 +108,6 @@ in
               format-icons = ["" "" "" "" ""];
             };
             
-            network = {
-              format-wifi = " {essid} ({signalStrength}%)";
-              format-ethernet = "{ifname}: {ipaddr}/{cidr} ";
-              format-linked = "{ifname} (No IP) ";
-              format = "";
-              format-disconnected = "󰌙";
-              format-alt = "{ifname}: {ipaddr}/{cidr}";
-              on-click = "wl-copy $(ip address show up scope global | grep inet | head -n1 | cut -d/ -f 1 | tr -d [:space:] | cut -c5-)";
-              on-click-right = "nmgui";
-              tooltip-format = " {bandwidthUpBits}  {bandwidthDownBits}\n{ifname}\n{ipaddr}/{cidr}\n";
-              tooltip-format-wifi = " {essid} {frequency}MHz\nStrength: {signaldBm}dBm ({signalStrength}%)\nIP: {ipaddr}/{cidr}\n {bandwidthUpBits}  {bandwidthDownBits}";
-              interval = 10;
-            };
-            
             "custom/storage" = {
               format = " {}";
               format-alt = "{percentage}% ";
@@ -146,42 +118,7 @@ in
                 df -h / | awk 'NR==2 {print "{\"text\":\"" $3 "/" $2 "\", \"alt\":\"" $5 "\", \"tooltip\":\"" $1 ": " $3 "/" $2 " (" $5 ")\"}"}' 
               '';
             };
-            
-            backlight = {
-              device = "intel_backlight";
-              format = "{icon} {percent}%";
-              format-alt = "{percent}% {icon}";
-              format-alt-click = "click-right";
-              format-icons = ["" "󰃠"];
-              on-scroll-down = "brightnessctl s 5%-";
-              on-scroll-up = "brightnessctl s +5%";
-            };
-            
-            "custom/pacman" = {
-              format = "󰮯  {}";
-              interval = 3600;
-              exec = "bash /home/monotoko/code/nix/number.sh || echo 0";
-              exec-if = "exit 0";
-              on-click = "alacritty -e 'paru'; pkill -SIGRTMIN+8 waybar";
-              signal = 8;
-            };
-            
-            "custom/spotify" = {
-              exec = pkgs.writeShellScript "spotify" ''
-                player_status=$(playerctl -p spotify status 2>/dev/null)
-                if [ "$player_status" = "Playing" ]; then
-                    echo "$(playerctl -p spotify metadata artist) - $(playerctl -p spotify metadata title)"
-                elif [ "$player_status" = "Paused" ]; then
-                    echo " $(playerctl -p spotify metadata artist) - $(playerctl -p spotify metadata title)"
-                fi
-              '';
-              interval = 1;
-              format = "{}  ";
-              on-click = "playerctl play-pause";
-              on-scroll-up = "playerctl next";
-              on-scroll-down = "playerctl previous";
-            };
-            
+          
             "custom/power" = {
               format = " 󰐥 ";
               tooltip = false;
@@ -305,9 +242,6 @@ in
           #cpu,
           #memory,
           #disk,
-          #temperature,
-          #backlight,
-          #network,
           #pulseaudio,
           #wireplumber,
           #custom-media,
@@ -356,10 +290,6 @@ in
                   background-color: #ffffff;
                   color: #000000;
               }
-          }
-
-          #temperature.critical {
-              background-color: #eb4d4b;
           }
 
           #tray > .passive {
