@@ -77,7 +77,7 @@
     };
 
     hyprpaper = {
-      wallpaper = "/home/wallpaper.jpg";
+      image = "/home/wallpaper.jpg";
     };
   };
 }
