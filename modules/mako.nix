@@ -33,19 +33,19 @@ in
       "${cfg.user}" = { pkgs, ... }: {
         services.mako = {
           enable = true;
-
+          user = "luvier";
           settings = {
-          max-visible = 10;
-          layer = "top";
-          font = "Sarasa UI SC 10";
-          background-color = "#4c566add";
-          text-color = "#d8dee9";
-          border-color = "#434c5e";
-          border-radius = 7;
-          max-icon-size = 48;
-          default-timeout = 10000;
-          anchor = "top-right";
-          margin = "20";
+            max-visible = 10;
+            layer = "top";
+            font = "Sarasa UI SC 10";
+            background-color = "#4c566add";
+            text-color = "#d8dee9";
+            border-color = "#434c5e";
+            border-radius = 7;
+            max-icon-size = 48;
+            default-timeout = 10000;
+            anchor = "top-right";
+            margin = "20";
           };
         };
       };
