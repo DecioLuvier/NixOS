@@ -128,7 +128,7 @@ in
             bind = , escape, submap, reset
             submap = reset
 
-            windowrule = float,title:^(.*Network Manager.*)$
+            windowrule = float,class:nm-connection-editor
           '';
 
           settings = {
@@ -173,7 +173,7 @@ in
 
             # Decorations
             decoration = {
-              active_opacity = 1.0;
+              active_opacity = 1;
               rounding = 4;
 
               blur = {
@@ -209,6 +209,7 @@ in
               kb_layout = "br";
               kb_variant = "abnt2";
             };
+
 
             # Group settings
             group = {
