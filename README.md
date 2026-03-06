@@ -1,20 +1,34 @@
-# NixOS Configuration
+# Installation
 
-1. Mount your disks normally
-2. You must generate your own `hardware-configuration.nix` because it contains the disk layout and hardware-specific settings for your machine.
+1. Generate your hardware configuration:
 
 ```
 sudo nixos-generate-config --root /mnt
 ```
 
-3. Install the system using this flake:
+2. Clone this repository:
 
 ```
-sudo nixos-install --flake github:decioluvier/nixos#default -I nixos-config=/mnt/etc/nixos/configuration.nix --no-write-lock-file
+git clone https://github.com/decioluvier/nixos
+cd nixos
 ```
 
-If the install fails, or if you pushed a new commit and the system is still using an old cached version, clear the Nix cache and run the install again:
+3. Copy your generated hardware configuration into the repository:
 
 ```
-rm -rf /home/$USER/.cache/nix
+cp /mnt/etc/nixos/hardware-configuration.nix .
+```
+
+4. Install the system using the flake:
+
+```
+sudo nixos-install --flake .#default
+```
+
+## Updating the system
+
+After installation, you can update the system with:
+
+```
+sudo nixos-rebuild switch --flake github:decioluvier/nixos
 ```
