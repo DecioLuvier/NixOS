@@ -128,7 +128,7 @@ in
             bind = , escape, submap, reset
             submap = reset
 
-            windowrulev2 = float, title:^(.*Network Manager.*)$
+            windowrule = float,title:^(.*Network Manager.*)$
           '';
 
           settings = {
@@ -208,15 +208,6 @@ in
 
               kb_layout = "br";
               kb_variant = "abnt2";
-            };
-
-            # Gestures
-            gestures = {
-              workspace_swipe = true;
-              workspace_swipe_fingers = 4;
-              workspace_swipe_distance = 250;
-              workspace_swipe_min_speed_to_force = 15;
-              workspace_swipe_create_new = false;
             };
 
             # Group settings
