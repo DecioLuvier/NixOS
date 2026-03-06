@@ -2,7 +2,7 @@
 
 {
   config = {
-    
+
     environment.systemPackages = [
       pkgs.wlogout
     ];
@@ -100,5 +100,5 @@
         };
       }
     ];
-  }
+  };
 }

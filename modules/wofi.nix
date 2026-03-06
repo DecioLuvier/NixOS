@@ -2,7 +2,7 @@
 
 {
   config = {
-    
+
     environment.systemPackages = [
       pkgs.wofi
     ];
@@ -72,5 +72,5 @@
         };
       }
     ];
-  }
+  };
 }

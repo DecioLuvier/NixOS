@@ -2,7 +2,7 @@
 
 {
   config = {
-    
+
     environment.systemPackages = [
       pkgs.waybar
       pkgs.pavucontrol
@@ -135,5 +135,5 @@
         };
       }
     ];
-  }
+  };
 }
