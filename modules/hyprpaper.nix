@@ -1,32 +1,30 @@
-{ config, lib, pkgs, ... }:
-
-with lib;
+{ config, pkgs, lib, ... }:
 
 let cfg = config.modules.hyprpaper;
+
 in {
-  
-  options.modules.hyprpaper = {
-    image = mkOption {
-      type = types.path;
-      default = "";
-      description = "Path to wallpaper image";
-    };
+  options.modules.hyprpaper = lib.mkOption {
+    type = lib.types.attrsOf lib.types.str;
+    default = {};
   };
 
   config = {
-    environment.systemPackages = [
-      pkgs.hyprpaper
+    environment.systemPackages = [ 
+      pkgs.hyprpaper 
     ];
 
-    home-manager.sharedModules = [
-      {
-        xdg.configFile."hypr/hyprpaper.conf".text = ''
-          preload = ${cfg.image}
-          wallpaper = ,${cfg.image}
-          splash = false
-          ipc = on
-        '';
-      }
-    ];
+    home-manager.sharedModules = [{
+      xdg.configFile."hypr/hyprpaper.conf".text =
+        lib.concatStringsSep "\n" (
+          [
+            "splash = false"
+            "ipc = on"
+          ] ++ lib.flatten (lib.mapAttrsToList (m: img: [
+            "preload = ${img}"
+            "wallpaper = ${m},${img}"
+          ]) cfg)
+        );
+    }];
   };
+
 }
