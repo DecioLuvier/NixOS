@@ -22,14 +22,14 @@
     );
 
     nixosModules = {
-      hyprland = import ./nixos/modules/hyprland.nix;
-      hyprland-desktop = import ./nixos/modules/hyprland-desktop.nix;
-      hyprpaper = import ./nixos/modules/hyprpaper.nix;
-      mako = import ./nixos/modules/mako.nix;
-      swaylock = import ./nixos/modules/swaylock.nix;
-      waybar = import ./nixos/modules/waybar.nix;
-      wlogout = import ./nixos/modules/wlogout.nix;
-      wofi = import ./nixos/modules/wofi.nix;
+      hyprland = import ./modules/hyprland.nix;
+      hyprland-desktop = import ./modules/hyprland-desktop.nix;
+      hyprpaper = import ./modules/hyprpaper.nix;
+      mako = import ./modules/mako.nix;
+      swaylock = import ./modules/swaylock.nix;
+      waybar = import ./modules/waybar.nix;
+      wlogout = import ./modules/wlogout.nix;
+      wofi = import ./modules/wofi.nix;
 
       default = { ... }: {
         imports = [
