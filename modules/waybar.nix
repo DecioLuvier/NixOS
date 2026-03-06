@@ -32,6 +32,11 @@ in
       networkmanagerapplet
     ];
 
+    fonts.packages = with pkgs; [
+      nerd-fonts.fira-code
+      font-awesome
+    ];
+
     home-manager.users = mkIf (cfg.user != null) {
       "${cfg.user}" = { pkgs, ... }: {
         programs.waybar = {
