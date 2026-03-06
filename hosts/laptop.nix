@@ -77,7 +77,7 @@
     };
 
     hyprpaper = {
-      image = "/home/wallpaper.jpg";
+      eDP-1 = "/home/luvier/wallpaper.jpg";
     };
   };
 }
