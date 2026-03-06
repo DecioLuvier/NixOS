@@ -24,6 +24,18 @@
     git
   ];
 
+
+  services.greetd = {
+    enable = true;
+    settings = {
+      default_session = {
+        command = "Hyprland";
+        user = "luvier";
+      };
+    };
+  };
+
+
   modules.hyprland-desktop = {
     enable = true;
     user = "luvier";
