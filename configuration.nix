@@ -1,6 +1,10 @@
 { config, pkgs, ... }:
 
 {
+  imports = [
+    ./hardware-configuration.nix
+  ];
+
   nix.settings.experimental-features = [ "nix-command" "flakes" ];
 
   networking.hostName = "nixos";
@@ -23,7 +27,9 @@
     wallpaper = "/home/luvier/wallpaper.jpg";
   };
 
-  home-manager.users.luvier.home.stateVersion = "24.11";
+  home-manager.users.luvier = {
+    home.stateVersion = "24.11";
+  };
 
   system.stateVersion = "24.11";
 }
