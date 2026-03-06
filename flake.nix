@@ -3,43 +3,50 @@
 
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
+
+    home-manager.url = "github:nix-community/home-manager";
+    home-manager.inputs.nixpkgs.follows = "nixpkgs";
   };
 
-  outputs = { self, nixpkgs, ... }:
-    let
-      inherit (nixpkgs) lib;
-      supportedSystems = [
-        "x86_64-linux"
-      ];
-      forAllSystems = f: lib.genAttrs supportedSystems (system: f system);
-    in {
-      formatter = forAllSystems (system: nixpkgs.legacyPackages.${system}.alejandra);
+  outputs = { self, nixpkgs, home-manager, ... }:
+  let
+    inherit (nixpkgs) lib;
+    supportedSystems = [
+      "x86_64-linux"
+    ];
+    forAllSystems = f: lib.genAttrs supportedSystems (system: f system);
+  in {
 
-      nixosModules = {
-        hyprland = import ./modules/hyprland.nix;
-        hyprland-desktop = import ./modules/hyprland-desktop.nix;
-        hyprpaper = import ./modules/hyprpaper.nix;
-        mako = import ./modules/mako.nix;
-        swaylock = import ./modules/swaylock.nix;
-        waybar = import ./modules/waybar.nix;
-        wlogout = import ./modules/wlogout.nix;
-        wofi = import ./modules/wofi.nix;
+    formatter = forAllSystems (system:
+      nixpkgs.legacyPackages.${system}.alejandra
+    );
 
-        default = { ... }: {
-          imports = [
-            self.nixosModules.hyprland-desktop
-          ];
-        };
-      };
+    nixosModules = {
+      hyprland = import ./nixos/modules/hyprland.nix;
+      hyprland-desktop = import ./nixos/modules/hyprland-desktop.nix;
+      hyprpaper = import ./nixos/modules/hyprpaper.nix;
+      mako = import ./nixos/modules/mako.nix;
+      swaylock = import ./nixos/modules/swaylock.nix;
+      waybar = import ./nixos/modules/waybar.nix;
+      wlogout = import ./nixos/modules/wlogout.nix;
+      wofi = import ./nixos/modules/wofi.nix;
 
-      nixosConfigurations.nixos = nixpkgs.lib.nixosSystem {
-        system = "x86_64-linux";
-
-        modules = [
-          ./configuration.nix
-          self.nixosModules.default
+      default = { ... }: {
+        imports = [
+          home-manager.nixosModules.home-manager
+          self.nixosModules.hyprland-desktop
         ];
       };
-
     };
+
+    nixosConfigurations.nixos = nixpkgs.lib.nixosSystem {
+      system = "x86_64-linux";
+
+      modules = [
+        ./configuration.nix
+        self.nixosModules.default
+      ];
+    };
+
+  };
 }
