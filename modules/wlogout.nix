@@ -1,39 +1,16 @@
-{ config, lib, pkgs, ... }:
+{ pkgs, ... }:
 
-with lib;
-
-let
-  cfg = config.modules.wlogout;
-in
 {
-  options.modules.wlogout = {
-    enable = mkEnableOption "Wlogout logout menu";
+  environment.systemPackages = [
+    pkgs.wlogout
+  ];
 
-    user = mkOption {
-      type = types.nullOr types.str;
-      default = null;
-      description = "User account that should receive the Wlogout Home Manager configuration.";
-    };
-  };
+  home-manager.sharedModules = [
+    {
+      programs.wlogout = {
+        enable = true;
 
-  config = mkIf cfg.enable {
-    assertions = [
-      {
-        assertion = cfg.user != null;
-        message = "modules.wlogout.enable requires modules.wlogout.user to be set.";
-      }
-    ];
-
-    environment.systemPackages = with pkgs; [
-      wlogout
-    ];
-
-    home-manager.users = mkIf (cfg.user != null) {
-      "${cfg.user}" = { pkgs, ... }: {
-        programs.wlogout = {
-          enable = true;
-
-          layout = [
+        layout = [
           {
             label = "hibernate";
             action = "systemctl hibernate";
@@ -65,8 +42,8 @@ in
             keybind = "r";
           }
         ];
-        
-          style = ''
+
+        style = ''
           * {
               background-image: none;
               box-shadow: none;
@@ -118,8 +95,7 @@ in
               background-image: image(url("${pkgs.wlogout}/share/wlogout/icons/reboot.png"));
           }
         '';
-        };
       };
-    };
-};
+    }
+  ];
 }

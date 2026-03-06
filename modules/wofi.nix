@@ -1,39 +1,16 @@
-{ config, lib, pkgs, ... }:
+{ pkgs, ... }:
 
-with lib;
-
-let
-  cfg = config.modules.wofi;
-in
 {
-  options.modules.wofi = {
-    enable = mkEnableOption "Wofi application launcher";
+  environment.systemPackages = [
+    pkgs.wofi
+  ];
 
-    user = mkOption {
-      type = types.nullOr types.str;
-      default = null;
-      description = "User account that should receive the Wofi Home Manager configuration.";
-    };
-  };
+  home-manager.sharedModules = [
+    {
+      programs.wofi = {
+        enable = true;
 
-  config = mkIf cfg.enable {
-    assertions = [
-      {
-        assertion = cfg.user != null;
-        message = "modules.wofi.enable requires modules.wofi.user to be set.";
-      }
-    ];
-
-    environment.systemPackages = with pkgs; [
-      wofi
-    ];
-
-    home-manager.users = mkIf (cfg.user != null) {
-      "${cfg.user}" = { pkgs, ... }: {
-        programs.wofi = {
-          enable = true;
-
-          settings = {
+        settings = {
           allow_images = true;
           hide_scroll = true;
           no_actions = false;
@@ -41,8 +18,8 @@ in
           mode = "drun";
           show = true;
         };
-        
-          style = ''
+
+        style = ''
           * {
               font-family: "Hack", monospace;
           }
@@ -90,8 +67,7 @@ in
               background: transparent;
           }
         '';
-        };
       };
-    };
-  };
+    }
+  ];
 }

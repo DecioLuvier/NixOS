@@ -12,9 +12,9 @@ sudo git add /mnt/etc/nixos/hardware-configuration.nix -f
 ```
 3. Install the system using the flake:
 ```
-sudo nixos-install --flake /mnt/etc/nixos#default
+sudo nixos-install --flake /mnt/etc/nixos#host (laptop/desktop)
 ```
 
 cd /etc/nixos
 sudo git pull
-sudo nixos-rebuild switch --flake /etc/nixos#default
+sudo nixos-rebuild switch --flake /etc/nixos#host (laptop/desktop)
