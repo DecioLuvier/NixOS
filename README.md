@@ -10,7 +10,7 @@ sudo nixos-generate-config --root /mnt
 3. Install the system using this flake:
 
 ```
-sudo nixos-install --flake github:decioluvier/nixos#default --no-write-lock-file
+sudo nixos-install --flake github:decioluvier/nixos#default -I nixos-config=/mnt/etc/nixos/configuration.nix --no-write-lock-file
 ```
 
 If the install fails, or if you pushed a new commit and the system is still using an old cached version, clear the Nix cache and run the install again:
