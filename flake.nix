@@ -26,7 +26,6 @@
       hyprland-desktop = import ./modules/hyprland-desktop.nix;
       hyprpaper = import ./modules/hyprpaper.nix;
       mako = import ./modules/mako.nix;
-      swaylock = import ./modules/swaylock.nix;
       waybar = import ./modules/waybar.nix;
       wlogout = import ./modules/wlogout.nix;
       wofi = import ./modules/wofi.nix;

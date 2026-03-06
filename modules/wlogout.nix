@@ -35,12 +35,6 @@ in
 
           layout = [
           {
-            label = "lock";
-            action = "swaylock";
-            text = "Lock";
-            keybind = "l";
-          }
-          {
             label = "hibernate";
             action = "systemctl hibernate";
             text = "Hibernate";

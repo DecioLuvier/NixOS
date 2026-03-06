@@ -11,7 +11,6 @@ in
     ./waybar.nix
     ./wofi.nix
     ./wlogout.nix
-    ./swaylock.nix
     ./mako.nix
     ./hyprpaper.nix
   ];
@@ -80,11 +79,6 @@ in
     };
 
     modules.wlogout = {
-      enable = true;
-      user = cfg.user;
-    };
-
-    modules.swaylock = {
       enable = true;
       user = cfg.user;
     };

@@ -82,9 +82,6 @@ in
     environment.systemPackages = with pkgs; [
       bibata-cursors  # Cursor theme
       wofi  # for app launcher
-      swaylock
-      swaylock-fancy
-      swayidle
       grimblast  # for screenshots
       brightnessctl
       playerctl
@@ -97,7 +94,6 @@ in
       wob
       alsa-utils
       kdePackages.polkit-kde-agent-1
-      swaybg
       hyprpaper
     ];
     
@@ -151,7 +147,6 @@ in
             "$terminal" = cfg.terminal;
             "$filemanager" = cfg.fileManager;
             "$applauncher" = cfg.appLauncher;
-            "$idlehandler" = "swayidle -w timeout 300 'swaylock -f -c 000000' before-sleep 'swaylock -f -c 000000'";
 
             # Screenshot commands
             "$shot-region" = "grimblast copy area";
@@ -272,15 +267,15 @@ in
             exec-once = [
               "systemctl --user import-environment WAYLAND_DISPLAY XDG_CURRENT_DESKTOP"
               "dbus-update-activation-environment --systemd WAYLAND_DISPLAY XDG_CURRENT_DESKTOP"
-              "hyprpaper &"
-              "waybar &"
-              "fcitx5 -d &"
-              "mako &"
-              "nm-applet --indicator &"
-              "bash -c \"mkfifo /tmp/$HYPRLAND_INSTANCE_SIGNATURE.wob && tail -f /tmp/$HYPRLAND_INSTANCE_SIGNATURE.wob | wob & disown\" &"
-              "${pkgs.kdePackages.polkit-kde-agent-1}/libexec/polkit-kde-authentication-agent-1 &"
+              "hyprpaper"
+              "waybar"
+              "fcitx5 -d"
+              "mako"
+              "nm-applet --indicator"
+              "bash -c \"mkfifo /tmp/$HYPRLAND_INSTANCE_SIGNATURE.wob && tail -f /tmp/$HYPRLAND_INSTANCE_SIGNATURE.wob | wob & disown\""
+              "${pkgs.kdePackages.polkit-kde-agent-1}/libexec/polkit-kde-authentication-agent-1"
               "$idlehandler"
-            ] ++ (optional (cfg.wallpaper != "") "swaybg -o * -i ${cfg.wallpaper} -m fill");
+            ];
 
             # Key bindings
             bind = [
@@ -315,7 +310,6 @@ in
               ", XF86AudioPrev, exec, playerctl previous"
 
               # Screen lock and waybar reload
-              "$mainMod, L, exec, swaylock-fancy -e -K -p 10 -f Hack-Regular"
               "$mainMod, O, exec, killall -SIGUSR2 waybar"
 
               # Window focus
