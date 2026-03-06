@@ -173,7 +173,7 @@ in
 
             # Decorations
             decoration = {
-              active_opacity = 1;
+              active_opacity = 1.0;
               rounding = 4;
 
               blur = {
@@ -215,17 +215,18 @@ in
               "col.border_active" = "rgb(1f854d)";
               "col.border_inactive" = "rgb(41b883)";
               "col.border_locked_active" = "rgb(279e60)";
-              "col.border_locked_inactive" = "rgb(103249)";
+              "col.border_locked_inactive" = "rgb(163249)";
 
               groupbar = {
                 font_family = "Fira Sans";
-                text_color = "rgb(103249)";
+                text_color = "rgb(163249)";
                 "col.active" = "rgb(1f854d)";
                 "col.inactive" = "rgb(41b883)";
                 "col.locked_active" = "rgb(279e60)";
-                "col.locked_inactive" = "rgb(103249)";
+                "col.locked_inactive" = "rgb(163249)";
               };
             };
+
             # Misc settings
             misc = {
               font_family = "Fira Sans";
