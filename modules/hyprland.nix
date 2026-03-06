@@ -212,21 +212,20 @@ in
 
             # Group settings
             group = {
-              "col.border_active" = "rgb(31,133,77)";
-              "col.border_inactive" = "rgb(65,184,131)";
-              "col.border_locked_active" = "rgb(39,158,96)";
-              "col.border_locked_inactive" = "rgb(16,50,73)";
+              "col.border_active" = "rgb(1f854d)";
+              "col.border_inactive" = "rgb(41b883)";
+              "col.border_locked_active" = "rgb(279e60)";
+              "col.border_locked_inactive" = "rgb(103249)";
 
               groupbar = {
                 font_family = "Fira Sans";
-                text_color = "rgb(16,50,73)";
-                "col.active" = "rgb(31,133,77)";
-                "col.inactive" = "rgb(65,184,131)";
-                "col.locked_active" = "rgb(39,158,96)";
-                "col.locked_inactive" = "rgb(16,50,73)";
+                text_color = "rgb(103249)";
+                "col.active" = "rgb(1f854d)";
+                "col.inactive" = "rgb(41b883)";
+                "col.locked_active" = "rgb(279e60)";
+                "col.locked_inactive" = "rgb(103249)";
               };
             };
-
             # Misc settings
             misc = {
               font_family = "Fira Sans";
