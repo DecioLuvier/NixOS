@@ -1,30 +1,34 @@
-{ pkgs, ... }:
+{ config, pkgs, ... }:
 
 {
-  environment.systemPackages = [
-    pkgs.mako
-    pkgs.libnotify
-  ];
+  config = {
 
-  home-manager.sharedModules = [
-    {
-      services.mako = {
-        enable = true;
+    environment.systemPackages = [
+      pkgs.mako
+      pkgs.libnotify
+    ];
 
-        settings = {
-          max-visible = 10;
-          layer = "top";
-          font = "Sarasa UI SC 10";
-          background-color = "#4c566add";
-          text-color = "#d8dee9";
-          border-color = "#434c5e";
-          border-radius = 7;
-          max-icon-size = 48;
-          default-timeout = 10000;
-          anchor = "top-right";
-          margin = "20";
+    home-manager.sharedModules = [
+      {
+        services.mako = {
+          enable = true;
+
+          settings = {
+            max-visible = 10;
+            layer = "top";
+            font = "Sarasa UI SC 10";
+            background-color = "#4c566add";
+            text-color = "#d8dee9";
+            border-color = "#434c5e";
+            border-radius = 7;
+            max-icon-size = 48;
+            default-timeout = 10000;
+            anchor = "top-right";
+            margin = "20";
+          };
         };
-      };
-    }
-  ];
+      }
+    ];
+
+  };
 }

@@ -3,28 +3,30 @@
 with lib;
 
 let cfg = config.modules.hyprpaper;
-
 in {
+  
   options.modules.hyprpaper = {
     image = mkOption {
-      type = lib.types.path;
+      type = types.path;
       default = "";
       description = "Path to wallpaper image";
     };
   };
 
-  environment.systemPackages = [
-    pkgs.hyprpaper
-  ];
+  config = {
+    environment.systemPackages = [
+      pkgs.hyprpaper
+    ];
 
-  home-manager.sharedModules = [
-    {
-      xdg.configFile."hypr/hyprpaper.conf".text = ''
-        preload = ${cfg.image}
-        wallpaper = ,${cfg.image}
-        splash = false
-        ipc = on
-      '';
-    }
-  ];
+    home-manager.sharedModules = [
+      {
+        xdg.configFile."hypr/hyprpaper.conf".text = ''
+          preload = ${cfg.image}
+          wallpaper = ,${cfg.image}
+          splash = false
+          ipc = on
+        '';
+      }
+    ];
+  };
 }
