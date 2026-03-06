@@ -1,8 +1,15 @@
 { config, pkgs, ... }:
 
+let
+  hardwareConfig =
+    if builtins.pathExists /mnt/etc/nixos/hardware-configuration.nix then
+      /mnt/etc/nixos/hardware-configuration.nix
+    else
+      /etc/nixos/hardware-configuration.nix;
+in
 {
   imports = [
-    ./hardware-configuration.nix
+    hardwareConfig
   ];
 
   nix.settings.experimental-features = [ "nix-command" "flakes" ];
