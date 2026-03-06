@@ -61,7 +61,6 @@ in {
         wob
         alsa-utils
         kdePackages.polkit-kde-agent-1
-        hyprpaper
       ]
       ++ optional (cfg.terminal == "alacritty") pkgs.alacritty
       ++ optional (cfg.terminal == "kitty") pkgs.kitty
@@ -86,7 +85,6 @@ in {
             "$browser" = cfg.browser;
 
             exec-once = [
-              "hyprpaper"
               "waybar"
               "mako"
               "nm-applet --indicator"

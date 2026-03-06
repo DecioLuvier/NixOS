@@ -76,7 +76,7 @@
       keyboardVariant = "abnt2";
     };
 
-    hyprpaper = {
+    swaybg = {
       eDP-1 = "/home/wallpaper.jpg";
     };
   };

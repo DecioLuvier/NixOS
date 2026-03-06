@@ -18,7 +18,7 @@
         home-manager.nixosModules.home-manager
 
         ./modules/hyprland.nix
-        ./modules/hyprpaper.nix
+        ./modules/swaybg.nix
         ./modules/mako.nix
         ./modules/waybar.nix
         ./modules/wlogout.nix
