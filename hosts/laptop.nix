@@ -51,6 +51,7 @@
     xdg-utils
     grim
     slurp
+    onnx2c
   ];
 
   # -----------------------------
