@@ -1,9 +1,4 @@
-{ lib
-, stdenv
-, fetchFromGitHub
-, cmake
-, protobuf
-}:
+{ lib , stdenv , fetchFromGitHub , cmake , protobuf }:
 
 stdenv.mkDerivation rec {
   pname = "onnx2c";
@@ -12,7 +7,7 @@ stdenv.mkDerivation rec {
   src = fetchFromGitHub {
     owner = "kraiskil";
     repo = "onnx2c";
-    rev = "e6308a7"; # commit atual do repo
+    rev = "e6308a7";
     hash = "sha256-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=";
     fetchSubmodules = true;
   };
@@ -29,11 +24,6 @@ stdenv.mkDerivation rec {
   cmakeFlags = [
     "-DCMAKE_BUILD_TYPE=Release"
   ];
-
-  installPhase = ''
-    mkdir -p $out/bin
-    cp onnx2c $out/bin/
-  '';
 
   meta = with lib; {
     description = "ONNX to C compiler for tiny ML inference";
