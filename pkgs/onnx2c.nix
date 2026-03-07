@@ -1,35 +1,47 @@
-{ lib , stdenv , fetchFromGitHub , cmake , protobuf }:
+{ lib, stdenv, cmake, pkg-config, protobuf, git, fetchFromGitHub }:
 
 stdenv.mkDerivation rec {
   pname = "onnx2c";
-  version = "unstable-2026-01";
+  version = "0.0.1";
 
   src = fetchFromGitHub {
+    rev = "a129890840d462e8d6dd2b0124e349eb9ace1913";
+    sha256 = "sha256-ALajneiJnmTsaNTEsVX5WtWZLvu5KuA0pBZqDY7PBG0=";
     owner = "kraiskil";
     repo = "onnx2c";
-    rev = "e6308a7";
-    hash = "sha256-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=";
     fetchSubmodules = true;
   };
 
-  nativeBuildInputs = [
-    cmake
-    protobuf
-  ];
+  nativeBuildInputs = [ cmake pkg-config git ];
+  buildInputs = [ protobuf ];
 
-  buildInputs = [
-    protobuf
-  ];
+  cmakeFlags = [ "-DCMAKE_BUILD_TYPE=Release" ];
+  enableParallelBuilding = true;
 
-  cmakeFlags = [
-    "-DCMAKE_BUILD_TYPE=Release"
-  ];
+  installPhase = ''
+    runHook preInstall
+    mkdir -p $out/bin
+    cp ./onnx2c $out/bin/
+    runHook postInstall
+  '';
+
+  checkPhase = ''
+    make test
+  '';
 
   meta = with lib; {
-    description = "ONNX to C compiler for tiny ML inference";
+    description = "Open Neural Network Exchange to C compiler";
+    longDescription = ''
+      Onnx2c is a ONNX to C compiler. It will read an ONNX file, and generate C code to be included in your project. Onnx2c's target is "Tiny ML", meaning running the inference on microcontrollers.
+    '';
     homepage = "https://github.com/kraiskil/onnx2c";
-    license = licenses.mit;
-    platforms = platforms.linux ++ platforms.darwin;
-    maintainers = [];
+    license = {
+      shortName = "ONNX2C-LICENSE";
+      fullName = "ONNX2C custom redistribution license";
+      url = "https://github.com/kraiskil/onnx2c/blob/master/LICENSE.txt";
+      free = true;
+      redistributable = true;
+    };
+    mainProgram = "onnx2c";
   };
 }

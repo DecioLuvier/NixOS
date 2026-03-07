@@ -94,9 +94,11 @@ in {
             # Key bindings
             bind = [
               # Core functionality
+              "$mainMod, C, exec, codium"
               "$mainMod, T, exec, $terminal"
               "$mainMod, E, exec, $filemanager"
               "$mainMod, B, exec, $browser"
+              "$mainMod, S, exec, simulide"
               "$mainMod, Q, killactive"
               "$mainMod SHIFT, M, exec, loginctl terminate-user \"\""
               "$mainMod, V, togglefloating"
@@ -104,6 +106,7 @@ in {
               "$mainMod, F, fullscreen"
               "$mainMod, Y, pin"
               "$mainMod, J, togglesplit"
+
 
               # Screenshots
               ", Print, exec, $shot-region"
@@ -129,8 +132,8 @@ in {
 
               # Workspace switching (1-10)
               "$mainMod, 1, workspace, 1"
-              "$mainMod, 2, workspace, 2"
               "$mainMod, 3, workspace, 3"
+              "$mainMod, 2, workspace, 2"
               "$mainMod, 4, workspace, 4"
               "$mainMod, 5, workspace, 5"
               "$mainMod, 6, workspace, 6"
@@ -233,7 +236,7 @@ in {
 
             binds = {
               allow_workspace_cycles = true;
-              workspace_back_and_forth = true;
+              workspace_back_and_forth = false;
               workspace_center_on = true;
               movefocus_cycles_fullscreen = true;
               window_direction_monitor_fallback = true;
