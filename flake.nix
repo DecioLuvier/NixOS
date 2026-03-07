@@ -17,9 +17,7 @@
     nixosConfigurations.laptop = nixpkgs.lib.nixosSystem {
       system = "x86_64-linux";
 
-      modules = [
-        { nixpkgs.overlays = [ self.overlays.default ]; }
-
+      modules = [ { nixpkgs.overlays = [ self.overlays.default ]; }
         ./hosts/laptop.nix
         home-manager.nixosModules.home-manager
 
