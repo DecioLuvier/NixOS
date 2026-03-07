@@ -1,19 +1,25 @@
 {
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
+
     home-manager.url = "github:nix-community/home-manager";
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
   };
 
-  outputs = { nixpkgs, home-manager, ... }: 
-  
-  {
+  outputs = { self, nixpkgs, home-manager, ... }: {
+
     formatter.x86_64-linux = nixpkgs.legacyPackages.x86_64-linux.alejandra;
+
+    overlays.default = final: prev: {
+      onnx2c = prev.callPackage ./pkgs/onnx2c.nix { };
+    };
 
     nixosConfigurations.laptop = nixpkgs.lib.nixosSystem {
       system = "x86_64-linux";
 
       modules = [
+        { nixpkgs.overlays = [ self.overlays.default ]; }
+
         ./hosts/laptop.nix
         home-manager.nixosModules.home-manager
 
@@ -25,5 +31,6 @@
         ./modules/wofi.nix
       ];
     };
+
   };
 }
