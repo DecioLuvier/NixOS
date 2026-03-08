@@ -21,25 +21,18 @@
   # -----------------------------
   # User configuration
   # -----------------------------
-
+  
   users.users.luvier = {
     isNormalUser = true;  # Create a regular user
     extraGroups = [
       "wheel"             # Allows sudo access
       "networkmanager"    # Allows controlling network connections
+      "storage"
     ];
   };
 
-  # -----------------------------
-  # Login manager
-  # -----------------------------
-  services.greetd = {
-    enable = true;
-    settings.default_session = {
-      command = "start-hyprland";   # Command used to start the desktop session
-      user = "luvier";              # User that will run the session
-    };
-  };
+  services.udisks2.enable = true;
+  services.gvfs.enable = true;
 
   # -----------------------------
   # System packages
@@ -49,8 +42,11 @@
     xdg-utils
     slurp
     onnx2c
+    udiskie
     simulide    
     vscodium
+    jupyter
+    github-desktop
   ];
 
   # -----------------------------
@@ -63,6 +59,17 @@
   };
 
   time.timeZone = "America/Sao_Paulo";
+
+  # -----------------------------
+  # Login manager
+  # -----------------------------
+  services.greetd = {
+    enable = true;
+    settings.default_session = {
+      command = "start-hyprland";   # Command used to start the desktop session
+      user = "luvier";              # User that will run the session
+    };
+  };
 
   services.tlp = {
     enable = true;
@@ -125,10 +132,16 @@
       enable = true;
       package = pkgs.vscodium;
 
+      extensions = with pkgs.vscode-extensions; [
+        jnoortheen.nix-ide
+        ms-toolsai.jupyter
+        ms-python.python
+      ];
+
       userSettings = {
         "editor.stickyScroll.enabled" = false;
         "editor.minimap.enabled" = false;
-        "git.enabled" = true;
+        "git.enabled" = false;
         "git.autofetch" = false;
         "git.path" = null;
         "explorer.confirmDelete" = false;

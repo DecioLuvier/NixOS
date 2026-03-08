@@ -87,6 +87,7 @@ in {
             exec-once = [
               "waybar"
               "mako"
+              "diskie --automount --notify"
               "nm-applet --indicator"
               "${pkgs.kdePackages.polkit-kde-agent-1}/libexec/polkit-kde-authentication-agent-1"
             ];
@@ -96,12 +97,12 @@ in {
               # Core functionality
               "$mainMod, C, exec, codium"
               "$mainMod, T, exec, $terminal"
-              "$mainMod, F, exec, $filemanager"
+              "$mainMod, E, exec, $filemanager"
+              "$mainMod, G, exec, github-desktop"
               "$mainMod, B, exec, $browser"
               "$mainMod, S, exec, simulide"
-
               "$mainMod, Q, killactive"
-              "$mainMod SHIFT, M, exec, loginctl terminate-user \"\""
+              
               "$mainMod, V, togglefloating" 
               "$mainMod, SPACE, exec, $launcher --show drun"
               "$mainMod, F, fullscreen"
