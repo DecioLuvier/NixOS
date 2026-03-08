@@ -1,7 +1,6 @@
 { config, pkgs, ... }:
 
 {
-
   imports = [
     ../hardware-configuration.nix
   ];
@@ -18,17 +17,6 @@
   networking.networkmanager.enable = true; 
 
 
-
-  home-manager.users.luvier = { pkgs, ... }: {
-
-    home.stateVersion = "24.11";
-
-    programs.git = {
-      enable = true;
-      userName = "decioluvier";
-      userEmail = "decioluvieriii@gmail.com";
-    };
-  };
   
   system.stateVersion = "24.11";
 
@@ -65,6 +53,7 @@
     onnx2c
     simulide    
     vscodium
+    github-desktop
   ];
 
   # -----------------------------
@@ -123,6 +112,30 @@
 
     swaybg = {
       eDP-1 = "/home/luvier/wallpaper.jpg";
+    };
+  };
+
+  home-manager.users.luvier = { pkgs, ... }: {
+    home.stateVersion = "24.11";
+
+    programs.git = {
+      enable = true;
+      userName = "decioluvier";
+      userEmail = "decioluvieriii@gmail.com";
+    };
+
+    programs.vscode = {
+      enable = true;
+      package = pkgs.vscodium;
+
+      userSettings = {
+        "editor.stickyScroll.enabled" = false;
+        "editor.minimap.enabled" = false;
+        "git.enabled" = false;
+        "git.autofetch" = false;
+        "git.path" = null;
+        "explorer.confirmDelete" = false;
+      };
     };
   };
 }
