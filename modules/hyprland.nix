@@ -99,7 +99,7 @@ in {
               "$mainMod, F, exec, $filemanager"
               "$mainMod, B, exec, $browser"
               "$mainMod, S, exec, simulide"
-              "$mainMod, G, exec, github-desktop"
+
               "$mainMod, Q, killactive"
               "$mainMod SHIFT, M, exec, loginctl terminate-user \"\""
               "$mainMod, V, togglefloating" 

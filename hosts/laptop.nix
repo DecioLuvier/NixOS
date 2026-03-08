@@ -15,8 +15,6 @@
 
   networking.hostName = "nixos"; 
   networking.networkmanager.enable = true; 
-
-
   
   system.stateVersion = "24.11";
 
@@ -53,7 +51,6 @@
     onnx2c
     simulide    
     vscodium
-    github-desktop
   ];
 
   # -----------------------------
