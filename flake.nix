@@ -11,7 +11,11 @@
     formatter.x86_64-linux = nixpkgs.legacyPackages.x86_64-linux.alejandra;
 
     overlays.default = final: prev: {
-      onnx2c = prev.callPackage ./pkgs/onnx2c.nix { };
+      onnx2c = final.callPackage ./pkgs/onnx2c.nix { };
+    };
+
+    devShells.${system} = {
+      jupyter = pkgs.callPackage ./shells/jupyter.nix { };
     };
 
     nixosConfigurations.laptop = nixpkgs.lib.nixosSystem {
