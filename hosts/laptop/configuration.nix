@@ -145,6 +145,7 @@
         "git.enabled" = true;
         "git.confirmSync" = false;
         "explorer.confirmDelete" = false;
+        "git.enableSmartCommit" = true;
       };
     };
   };
