@@ -1,3 +1,4 @@
+
 { config, pkgs, ... }:
 
 {
@@ -142,6 +143,7 @@
         "editor.stickyScroll.enabled" = false;
         "editor.minimap.enabled" = false;
         "git.enabled" = true;
+        "git.confirmSync" = false;
         "explorer.confirmDelete" = false;
       };
     };
