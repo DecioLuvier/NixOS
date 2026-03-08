@@ -128,7 +128,7 @@
       userSettings = {
         "editor.stickyScroll.enabled" = false;
         "editor.minimap.enabled" = false;
-        "git.enabled" = false;
+        "git.enabled" = true;
         "git.autofetch" = false;
         "git.path" = null;
         "explorer.confirmDelete" = false;
