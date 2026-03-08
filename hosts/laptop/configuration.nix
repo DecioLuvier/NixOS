@@ -34,6 +34,7 @@
   services.udisks2.enable = true;
   services.gvfs.enable = true;
 
+
   # -----------------------------
   # System packages
   # -----------------------------
@@ -46,7 +47,6 @@
     simulide    
     vscodium
     jupyter
-    github-desktop
   ];
 
   # -----------------------------
@@ -141,9 +141,7 @@
       userSettings = {
         "editor.stickyScroll.enabled" = false;
         "editor.minimap.enabled" = false;
-        "git.enabled" = false;
-        "git.autofetch" = false;
-        "git.path" = null;
+        "git.enabled" = true;
         "explorer.confirmDelete" = false;
       };
     };
