@@ -18,7 +18,7 @@
       system = "x86_64-linux";
 
       modules = [ { nixpkgs.overlays = [ self.overlays.default ]; }
-        ./hosts/laptop.nix
+        ./hosts/laptop/configuration.nix
         home-manager.nixosModules.home-manager
 
         ./modules/hyprland.nix
