@@ -1,9 +1,14 @@
 { config, pkgs, lib, ... }:
 
 {
+  imports = [
+    ./hardware.nix
+  ];
+
   nix.settings.experimental-features = [ "nix-command" "flakes" ];
 
   system.stateVersion = "24.11";
+  home.stateVersion = "24.11";
 
   boot.loader = {
     systemd-boot.enable = true;
@@ -42,7 +47,6 @@
 
     tlp = {
       enable = true;
-
       settings = {
         CPU_SCALING_GOVERNOR_ON_AC = "performance";
         CPU_SCALING_GOVERNOR_ON_BAT = "powersave";
