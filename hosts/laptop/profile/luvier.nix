@@ -32,13 +32,17 @@
 
   environment.systemPackages = with pkgs; [
     simulide
+    gh
   ];
 
   programs.git = {
     enable = true;
-    config = {
-      user.name = "decioluvier";
-      user.email = "decioluvieriii@gmail.com";
+
+    extraConfig = {
+      user = {
+        name = "decioluvier";
+        email = "decioluvieriii@gmail.com";
+      };
     };
   };
 }
