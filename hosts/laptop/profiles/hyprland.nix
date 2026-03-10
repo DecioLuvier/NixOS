@@ -37,7 +37,6 @@
       stateVersion = "24.11";
       packages = with pkgs; [
         simulide
-        gh
         github-desktop
       ];
     };

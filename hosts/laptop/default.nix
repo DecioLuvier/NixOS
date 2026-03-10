@@ -39,7 +39,7 @@
 
   services = {
     logrotate.enable = false;
-
+    gnome.gnome-keyring.enable = true;
     udisks2.enable = true;
     gvfs.enable = true;
     pipewire.enable = true;
