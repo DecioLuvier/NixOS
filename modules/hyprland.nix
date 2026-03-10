@@ -32,7 +32,7 @@ with lib;
         brave
       ];
 
-    home-manager.sharedModules = [ { pkgs, ... }: {
+    home-manager.sharedModules = [{
 
         home.pointerCursor = {
           name = "Bibata-Modern-Classic";
@@ -47,7 +47,7 @@ with lib;
             exec-once = [
               "waybar"
               "mako"
-              "diskie --automount --notify"
+              "udiskie --automount --notify"
               "nm-applet --indicator"
               "${pkgs.kdePackages.polkit-kde-agent-1}/libexec/polkit-kde-authentication-agent-1"
             ];

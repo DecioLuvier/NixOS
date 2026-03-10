@@ -10,7 +10,7 @@
 
   outputs = { self, nixpkgs, home-manager, ... }: {
     formatter.x86_64-linux = nixpkgs.legacyPackages.x86_64-linux.alejandra;
-    
+
     nixosConfigurations.laptop-luvier = nixpkgs.lib.nixosSystem {
         system = "x86_64-linux";
 
@@ -20,8 +20,8 @@
 
           ./hosts/laptop/default.nix
           ./hosts/laptop/hardware.nix
-          ./hosts/laptop/profile/luvier.nix
+          ./hosts/laptop/profiles/luvier.nix
         ];
       };
   };
-}
+} 
