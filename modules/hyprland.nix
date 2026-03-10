@@ -2,45 +2,11 @@
 
 with lib;
 
-let cfg = config.modules.hyprland;
-
-in {
-
-  options.modules.hyprland = {
-    terminal = mkOption {
-      type = types.enum [ "alacritty" "kitty" ];
-      default = "alacritty";
-    };
-
-    fileManager = mkOption {
-      type = types.enum [ "nautilus" "thunar" ];
-      default = "nautilus";
-    };
-
-    appLauncher = mkOption {
-      type = types.enum [ "wofi" ];
-      default = "wofi";
-    };
-
-    browser = mkOption {
-      type = types.enum [ "firefox" "brave" ];
-      default = "firefox";
-    };
-
-    keyboardLayout = mkOption {
-      type = types.str;
-      default = "us";
-    };
-
-    keyboardVariant = mkOption {
-      type = types.str;
-      default = "";
-    };
-
-  };
-
+{
   config = {
     
+    programs.hyprland.enable = true;
+
     xdg.portal = {
       enable = true;
       extraPortals = [ pkgs.xdg-desktop-portal-hyprland ];
@@ -49,41 +15,35 @@ in {
     environment.systemPackages =
       with pkgs;
       [
-        bibata-cursors
         grimblast
         brightnessctl
         playerctl
         pavucontrol
-        pulseaudio
         waybar
         mako
         networkmanagerapplet
         wob
         alsa-utils
+        udiskie
         kdePackages.polkit-kde-agent-1
-      ]
-      ++ optional (cfg.terminal == "alacritty") pkgs.alacritty
-      ++ optional (cfg.terminal == "kitty") pkgs.kitty
-      ++ optional (cfg.fileManager == "nautilus") pkgs.nautilus
-      ++ optional (cfg.fileManager == "thunar") pkgs.thunar
-      ++ optional (cfg.appLauncher == "wofi") pkgs.wofi
-      ++ optional (cfg.browser == "firefox") pkgs.firefox
-      ++ optional (cfg.browser == "brave") pkgs.brave;
+        alacritty
+        nautilus
+        wofi
+        brave
+      ];
 
-    programs.hyprland.enable = true;
+    home-manager.sharedModules = [ { pkgs, ... }: {
 
-    home-manager.sharedModules = [
-      {
+        home.pointerCursor = {
+          name = "Bibata-Modern-Classic";
+          size = 24;
+          package = pkgs.bibata-cursors;
+        };
+
         wayland.windowManager.hyprland = {
           enable = true;
 
           settings = {
-            "$mainMod" = "SUPER";
-            "$terminal" = cfg.terminal;
-            "$filemanager" = cfg.fileManager;
-            "$launcher" = cfg.appLauncher;
-            "$browser" = cfg.browser;
-
             exec-once = [
               "waybar"
               "mako"
@@ -96,43 +56,20 @@ in {
             bind = [
               # Core functionality
               "$mainMod, C, exec, codium"
-              "$mainMod, T, exec, $terminal"
-              "$mainMod, E, exec, $filemanager"
-              "$mainMod, G, exec, github-desktop"
-              "$mainMod, B, exec, $browser"
+              "$mainMod, T, exec, alacritty"
+              "$mainMod, E, exec, nautilus"
+              "$mainMod, B, exec, brave"
               "$mainMod, S, exec, simulide"
+              "$mainMod, SPACE, exec, wofi --show drun"
               "$mainMod, Q, killactive"
-              
-              "$mainMod, V, togglefloating" 
-              "$mainMod, SPACE, exec, $launcher --show drun"
+            
+
               "$mainMod, F, fullscreen"
-              "$mainMod, Y, pin"
-              "$mainMod, J, togglesplit"
 
-
-              # Screenshots
-              ", Print, exec, $shot-region"
-              "CTRL, Print, exec, $shot-window"
-              "ALT, Print, exec, $shot-screen"
-
-              # Playback control
-              ", XF86AudioPlay, exec, playerctl play-pause"
-              ", XF86AudioNext, exec, playerctl next"
-              ", XF86AudioPrev, exec, playerctl previous"
-
-              # Window focus
               "$mainMod, left, movefocus, l"
               "$mainMod, right, movefocus, r"
               "$mainMod, up, movefocus, u"
               "$mainMod, down, movefocus, d"
-
-              # Window movement
-              "$mainMod SHIFT, left, movewindow, l"
-              "$mainMod SHIFT, right, movewindow, r"
-              "$mainMod SHIFT, up, movewindow, u"
-              "$mainMod SHIFT, down, movewindow, d"
-
-              # Workspace switching (1-10)
               "$mainMod, 1, workspace, 1"
               "$mainMod, 3, workspace, 3"
               "$mainMod, 2, workspace, 2"
@@ -148,8 +85,8 @@ in {
             monitor = [ ",preferred,auto,1" ];
 
             input = {
-              kb_layout = cfg.keyboardLayout;
-              kb_variant = cfg.keyboardVariant;
+              kb_layout = "br";
+              kb_variant = "abnt2";
               follow_mouse = 1;
             };
 
