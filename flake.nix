@@ -13,7 +13,7 @@
       modules = [ { nixpkgs.overlays = [ self.overlays.default ]; }
         ./hosts/laptop/default.nix
         ./hosts/laptop/hardware.nix
-        ./hosts/laptop/users/luvier.nix
+        ./hosts/laptop/profile/luvier.nix
       ];
     };
 
