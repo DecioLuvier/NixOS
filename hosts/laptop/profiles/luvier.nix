@@ -31,13 +31,15 @@
   };
 
   home-manager.users.luvier = {
-    home.username = "luvier";
-    home.homeDirectory = "/home/luvier";
-
-    home.packages = with pkgs; [
-      simulide
-      gh
-    ];
+    home = {
+      username = "luvier";
+      homeDirectory = "/home/luvier";
+      stateVersion = "24.11";
+      packages = with pkgs; [
+        simulide
+        gh
+      ];
+    };
 
     programs.git = {
       enable = true;

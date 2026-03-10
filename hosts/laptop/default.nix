@@ -8,8 +8,7 @@
   nix.settings.experimental-features = [ "nix-command" "flakes" ];
 
   system.stateVersion = "24.11";
-  home.stateVersion = "24.11";
-
+  
   boot.loader = {
     systemd-boot.enable = true;
     efi.canTouchEfiVariables = true;
