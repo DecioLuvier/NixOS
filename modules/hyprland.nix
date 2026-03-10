@@ -44,6 +44,8 @@ with lib;
           enable = true;
 
           settings = {
+            "$mainMod" = "SUPER";
+
             exec-once = [
               "waybar"
               "mako"
