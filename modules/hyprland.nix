@@ -62,7 +62,8 @@ with lib;
               "$mainMod, E, exec, nautilus"
               "$mainMod, B, exec, brave"
               "$mainMod, S, exec, simulide"
-              "$mainMod, J, exec, alacritty -e nix develop jupyter"
+              "$mainMod, R, exec, alacritty -e sudo nixos-rebuild switch --flake ~/NixOS#$(hostname)"
+              "$mainMod, J, exec, alacritty -e nix-shell ~NixOS/shells/jupyter.nix"
               "$mainMod, SPACE, exec, wofi --show drun"
               "$mainMod, Q, killactive"
             

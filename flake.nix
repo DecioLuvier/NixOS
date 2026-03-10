@@ -10,15 +10,14 @@
 
   outputs = { self, nixpkgs, home-manager, ... }: {
 
-    nixosConfigurations.laptop-luvier = nixpkgs.lib.nixosSystem {
+    nixosConfigurations.laptop = nixpkgs.lib.nixosSystem {
       system = "x86_64-linux";
-      specialArgs = { inherit self; };
+
       modules = [
         home-manager.nixosModules.home-manager
         ./hosts/laptop/default.nix
         ./hosts/laptop/hardware.nix
-        ./hosts/laptop/profiles/luvier.nix
-        ./shells/registry.nix
+        ./hosts/laptop/profiles/hyprland.nix
       ];
     };
   };

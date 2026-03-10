@@ -38,6 +38,7 @@
       packages = with pkgs; [
         simulide
         gh
+        github-desktop
       ];
     };
 
