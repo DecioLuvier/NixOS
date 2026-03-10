@@ -8,7 +8,7 @@
   nix.settings.experimental-features = [ "nix-command" "flakes" ];
 
   system.stateVersion = "24.11";
-  
+
   boot.loader = {
     systemd-boot.enable = true;
     efi.canTouchEfiVariables = true;
@@ -78,8 +78,8 @@
 
   xdg = {
     autostart.enable = false;
-    icons.enable = false;
-    mime.enable = false;
-    sounds.enable = false;
+    icons.enable = true;
+    mime.enable = true;
+    sounds.enable = true;
   };
 }
