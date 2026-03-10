@@ -33,8 +33,8 @@
   };
 
   programs = {
-    command-not-found.enable = false;
-    fish.generateCompletions = false;
+    command-not-found.enable = true;
+    fish.generateCompletions = true;
   };
 
   services = {
@@ -74,12 +74,5 @@
         SOUND_POWER_SAVE_ON_BAT = 1;
       };
     };
-  };
-
-  xdg = {
-    autostart.enable = false;
-    icons.enable = true;
-    mime.enable = true;
-    sounds.enable = true;
   };
 }
