@@ -48,17 +48,5 @@
         };
       };
     };
-
-    programs.vscode = {
-      enable = true;
-      package = pkgs.vscodium;
-
-      userSettings = {
-        "editor.stickyScroll.enabled" = false;
-        "editor.minimap.enabled" = false;
-        "git.enabled" = false;
-      };
-    };
-
   };
 }
