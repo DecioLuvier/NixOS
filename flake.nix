@@ -15,9 +15,7 @@
         system = "x86_64-linux";
 
         modules = [ 
-          { nixpkgs.overlays = [ self.overlays.default ]; }
           home-manager.nixosModules.home-manager
-
           ./hosts/laptop/default.nix
           ./hosts/laptop/hardware.nix
           ./hosts/laptop/profiles/luvier.nix
