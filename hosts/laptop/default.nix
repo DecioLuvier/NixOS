@@ -1,11 +1,8 @@
-{ config, pkgs, ... }:
+{ config, pkgs, lib, ... }:
 
 {
-  imports = [
-    <nixpkgs/nixos/modules/profiles/minimal.nix>
-  ];
-
   nix.settings.experimental-features = [ "nix-command" "flakes" ];
+
   system.stateVersion = "24.11";
 
   boot.loader = {
@@ -18,7 +15,27 @@
     networkmanager.enable = true;
   };
 
+  documentation = {
+    enable = false;
+    doc.enable = false;
+    info.enable = false;
+    man.enable = false;
+    nixos.enable = false;
+  };
+
+  environment = {
+    defaultPackages = [ ];
+    stub-ld.enable = false;
+  };
+
+  programs = {
+    command-not-found.enable = false;
+    fish.generateCompletions = false;
+  };
+
   services = {
+    logrotate.enable = false;
+
     udisks2.enable = true;
     gvfs.enable = true;
     pipewire.enable = true;
@@ -54,5 +71,12 @@
         SOUND_POWER_SAVE_ON_BAT = 1;
       };
     };
+  };
+
+  xdg = {
+    autostart.enable = false;
+    icons.enable = false;
+    mime.enable = false;
+    sounds.enable = false;
   };
 }
