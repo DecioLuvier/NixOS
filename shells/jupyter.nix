@@ -1,7 +1,10 @@
 { pkgs ? import <nixpkgs> {} }:
 
 let
-  onnx2c = pkgs.callPackage ../overlays/onnx2c.nix {};
+
+  bnn = pkgs.callPackage ../packages/bnn.nix {};
+
+  onnx2c = pkgs.callPackage ../packages/onnx2c.nix {};
 
   pythonEnv = pkgs.python3.withPackages (p: with p; [
     ipykernel
@@ -12,10 +15,11 @@ let
     matplotlib
     torchinfo
     onnxscript
+    onnxruntime
   ]);
-in
 
-pkgs.mkShell {
+in pkgs.mkShell {
+
   packages = [
     pythonEnv
     onnx2c
@@ -25,6 +29,6 @@ pkgs.mkShell {
   ];
 
   shellHook = ''
-    jupyter lab --no-browser
+    jupyter lab --browser="firefox --new-window %s"
   '';
 }

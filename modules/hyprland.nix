@@ -29,7 +29,7 @@ with lib;
         alacritty
         nautilus
         wofi
-        brave
+        firefox
       ];
 
     home-manager.sharedModules = [{
@@ -57,14 +57,15 @@ with lib;
             # Key bindings
             bind = [
               # Core functionality
-              "$mainMod, C, exec, codium"
+              "$mainMod, Tab, workspace, previous"
+              "$mainMod, N, exec, codium -n ~/NixOS"
               "$mainMod, T, exec, alacritty"
               "$mainMod, E, exec, nautilus"
-              "$mainMod, B, exec, brave"
+              "$mainMod, B, exec, firefox"
               "$mainMod, G, exec, github-desktop"
               "$mainMod, S, exec, simulide"
               "$mainMod, R, exec, alacritty -e sudo nixos-rebuild switch --flake ~/NixOS#$(hostname)"
-              "$mainMod, J, exec, alacritty -e nix-shell ~NixOS/shells/jupyter.nix"
+              "$mainMod, J, exec, alacritty -e nix-shell ~/NixOS/shells/jupyter.nix"
               "$mainMod, SPACE, exec, wofi --show drun"
               "$mainMod, Q, killactive"
             
