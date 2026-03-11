@@ -54,23 +54,20 @@ with lib;
               "${pkgs.kdePackages.polkit-kde-agent-1}/libexec/polkit-kde-authentication-agent-1"
             ];
 
-            # Key bindings
             bind = [
-              # Core functionality
               "$mainMod, Tab, workspace, previous"
               "$mainMod, N, exec, codium -n ~/NixOS"
+              "$mainMod, C, exec, codium ."
               "$mainMod, T, exec, alacritty"
               "$mainMod, E, exec, nautilus"
               "$mainMod, B, exec, firefox"
               "$mainMod, G, exec, github-desktop"
               "$mainMod, S, exec, simulide"
-              "$mainMod, R, exec, alacritty -e sudo nixos-rebuild switch --flake ~/NixOS#$(hostname)"
-              "$mainMod, J, exec, alacritty -e nix-shell ~/NixOS/shells/jupyter.nix"
-              "$mainMod, SPACE, exec, wofi --show drun"
+              "$mainMod, R, exec, alacritty --hold -e sudo nixos-rebuild switch --flake ~/NixOS#$(hostname)"
+              "$mainMod, J, exec, alacritty --hold -e nix develop ~/NixOS/modules/jupyter"
+              "$mainMod, SPACE, exec, wofi --show drun" 
               "$mainMod, Q, killactive"
-            
               "$mainMod, F, fullscreen"
-
               "$mainMod, left, movefocus, l"
               "$mainMod, right, movefocus, r"
               "$mainMod, up, movefocus, u"

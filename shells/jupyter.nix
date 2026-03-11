@@ -1,9 +1,6 @@
 { pkgs ? import <nixpkgs> {} }:
 
 let
-
-  bnn = pkgs.callPackage ../packages/bnn.nix {};
-
   onnx2c = pkgs.callPackage ../packages/onnx2c.nix {};
 
   pythonEnv = pkgs.python3.withPackages (p: with p; [
@@ -26,9 +23,10 @@ in pkgs.mkShell {
     pkgs.gcc
     pkgs.gnumake
     pkgs.cmake
+    pkgs.valgrind
   ];
 
   shellHook = ''
-    jupyter lab --browser="firefox --new-window %s"
+    codium ~/IA
   '';
 }
