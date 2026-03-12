@@ -12,10 +12,10 @@ let
     onnxruntime
   ]);
 in
-pkgs.mkShell {
-  buildInputs = [
-    pythonEnv
-  ];
+  pkgs.mkShell {
+    buildInputs = [
+      pythonEnv
+    ];
 
   shellHook = ''
     export JUPYTER_RUNTIME_DIR=$(mktemp -d)

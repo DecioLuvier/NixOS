@@ -9,11 +9,14 @@
 
   system.stateVersion = "24.11";
 
-  boot.loader = {
-    systemd-boot.enable = true;
-    efi.canTouchEfiVariables = true;
+  boot = {
+    tmp.cleanOnBoot = true;
+    loader = {
+      systemd-boot.enable = true;
+      efi.canTouchEfiVariables = true;
+    };
   };
-
+  
   networking = {
     hostName = "laptop";
     networkmanager.enable = true;
