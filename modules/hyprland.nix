@@ -64,7 +64,7 @@ with lib;
               "$mainMod, G, exec, github-desktop"
               "$mainMod, S, exec, simulide"
               "$mainMod, R, exec, alacritty --hold -e sudo nixos-rebuild switch --flake ~/NixOS#$(hostname)"
-              "$mainMod, J, exec, alacritty --hold -e nix develop ~/NixOS/modules/jupyter"
+              "$mainMod, J, exec, alacritty --hold -e nix-shell ~/NixOS/shells/jupyter.nix --pure"
               "$mainMod, SPACE, exec, wofi --show drun" 
               "$mainMod, Q, killactive"
               "$mainMod, F, fullscreen"

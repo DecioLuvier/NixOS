@@ -1,11 +1,9 @@
 { pkgs ? import <nixpkgs> {} }:
 
 let
-  onnx2c = pkgs.callPackage ../packages/onnx2c.nix {};
-
   pythonEnv = pkgs.python3.withPackages (p: with p; [
     ipykernel
-    jupyterlab
+    notebook
     torch
     torchvision
     tqdm
@@ -16,17 +14,15 @@ let
   ]);
 
 in pkgs.mkShell {
-
   packages = [
+    pkgs.vscodium
     pythonEnv
-    onnx2c
-    pkgs.gcc
-    pkgs.gnumake
-    pkgs.cmake
-    pkgs.valgrind
   ];
 
   shellHook = ''
-    codium ~/IA
+    python -m ipykernel install --user \
+      --name nix-ml \
+      --display-name "Python (nix-ml)" \
+      2>/dev/null || true
   '';
 }
