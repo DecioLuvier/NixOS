@@ -2,7 +2,6 @@
 
 let
   pythonEnv = pkgs.python3.withPackages (p: with p; [
-    ipykernel
     notebook
     torch
     torchvision
@@ -12,17 +11,17 @@ let
     onnxscript
     onnxruntime
   ]);
-
-in pkgs.mkShell {
-  packages = [
-    pkgs.vscodium
+in
+pkgs.mkShell {
+  buildInputs = [
     pythonEnv
   ];
 
   shellHook = ''
-    python -m ipykernel install --user \
-      --name nix-ml \
-      --display-name "Python (nix-ml)" \
-      2>/dev/null || true
+    export JUPYTER_RUNTIME_DIR=$(mktemp -d)
+    export JUPYTER_DATA_DIR=$JUPYTER_RUNTIME_DIR
+    export JUPYTER_CONFIG_DIR=$JUPYTER_RUNTIME_DIR
+
+    jupyter notebook --no-browser 
   '';
 }
