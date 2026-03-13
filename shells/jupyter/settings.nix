@@ -1,4 +1,4 @@
-{ pkgs, self }:
+{ pkgs, kernels }:
 
 pkgs.writeText "settings.json"
   (builtins.toJSON {
@@ -11,8 +11,9 @@ pkgs.writeText "settings.json"
 
     jupyter.kernels.excludePythonEnvironments = [".*"];
 
+    # Caminho real para os kernels
     jupyter.kernels.trusted = [
-      "${self}/share/jupyter/kernels/pyfull"
-      "${self}/share/jupyter/kernels/pymini"
+      "${kernels}/share/jupyter/kernels/pyfull"
+      "${kernels}/share/jupyter/kernels/pymini"
     ];
   })

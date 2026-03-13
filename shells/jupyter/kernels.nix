@@ -18,14 +18,28 @@ let
     matplotlib
   ]);
 in
-{
-  packages = [
-    pythonFull
-    pythonMini
-  ];
+pkgs.stdenv.mkDerivation {
+  pname = "jupyter-kernels";
+  version = "1.0";
 
-  shellHook = ''
-    ${pythonFull.interpreter} -m ipykernel install --prefix "$out" --name pyfull --display-name "Python (Full)"
-    ${pythonMini.interpreter} -m ipykernel install --prefix "$out" --name pymini --display-name "Python (Mini)"
+  buildInputs = [ pythonFull pythonMini ];
+
+  installPhase = ''
+    mkdir -p $out/share/jupyter/kernels
+
+    ${pythonFull.interpreter} -m ipykernel install \
+      --prefix $out \
+      --name pyfull \
+      --display-name "Python (Full)"
+
+    ${pythonMini.interpreter} -m ipykernel install \
+      --prefix $out \
+      --name pymini \
+      --display-name "Python (Mini)"
   '';
+
+  meta = with pkgs.lib; {
+    description = "Python Jupyter kernels (Full + Mini) instalados em $out";
+    license = licenses.mit;
+  };
 }

@@ -1,5 +1,5 @@
 {
-  description = "Codium Jupyter App Flake";
+  description = "Codium + Jupyter com kernels Full/Mini usando $out";
 
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
@@ -10,38 +10,35 @@
     flake-utils.lib.eachDefaultSystem (system:
       let
         pkgs = import nixpkgs { inherit system; };
-        settings   = import ./settings.nix { inherit pkgs self; };
-        extensions = import ./extensions.nix { inherit pkgs; };
-        kernels    = import ./kernels.nix { inherit pkgs self; };
+
+        kernels = import ./kernels.nix {  };
+        extensions = import ./extensions.nix {  };
+        settings = import ./settings.nix { };
 
         codium = pkgs.vscode-with-extensions.override {
           vscode = pkgs.vscodium;
           vscodeExtensions = extensions;
         };
 
-        codium-jupyter = pkgs.writeShellScriptBin "codium-jupyter" ''
-          USER_CONFIG="${XDG_CONFIG_HOME:-$HOME/.config}/codium"
-          mkdir -p "$USER_CONFIG"
+        codiumDataDir = "${toString ./.}/codium-data";
+        codiumExtensionsDir = "${toString ./.}/codium-extensions";
 
-          cp -r ${settings}/* "$USER_CONFIG/" 2>/dev/null || true
-          cp -r ${extensions}/* "$USER_CONFIG/extensions/" 2>/dev/null || true
-
-          exec ${codium}/bin/codium \
-            --user-data-dir "$USER_CONFIG" \
-            --extensions-dir "$USER_CONFIG/extensions" \
-            "$@"
-        '';
       in {
-        devShells.default = pkgs.mkShell {
-          packages = [
-            codium-jupyter
-          ] ++ kernels.packages;
+        apps.x86_64-linux.codium-jupyter = {
+          type = "app";
+          program = "${pkgs.stdenv.shell} -c ''
+            mkdir -p ${codiumDataDir} ${codiumExtensionsDir}
+            ln -sf ${settings} ${codiumDataDir}/settings.json
 
-          shellHook = kernels.shellHook;
-        };
+            # Define os kernels confiáveis do Jupyter
+            export JUPYTER_PATH=${kernels}/share/jupyter/kernels
+            export JUPYTER_CONFIG_DIR=${codiumDataDir}
 
-        apps.default.codium-jupyter = flake-utils.lib.mkApp {
-          drv = codium-jupyter;
+            exec ${codium}/bin/codium \
+              --user-data-dir ${codiumDataDir} \
+              --extensions-dir ${codiumExtensionsDir} \
+              \"$@\"
+          ''";
         };
       }
     );
