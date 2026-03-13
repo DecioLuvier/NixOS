@@ -17,8 +17,6 @@ let
     tqdm
     matplotlib
   ]);
-
-  kernelDir = "${self}/kernels"; 
 in
 {
   packages = [
@@ -27,9 +25,7 @@ in
   ];
 
   shellHook = ''
-    mkdir -p ${kernelDir}
-    ${pythonFull.interpreter} -m ipykernel install --prefix "${kernelDir}" --display-name "Python (Full)"
-    ${pythonMini.interpreter} -m ipykernel install --prefix "${kernelDir}" --display-name "Python (Mini)"
-    export JUPYTER_PATH="${kernelDir}:${JUPYTER_PATH}"
+    ${pythonFull.interpreter} -m ipykernel install --prefix "$out" --name pyfull --display-name "Python (Full)"
+    ${pythonMini.interpreter} -m ipykernel install --prefix "$out" --name pymini --display-name "Python (Mini)"
   '';
 }
