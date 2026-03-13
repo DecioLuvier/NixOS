@@ -1,5 +1,5 @@
 {
-  description = "Dev env with single Jupyter kernel filtered by path";
+  description = "Dev env with two Jupyter kernels filtered by path";
 
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
@@ -25,25 +25,24 @@
       onnxscript
       onnxruntime
     ]);
-  in {
 
+    pythonMini = pkgs.python3.withPackages (p: with p; [
+      ipykernel
+      tqdm
+      matplotlib
+    ]);
+  in {
     devShells.${system}.default = pkgs.mkShell {
       packages = [
         pythonEnv
+        pythonMini
         pkgs.vscodium
       ];
 
       shellHook = ''
-        # Caminho onde o kernel será registrado
-        KERNEL_DIR="$HOME/.local/share/jupyter/kernels/nix-python"
+        ${pythonEnv.interpreter} -m ipykernel install --user --name pyfull --display-name "Python (Full)"
+        ${pythonMini.interpreter} -m ipykernel install --user --name pymini --display-name "Python (Mini)"
 
-        # Registra o kernel somente se ainda não estiver registrado
-        if [ ! -d "$KERNEL_DIR" ]; then
-          python -m ipykernel install \
-            --user \
-            --name nix-python \
-            --display-name "Python (nix)"
-        fi
       '';
     };
 
@@ -54,33 +53,25 @@
         package = pkgs.vscodium;
 
         extensions = with pkgs.vscode-extensions; [
-          jnoortheen.nix-ide
           ms-python.python
           ms-toolsai.jupyter
         ];
 
         userSettings = {
-
           "editor.stickyScroll.enabled" = false;
           "editor.minimap.enabled" = false;
           "git.enabled" = false;
           "explorer.confirmDelete" = false;
 
-          # Esconde todos os ambientes Python que não queremos
-          "jupyter.kernels.excludePythonEnvironments" = [
-            ".*"
-          ];
+          "jupyter.kernels.excludePythonEnvironments" = [".*"];
 
-          # Mostra apenas o kernel do pythonEnv registrado
-          "jupyter.kernels.filter" = [
-            {
-              path = "${pythonEnv}/bin/python";
-            }
+          "jupyter.kernels.trusted" = [
+            "${builtins.getEnv "HOME"}/.local/share/jupyter/kernels/pyfull/kernel.json"
+            "${builtins.getEnv "HOME"}/.local/share/jupyter/kernels/pymini/kernel.json"
           ];
         };
       };
 
     };
-
   };
 }

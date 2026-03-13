@@ -1,8 +1,9 @@
 { pkgs ? import <nixpkgs> {} }:
 
 let
-  pythonEnv = pkgs.python3.withPackages (p: with p; [
+  pyFull = pkgs.python3.withPackages (p: with p; [
     notebook
+    ipykernel
     torch
     torchvision
     tqdm
@@ -12,16 +13,13 @@ let
     onnxruntime
   ]);
 in
-  pkgs.mkShell {
-    buildInputs = [
-      pythonEnv
-    ];
+
+pkgs.mkShell {
+  buildInputs = [
+    pyFull
+  ];
 
   shellHook = ''
-    export JUPYTER_RUNTIME_DIR=$(mktemp -d)
-    export JUPYTER_DATA_DIR=$JUPYTER_RUNTIME_DIR
-    export JUPYTER_CONFIG_DIR=$JUPYTER_RUNTIME_DIR
-
-    jupyter notebook --no-browser 
+    ${pyFull.interpreter} -m ipykernel install --user --name pyfull --display-name "Python (Full)" 
   '';
 }
