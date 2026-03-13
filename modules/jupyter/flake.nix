@@ -1,5 +1,5 @@
 {
-  description = "Dev env with two Jupyter kernels filtered by path";
+  description = "Dev env with Python kernels and VSCode imported";
 
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
@@ -8,13 +8,17 @@
       url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
+    # Importa o flake do VSCode
+    flake-vscode.url = "path:./vscode"; 
   };
 
-  outputs = { self, nixpkgs, home-manager }:
+  outputs = { self, nixpkgs, home-manager, flake-vscode }:
   let
     system = "x86_64-linux";
     pkgs = import nixpkgs { inherit system; };
 
+    # Python completo
     pythonEnv = pkgs.python3.withPackages (p: with p; [
       ipykernel
       torch
@@ -26,52 +30,30 @@
       onnxruntime
     ]);
 
+    # Python mini
     pythonMini = pkgs.python3.withPackages (p: with p; [
       ipykernel
       tqdm
       matplotlib
     ]);
   in {
+    # DevShell principal (Python + kernels)
     devShells.${system}.default = pkgs.mkShell {
       packages = [
         pythonEnv
         pythonMini
-        pkgs.vscodium
       ];
 
       shellHook = ''
-        ${pythonEnv.interpreter} -m ipykernel install --user --name pyfull --display-name "Python (Full)"
+        ${pythonEnv.interpreter} -m ipykernel install --user --name batata --display-name "Python (Full)"
         ${pythonMini.interpreter} -m ipykernel install --user --name pymini --display-name "Python (Mini)"
-
       '';
     };
 
+    # Home Manager
     homeManagerModules.default = { pkgs, ... }: {
-
-      programs.vscode = {
-        enable = true;
-        package = pkgs.vscodium;
-
-        extensions = with pkgs.vscode-extensions; [
-          ms-python.python
-          ms-toolsai.jupyter
-        ];
-
-        userSettings = {
-          "editor.stickyScroll.enabled" = false;
-          "editor.minimap.enabled" = false;
-          "git.enabled" = false;
-          "explorer.confirmDelete" = false;
-
-          "jupyter.kernels.excludePythonEnvironments" = [".*"];
-
-          "jupyter.kernels.trusted" = [
-            "${builtins.getEnv "HOME"}/.local/share/jupyter/kernels/pyfull/kernel.json"
-            "${builtins.getEnv "HOME"}/.local/share/jupyter/kernels/pymini/kernel.json"
-          ];
-        };
-      };
-
+      # Importa apenas o módulo do VSCode
+      imports = [ flake-vscode.homeManagerModules.default { inherit pkgs; } ];
     };
   };
 }
