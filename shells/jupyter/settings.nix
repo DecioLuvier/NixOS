@@ -11,7 +11,7 @@ pkgs.writeText "settings.json"
     "jupyter.kernels.excludePythonEnvironments" = [".*"];
 
     "jupyter.kernels.trusted" = [
-      ".kernels/share/jupyter/kernels/pyfull"
-      ".kernels/share/jupyter/kernels/pymini"
+      "__PWD__/.kernels/share/jupyter/kernels/pyfull/kernel.json"
+      "__PWD__/.kernels/share/jupyter/kernels/pymini/kernel.json"
     ];
   })

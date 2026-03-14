@@ -20,15 +20,20 @@
         };
       in {
         devShells.default = pkgs.mkShell {
-          buildInputs = [ codium kernels.pythonFull kernels.pythonMini ];
+          buildInputs = [ codium ];
 
-          shellHook = ''
-            mkdir -p "$PWD/.kernels"
-            mkdir -p $PWD/.vscode
-            ${kernels.shellHook}
-            cp ./settings.json /home/luvier/NixOS/shells/jupyter/.vscode/User/settings.json
-            codium --user-data-dir=/home/luvier/NixOS/shells/jupyter/.vscode "$PWD"
-          '';
+        shellHook = ''
+          mkdir -p "$PWD/.kernels"
+          mkdir -p "$PWD/.vscode/User"
+
+          export JUPYTER_PATH="$PWD/.kernels/share/jupyter"
+
+          ${kernels.shellHook}
+
+          sed "s|__PWD__|$PWD|g" ${settings} > "$PWD/.vscode/User/settings.json"
+
+          codium --user-data-dir="$PWD/.vscode" "$PWD"
+        '';
         };
 
       }
