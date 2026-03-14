@@ -1,4 +1,4 @@
-{ pkgs, pythonFull, pythonMini }:
+{ pkgs }:
 
 pkgs.writeText "settings.json"
   (builtins.toJSON {
@@ -11,7 +11,7 @@ pkgs.writeText "settings.json"
     "jupyter.kernels.excludePythonEnvironments" = [".*"];
 
     "jupyter.kernels.trusted" = [
-      "${pythonFull}/share/jupyter/kernels/pyfull"
-      "${pythonMini}/share/jupyter/kernels/pymini"
+      ".kernels/share/jupyter/kernels/pyfull"
+      ".kernels/share/jupyter/kernels/pymini"
     ];
   })

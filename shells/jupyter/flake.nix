@@ -10,49 +10,23 @@
     flake-utils.lib.eachDefaultSystem (system:
       let
         pkgs = import nixpkgs { inherit system; };
-
-        pythonFull = pkgs.python3.withPackages (p: with p; [
-          ipykernel
-          notebook
-          pip
-          setuptools
-          wheel
-          torch
-          torchvision
-          tqdm
-          matplotlib
-          torchinfo
-          onnxscript
-          onnxruntime
-        ]);
-
-
-        pythonMini = pkgs.python3.withPackages (p: with p; [
-          ipykernel
-          tqdm
-          matplotlib
-        ]);
-
+        kernels = import ./kernels.nix { inherit pkgs; };
+        settings = import ./settings.nix { inherit pkgs; };
         extensions = import ./extensions.nix { inherit pkgs; };
-
+ 
         codium = pkgs.vscode-with-extensions.override {
           vscode = pkgs.vscodium;
           vscodeExtensions = extensions;
         };
-
-        settings = import ./settings.nix { inherit pkgs pythonFull pythonMini; };
       in {
         devShells.default = pkgs.mkShell {
-          buildInputs = [ codium pythonFull pythonMini ];
+          buildInputs = [ codium kernels.pythonFull kernels.pythonMini ];
 
           shellHook = ''
+            mkdir -p "$PWD/.kernels"
             mkdir -p $PWD/.vscode
-            cp ${settings} /home/luvier/NixOS/shells/jupyter/.vscode/User/settings.json
-
-            ${pythonFull.interpreter} -m ipykernel install --user --name pyfull --display-name "Python (Full)"
-            ${pythonMini.interpreter} -m ipykernel install --user --name pymini --display-name "Python (Mini)"
-
-
+            ${kernels.shellHook}
+            cp ./settings.json /home/luvier/NixOS/shells/jupyter/.vscode/User/settings.json
             codium --user-data-dir=/home/luvier/NixOS/shells/jupyter/.vscode "$PWD"
           '';
         };
