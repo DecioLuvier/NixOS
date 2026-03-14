@@ -37,9 +37,4 @@ pkgs.stdenv.mkDerivation {
       --name pymini \
       --display-name "Python (Mini)"
   '';
-
-  meta = with pkgs.lib; {
-    description = "Python Jupyter kernels (Full + Mini) instalados em $out";
-    license = licenses.mit;
-  };
 }

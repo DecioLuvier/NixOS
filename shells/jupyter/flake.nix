@@ -30,10 +30,6 @@
             mkdir -p ${codiumDataDir} ${codiumExtensionsDir}
             ln -sf ${settings} ${codiumDataDir}/settings.json
 
-            # Define os kernels confiáveis do Jupyter
-            export JUPYTER_PATH=${kernels}/share/jupyter/kernels
-            export JUPYTER_CONFIG_DIR=${codiumDataDir}
-
             exec ${codium}/bin/codium \
               --user-data-dir ${codiumDataDir} \
               --extensions-dir ${codiumExtensionsDir} \
