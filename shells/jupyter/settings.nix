@@ -1,19 +1,17 @@
-{ pkgs, kernels }:
+{ pkgs, pythonFull, pythonMini }:
 
 pkgs.writeText "settings.json"
   (builtins.toJSON {
+    "editor.stickyScroll.enabled" = false;
+    "editor.minimap.enabled" = false;
 
-    editor.stickyScroll.enabled = false;
-    editor.minimap.enabled = false;
+    "git.enabled" = false;
+    "explorer.confirmDelete" = false;
 
-    git.enabled = false;
-    explorer.confirmDelete = false;
+    "jupyter.kernels.excludePythonEnvironments" = [".*"];
 
-    jupyter.kernels.excludePythonEnvironments = [".*"];
-
-    # Caminho real para os kernels
-    jupyter.kernels.trusted = [
-      "${kernels}/share/jupyter/kernels/pyfull"
-      "${kernels}/share/jupyter/kernels/pymini"
+    "jupyter.kernels.trusted" = [
+      "${pythonFull}/share/jupyter/kernels/pyfull"
+      "${pythonMini}/share/jupyter/kernels/pymini"
     ];
   })

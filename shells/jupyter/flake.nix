@@ -1,5 +1,5 @@
 {
-  description = "Codium + Jupyter com kernels Full/Mini usando $out";
+  description = "Jupyter dev environment with Python Full/Mini and VSCodium";
 
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
@@ -11,31 +11,52 @@
       let
         pkgs = import nixpkgs { inherit system; };
 
-        kernels = import ./kernels.nix {  };
-        extensions = import ./extensions.nix {  };
-        settings = import ./settings.nix { };
+        pythonFull = pkgs.python3.withPackages (p: with p; [
+          ipykernel
+          notebook
+          pip
+          setuptools
+          wheel
+          torch
+          torchvision
+          tqdm
+          matplotlib
+          torchinfo
+          onnxscript
+          onnxruntime
+        ]);
+
+
+        pythonMini = pkgs.python3.withPackages (p: with p; [
+          ipykernel
+          tqdm
+          matplotlib
+        ]);
+
+        extensions = import ./extensions.nix { inherit pkgs; };
 
         codium = pkgs.vscode-with-extensions.override {
           vscode = pkgs.vscodium;
           vscodeExtensions = extensions;
         };
 
-        codiumDataDir = "${toString ./.}/codium-data";
-        codiumExtensionsDir = "${toString ./.}/codium-extensions";
-
+        settings = import ./settings.nix { inherit pkgs pythonFull pythonMini; };
       in {
-        apps.x86_64-linux.codium-jupyter = {
-          type = "app";
-          program = "${pkgs.stdenv.shell} -c ''
-            mkdir -p ${codiumDataDir} ${codiumExtensionsDir}
-            ln -sf ${settings} ${codiumDataDir}/settings.json
+        devShells.default = pkgs.mkShell {
+          buildInputs = [ codium pythonFull pythonMini ];
 
-            exec ${codium}/bin/codium \
-              --user-data-dir ${codiumDataDir} \
-              --extensions-dir ${codiumExtensionsDir} \
-              \"$@\"
-          ''";
+          shellHook = ''
+            mkdir -p $PWD/.vscode
+            cp ${settings} /home/luvier/NixOS/shells/jupyter/.vscode/User/settings.json
+
+            ${pythonFull.interpreter} -m ipykernel install --user --name pyfull --display-name "Python (Full)"
+            ${pythonMini.interpreter} -m ipykernel install --user --name pymini --display-name "Python (Mini)"
+
+
+            codium --user-data-dir=/home/luvier/NixOS/shells/jupyter/.vscode "$PWD"
+          '';
         };
+
       }
     );
 }
