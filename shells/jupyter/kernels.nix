@@ -15,6 +15,17 @@ let
     onnxscript
     onnxruntime
   ]);
+
+  pythonData = pkgs.python3.withPackages (p: with p; [
+    ipykernel
+    notebook
+    pandas
+    numpy
+    scipy
+    seaborn
+    scikit-learn
+    matplotlib
+  ]);
 in {
-  inherit pythonFull;
+  inherit pythonFull pythonData;
 }
