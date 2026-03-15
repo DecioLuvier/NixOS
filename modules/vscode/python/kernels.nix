@@ -26,6 +26,7 @@ let
     scikit-learn
     matplotlib
   ]);
-in {
-  inherit pythonFull pythonData;
+in
+pkgs.symlinkJoin {
+  paths = [ pythonFull pythonData ];
 }
