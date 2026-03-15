@@ -20,18 +20,11 @@
         };
       in {
         devShells.default = pkgs.mkShell {
-          buildInputs = [ codium ];
-
+        packages = [ codium python.pythonFull ];
         shellHook = ''
           mkdir -p "$PWD/.kernels"
           mkdir -p "$PWD/.vscode/User"
-
-          export JUPYTER_PATH="$PWD/.kernels/share/jupyter"
-
-          ${kernels.shellHook}
-
           sed "s|__PWD__|$PWD|g" ${settings} > "$PWD/.vscode/User/settings.json"
-
           codium --user-data-dir="$PWD/.vscode" "$PWD"
         '';
         };

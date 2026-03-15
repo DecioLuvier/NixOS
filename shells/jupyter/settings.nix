@@ -7,11 +7,4 @@ pkgs.writeText "settings.json"
 
     "git.enabled" = false;
     "explorer.confirmDelete" = false;
-
-    "jupyter.kernels.excludePythonEnvironments" = [".*"];
-
-    "jupyter.kernels.trusted" = [
-      "__PWD__/.kernels/share/jupyter/kernels/pyfull/kernel.json"
-      "__PWD__/.kernels/share/jupyter/kernels/pymini/kernel.json"
-    ];
   })
