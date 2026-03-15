@@ -2,12 +2,16 @@
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
     flake-utils.url = "github:numtide/flake-utils";
+
+    onnx2c.url = "path:../onnx2c";
   };
 
-  outputs = { self, nixpkgs, flake-utils }:
+  outputs = { self, nixpkgs, flake-utils, onnx2c }:
     flake-utils.lib.eachDefaultSystem (system:
       let
         pkgs = import nixpkgs { inherit system; };
+
+        onnx2c = onnx2c.packages.${system}.default;
 
         mkCodium = { kernels, settings, extensions }:
           let
@@ -18,7 +22,8 @@
           in pkgs.writeShellScriptBin "codium" ''
             export HOME="$(mktemp -d)"
             export VSCODE_USER_DATA="$(mktemp -d)"
-            export PATH="${pkgs.coreutils}/bin:${kernels}/bin:$PATH"
+
+            export PATH="${pkgs.coreutils}/bin:${kernels}:$PATH"
 
             mkdir -p "$VSCODE_USER_DATA/User"
             cp ${settings} "$VSCODE_USER_DATA/User/settings.json"
@@ -29,7 +34,7 @@
       in {
         packages = {
           python = mkCodium {
-            kernels = import ./python/kernels.nix { inherit pkgs; };
+            kernels = import ./python/kernels.nix { inherit pkgs onnx2c; };
             settings = import ./python/settings.nix { inherit pkgs; };
             extensions = import ./python/extensions.nix { inherit pkgs; };
           };

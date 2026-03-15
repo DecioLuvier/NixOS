@@ -7,4 +7,7 @@ pkgs.writeText "settings.json"
 
     "git.enabled" = false;
     "explorer.confirmDelete" = false;
+
+    "security.workspace.trust.enabled" = false;
+    "security.workspace.trust.startupPrompt" = "never";
   })

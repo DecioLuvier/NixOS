@@ -27,6 +27,4 @@ let
     matplotlib
   ]);
 in
-pkgs.symlinkJoin {
-  paths = [ pythonFull pythonData ];
-}
+"${pythonFull}/bin:${pythonData}/bin"
