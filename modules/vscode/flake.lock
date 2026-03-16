@@ -1,21 +1,5 @@
 {
   "nodes": {
-    "emx-pytorch-src": {
-      "flake": false,
-      "locked": {
-        "lastModified": 1771759480,
-        "narHash": "sha256-zMjjwbd7XubStaV5mUQyDxHFDwOVVxDx1CuF+EQZscI=",
-        "owner": "emmtrix",
-        "repo": "emx-pytorch-cgen",
-        "rev": "e78f5737cd871c8e149e2f06f271b26e95e0fef5",
-        "type": "github"
-      },
-      "original": {
-        "owner": "emmtrix",
-        "repo": "emx-pytorch-cgen",
-        "type": "github"
-      }
-    },
     "flake-utils": {
       "inputs": {
         "systems": "systems"
@@ -133,18 +117,17 @@
       },
       "parent": []
     },
-    "pytorch-cgen": {
+    "onnx2pytorch": {
       "inputs": {
-        "emx-pytorch-src": "emx-pytorch-src",
         "flake-utils": "flake-utils_3",
         "nixpkgs": "nixpkgs_3"
       },
       "locked": {
-        "path": "../../packages/emx-pytorch-cgen",
+        "path": "../../packages/onnx2pytorch",
         "type": "path"
       },
       "original": {
-        "path": "../../packages/emx-pytorch-cgen",
+        "path": "../../packages/onnx2pytorch",
         "type": "path"
       },
       "parent": []
@@ -154,7 +137,7 @@
         "flake-utils": "flake-utils",
         "nixpkgs": "nixpkgs",
         "onnx2c": "onnx2c",
-        "pytorch-cgen": "pytorch-cgen"
+        "onnx2pytorch": "onnx2pytorch"
       }
     },
     "systems": {
