@@ -11,8 +11,6 @@
       let
         pkgs = import nixpkgs { inherit system; };
 
-        onnx2c = onnx2c.packages.${system}.default;
-
         mkCodium = { kernels, settings, extensions }:
           let
             codium-base = pkgs.vscode-with-extensions.override {
@@ -34,7 +32,10 @@
       in {
         packages = {
           python = mkCodium {
-            kernels = import ./python/kernels.nix { inherit pkgs onnx2c; };
+            kernels = import ./python/kernels.nix {
+              inherit pkgs;
+              onnx2c = onnx2c.packages.${system}.default;
+            };
             settings = import ./python/settings.nix { inherit pkgs; };
             extensions = import ./python/extensions.nix { inherit pkgs; };
           };

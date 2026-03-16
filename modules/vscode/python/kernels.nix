@@ -1,4 +1,4 @@
-{ pkgs }:
+{ pkgs, onnx2c, ... }:
 
 let
   pythonFull = pkgs.python3.withPackages (p: with p; [
@@ -14,6 +14,7 @@ let
     torchinfo
     onnxscript
     onnxruntime
+    emx-onnx-cgen
   ]);
 
   pythonData = pkgs.python3.withPackages (p: with p; [
@@ -27,4 +28,4 @@ let
     matplotlib
   ]);
 in
-"${pythonFull}/bin:${pythonData}/bin"
+"${pkgs.gcc}/bin:${pythonFull}/bin:${pythonData}/bin:${onnx2c}/bin"
