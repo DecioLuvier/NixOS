@@ -1,31 +1,21 @@
-{ pkgs, onnx2c, ... }:
+{ pkgs, onnx2c, onnx2pytorch, ... }:
 
 let
-  pythonFull = pkgs.python3.withPackages (p: with p; [
-    ipykernel
-    notebook
-    pip
-    setuptools
-    wheel
-    torch
-    torchvision
-    tqdm
-    matplotlib
-    torchinfo
-    onnxscript
-    onnxruntime
-    emx-onnx-cgen
-  ]);
+  pythonFull = pkgs.python3.withPackages (p: [
+    p.ipykernel
+    p.notebook
+    p.pip
+    p.setuptools
+    p.wheel
+    p.torch
+    p.torchvision
+    p.tqdm
+    p.matplotlib
+    p.torchinfo
+    p.onnxscript
+    p.onnxruntime
 
-  pythonData = pkgs.python3.withPackages (p: with p; [
-    ipykernel
-    notebook
-    pandas
-    numpy
-    scipy
-    seaborn
-    scikit-learn
-    matplotlib
+    onnx2pytorch
   ]);
 in
-"${pkgs.gcc}/bin:${pythonFull}/bin:${pythonData}/bin:${onnx2c}/bin"
+"${pkgs.gcc}/bin:${pythonFull}/bin:${onnx2c}/bin"

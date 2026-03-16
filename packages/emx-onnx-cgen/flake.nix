@@ -16,7 +16,7 @@
       {
         packages.default = pkgs.python3Packages.buildPythonPackage {
           pname = "emx-onnx-cgen";
-          version = "2026-03-04";
+          version = "0.0.1";
           src = emx-src;
 
           pyproject = false;
@@ -24,11 +24,6 @@
           nativeBuildInputs = with pkgs.python3Packages; [
             setuptools
             wheel
-          ];
-
-          propagatedBuildInputs = with pkgs.python3Packages; [
-            onnx
-            numpy
           ];
 
           doCheck = false;

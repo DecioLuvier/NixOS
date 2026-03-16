@@ -3,10 +3,11 @@
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
     flake-utils.url = "github:numtide/flake-utils";
 
-    onnx2c.url = "path:../onnx2c";
+    onnx2c.url = "path:../../packages/onnx2c";
+    onnx2pytorch.url = "path:../../packages/onnx2pytorch";
   };
 
-  outputs = { self, nixpkgs, flake-utils, onnx2c }:
+  outputs = { self, nixpkgs, flake-utils, onnx2c, onnx2pytorch }:
     flake-utils.lib.eachDefaultSystem (system:
       let
         pkgs = import nixpkgs { inherit system; };
@@ -35,6 +36,7 @@
             kernels = import ./python/kernels.nix {
               inherit pkgs;
               onnx2c = onnx2c.packages.${system}.default;
+              onnx2pytorch = onnx2pytorch.packages.${system}.default;
             };
             settings = import ./python/settings.nix { inherit pkgs; };
             extensions = import ./python/extensions.nix { inherit pkgs; };
