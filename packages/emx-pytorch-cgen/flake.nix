@@ -36,7 +36,7 @@
           onnx2pytorch
         ];
 
-                pythonImportsCheck = [ "codegen_backend" ];
+        pythonImportsCheck = [ "codegen_backend" ];
 
         doCheck = false;
       };

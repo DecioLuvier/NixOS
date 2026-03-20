@@ -6,9 +6,10 @@
     onnx2c.url = "path:../../packages/onnx2c";
     onnx2pytorch.url = "path:../../packages/onnx2pytorch";
     emx-pytorch-cgen.url = "path:../../packages/emx-pytorch-cgen";
+    emx-onnx-cgen.url = "path:../../packages/emx-onnx-cgen";  
   };
 
-  outputs = { self, nixpkgs, flake-utils, onnx2c, onnx2pytorch, emx-pytorch-cgen }:
+  outputs = { self, nixpkgs, flake-utils, onnx2c, onnx2pytorch, emx-pytorch-cgen, emx-onnx-cgen }:
     flake-utils.lib.eachDefaultSystem (system:
       let
         pkgs = import nixpkgs { inherit system; };
@@ -39,6 +40,7 @@
               onnx2c = onnx2c.packages.${system}.default;
               onnx2pytorch = onnx2pytorch.packages.${system}.default;
               emx-pytorch-cgen = emx-pytorch-cgen.packages.${system}.default;
+              emx-onnx-cgen = emx-onnx-cgen.packages.${system}.default;
             };
             settings = import ./python/settings.nix { inherit pkgs; };
             extensions = import ./python/extensions.nix { inherit pkgs; };

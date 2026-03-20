@@ -1,34 +1,53 @@
 {
+  description = "emx-onnx-cgen via GitHub (fixed build)";
+
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
     flake-utils.url = "github:numtide/flake-utils";
+
+    emx-onnx-cgen-src = {
+      url = "github:emmtrix/emx-onnx-cgen/v1.2.0";
+      flake = false;
+    };
   };
 
-  outputs = { self, nixpkgs, flake-utils }:
+  outputs = { self, nixpkgs, flake-utils, emx-onnx-cgen-src }:
     flake-utils.lib.eachDefaultSystem (system:
       let
         pkgs = import nixpkgs { inherit system; };
+        py = pkgs.python3Packages;
       in {
-        packages.default = pkgs.python3Packages.buildPythonPackage rec {
+        packages.default = py.buildPythonPackage rec {
           pname = "emx-onnx-cgen";
-          version = "0.4.1";
-          
-          pyproject = true;
+          version = "1.2.0";
 
-          src = pkgs.fetchPypi {
-            inherit pname version;
-            hash = "sha256-+TX2sWL8LbQRG44pSNyiP15pjaCopQoXcSmcCHVL7PM=";
-          };
-          
-          nativeBuildInputs = with pkgs.python3Packages; [
+          format = "pyproject";
+          src = emx-onnx-cgen-src;
 
+          nativeBuildInputs = with py; [
+            setuptools
+            setuptools-scm
+            wheel
+            pip
+          ];
+
+          patchPhase = ''
+            sed -i \
+              -e 's/build-backend = "packaging_backend"/build-backend = "setuptools.build_meta"/' \
+              -e '/backend-path/d' \
+              pyproject.toml
+          '';
+
+          propagatedBuildInputs = with py; [
+            emx-regex-cgen
+            jinja2
+            numpy
+            onnx
+            onnxruntime
+            protobuf
           ];
 
           doCheck = false;
-
-          propagatedBuildInputs = with pkgs.python3Packages; [ 
-
-          ];
         };
       }
     );
