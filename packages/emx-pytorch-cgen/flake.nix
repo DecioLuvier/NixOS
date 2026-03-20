@@ -1,40 +1,42 @@
-nix
-
 {
-  description = "emx-pytorch-cgen CLI local";
+  description = "emx-pytorch-cgen CLI via GitHub";
 
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
+    emx-pytorch-src = {
+      url = "github:emmtrix/emx-pytorch-cgen";
+      flake = false;
+    };
     onnx2pytorch-repo.url = "path:../onnx2pytorch";
   };
 
-  outputs = { self, nixpkgs, onnx2pytorch-repo, ... }:
+  outputs = { self, nixpkgs, emx-pytorch-src, onnx2pytorch-repo, ... }:
     let
       system = "x86_64-linux";
       pkgs = import nixpkgs { inherit system; };
-      python = pkgs.python3;
-      
+      pythonPackages = pkgs.python3Packages;
       onnx2pytorch = onnx2pytorch-repo.packages.${system}.default;
     in {
-      packages.${system}.default = python.pkgs.buildPythonPackage rec {
+      packages.${system}.default = pythonPackages.buildPythonPackage rec {
         pname = "emx-pytorch-cgen";
         version = "0.1.0";
-        pyproject = true;
+        format = "setuptools"; 
 
-        src = ./.;
+        src = emx-pytorch-src;
 
-        nativeBuildInputs = with python.pkgs; [
-          setuptools
-          wheel
+        nativeBuildInputs = [
+          pythonPackages.setuptools
+          pythonPackages.wheel
         ];
 
-        propagatedBuildInputs = with python.pkgs; [
-          torch
-          jinja2
-          onnx
+        propagatedBuildInputs = [
+          pythonPackages.torch
+          pythonPackages.jinja2
+          pythonPackages.onnx
           onnx2pytorch
         ];
 
+                pythonImportsCheck = [ "codegen_backend" ];
 
         doCheck = false;
       };

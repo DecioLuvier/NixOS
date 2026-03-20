@@ -1,4 +1,4 @@
-{ pkgs, onnx2c, onnx2pytorch, ... }:
+{ pkgs, onnx2c, onnx2pytorch, emx-pytorch-cgen, ... }:
 
 let
   pythonFull = pkgs.python3.withPackages (p: [
@@ -14,7 +14,7 @@ let
     p.torchinfo
     p.onnxscript
     p.onnxruntime
-
+    emx-pytorch-cgen
     onnx2pytorch
   ]);
 in

@@ -10,7 +10,7 @@
         pkgs = import nixpkgs { inherit system; };
       in {
         packages.default = pkgs.python3Packages.buildPythonPackage rec {
-          pname = "onnx2pytorch";
+          pname = "emx-onnx-cgen";
           version = "0.4.1";
           
           pyproject = true;
@@ -21,16 +21,13 @@
           };
           
           nativeBuildInputs = with pkgs.python3Packages; [
-            setuptools
-            wheel
-            torchvision
+
           ];
 
           doCheck = false;
 
           propagatedBuildInputs = with pkgs.python3Packages; [ 
-            torch 
-            onnx 
+
           ];
         };
       }

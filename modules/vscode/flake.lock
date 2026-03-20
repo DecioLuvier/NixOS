@@ -1,5 +1,37 @@
 {
   "nodes": {
+    "emx-pytorch-cgen": {
+      "inputs": {
+        "emx-pytorch-src": "emx-pytorch-src",
+        "nixpkgs": "nixpkgs",
+        "onnx2pytorch-repo": "onnx2pytorch-repo"
+      },
+      "locked": {
+        "path": "../../packages/emx-pytorch-cgen",
+        "type": "path"
+      },
+      "original": {
+        "path": "../../packages/emx-pytorch-cgen",
+        "type": "path"
+      },
+      "parent": []
+    },
+    "emx-pytorch-src": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1771759480,
+        "narHash": "sha256-zMjjwbd7XubStaV5mUQyDxHFDwOVVxDx1CuF+EQZscI=",
+        "owner": "emmtrix",
+        "repo": "emx-pytorch-cgen",
+        "rev": "e78f5737cd871c8e149e2f06f271b26e95e0fef5",
+        "type": "github"
+      },
+      "original": {
+        "owner": "emmtrix",
+        "repo": "emx-pytorch-cgen",
+        "type": "github"
+      }
+    },
     "flake-utils": {
       "inputs": {
         "systems": "systems"
@@ -39,6 +71,24 @@
     "flake-utils_3": {
       "inputs": {
         "systems": "systems_3"
+      },
+      "locked": {
+        "lastModified": 1731533236,
+        "narHash": "sha256-l0KFg5HjrsfsO/JpG+r7fRrqm12kzFHyUHqHCVpMMbI=",
+        "owner": "numtide",
+        "repo": "flake-utils",
+        "rev": "11707dc2f618dd54ca8739b309ec4fc024de578b",
+        "type": "github"
+      },
+      "original": {
+        "owner": "numtide",
+        "repo": "flake-utils",
+        "type": "github"
+      }
+    },
+    "flake-utils_4": {
+      "inputs": {
+        "systems": "systems_4"
       },
       "locked": {
         "lastModified": 1731533236,
@@ -102,10 +152,42 @@
         "type": "github"
       }
     },
+    "nixpkgs_4": {
+      "locked": {
+        "lastModified": 1773579282,
+        "narHash": "sha256-LWvZj9Bvm1EuoO6zbX4yjZebwnZNfeTbmCJGS7RGQ3Y=",
+        "owner": "NixOS",
+        "repo": "nixpkgs",
+        "rev": "5a88de74db0e948139be4b46f9a94d64aa11391c",
+        "type": "github"
+      },
+      "original": {
+        "owner": "NixOS",
+        "ref": "nixos-unstable",
+        "repo": "nixpkgs",
+        "type": "github"
+      }
+    },
+    "nixpkgs_5": {
+      "locked": {
+        "lastModified": 1773579282,
+        "narHash": "sha256-LWvZj9Bvm1EuoO6zbX4yjZebwnZNfeTbmCJGS7RGQ3Y=",
+        "owner": "NixOS",
+        "repo": "nixpkgs",
+        "rev": "5a88de74db0e948139be4b46f9a94d64aa11391c",
+        "type": "github"
+      },
+      "original": {
+        "owner": "NixOS",
+        "ref": "nixos-unstable",
+        "repo": "nixpkgs",
+        "type": "github"
+      }
+    },
     "onnx2c": {
       "inputs": {
-        "flake-utils": "flake-utils_2",
-        "nixpkgs": "nixpkgs_2"
+        "flake-utils": "flake-utils_3",
+        "nixpkgs": "nixpkgs_4"
       },
       "locked": {
         "path": "../../packages/onnx2c",
@@ -119,8 +201,8 @@
     },
     "onnx2pytorch": {
       "inputs": {
-        "flake-utils": "flake-utils_3",
-        "nixpkgs": "nixpkgs_3"
+        "flake-utils": "flake-utils_4",
+        "nixpkgs": "nixpkgs_5"
       },
       "locked": {
         "path": "../../packages/onnx2pytorch",
@@ -132,10 +214,28 @@
       },
       "parent": []
     },
-    "root": {
+    "onnx2pytorch-repo": {
       "inputs": {
         "flake-utils": "flake-utils",
-        "nixpkgs": "nixpkgs",
+        "nixpkgs": "nixpkgs_2"
+      },
+      "locked": {
+        "path": "../onnx2pytorch",
+        "type": "path"
+      },
+      "original": {
+        "path": "../onnx2pytorch",
+        "type": "path"
+      },
+      "parent": [
+        "emx-pytorch-cgen"
+      ]
+    },
+    "root": {
+      "inputs": {
+        "emx-pytorch-cgen": "emx-pytorch-cgen",
+        "flake-utils": "flake-utils_2",
+        "nixpkgs": "nixpkgs_3",
         "onnx2c": "onnx2c",
         "onnx2pytorch": "onnx2pytorch"
       }
@@ -171,6 +271,21 @@
       }
     },
     "systems_3": {
+      "locked": {
+        "lastModified": 1681028828,
+        "narHash": "sha256-Vy1rq5AaRuLzOxct8nz4T6wlgyUR7zLU309k9mBC768=",
+        "owner": "nix-systems",
+        "repo": "default",
+        "rev": "da67096a3b9bf56a91d16901293e51ba5b49a27e",
+        "type": "github"
+      },
+      "original": {
+        "owner": "nix-systems",
+        "repo": "default",
+        "type": "github"
+      }
+    },
+    "systems_4": {
       "locked": {
         "lastModified": 1681028828,
         "narHash": "sha256-Vy1rq5AaRuLzOxct8nz4T6wlgyUR7zLU309k9mBC768=",
