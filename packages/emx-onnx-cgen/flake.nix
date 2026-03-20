@@ -1,6 +1,4 @@
 {
-  description = "emx-onnx-cgen via GitHub (fixed build)";
-
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
     flake-utils.url = "github:numtide/flake-utils";
@@ -9,13 +7,18 @@
       url = "github:emmtrix/emx-onnx-cgen/v1.2.0";
       flake = false;
     };
+
+    emx_regex_cgen.url = "path:../emx-regex-cgen";
   };
 
-  outputs = { self, nixpkgs, flake-utils, emx-onnx-cgen-src }:
+  outputs = { self, nixpkgs, flake-utils, emx-onnx-cgen-src, emx_regex_cgen, ... }:
     flake-utils.lib.eachDefaultSystem (system:
       let
         pkgs = import nixpkgs { inherit system; };
         py = pkgs.python3Packages;
+
+        emxRegex = emx_regex_cgen.packages.${system}.default;
+
       in {
         packages.default = py.buildPythonPackage rec {
           pname = "emx-onnx-cgen";
@@ -31,21 +34,18 @@
             pip
           ];
 
-          patchPhase = ''
-            sed -i \
-              -e 's/build-backend = "packaging_backend"/build-backend = "setuptools.build_meta"/' \
-              -e '/backend-path/d' \
-              pyproject.toml
-          '';
-
-          propagatedBuildInputs = with py; [
-            emx-regex-cgen
-            jinja2
-            numpy
-            onnx
-            onnxruntime
-            protobuf
+          propagatedBuildInputs = [
+            emxRegex
+            py.jinja2
+            py.numpy
+            py.onnx
+            py.onnxruntime
+            py.protobuf
           ];
+
+          preBuild = ''
+            export PYTHONPATH=$PWD:$PYTHONPATH
+          '';
 
           doCheck = false;
         };

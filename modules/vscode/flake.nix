@@ -7,6 +7,7 @@
     onnx2pytorch.url = "path:../../packages/onnx2pytorch";
     emx-pytorch-cgen.url = "path:../../packages/emx-pytorch-cgen";
     emx-onnx-cgen.url = "path:../../packages/emx-onnx-cgen";  
+    emx_regex_cgen.url = "path:../../packages/emx_regex_cgen"; 
   };
 
   outputs = { self, nixpkgs, flake-utils, onnx2c, onnx2pytorch, emx-pytorch-cgen, emx-onnx-cgen }:
