@@ -8,31 +8,28 @@
     flake-utils.lib.eachDefaultSystem (system:
       let
         pkgs = import nixpkgs { inherit system; };
+        py = pkgs.python3Packages;
       in {
-        packages.default = pkgs.python3Packages.buildPythonPackage rec {
+        packages.default = py.buildPythonPackage rec {
           pname = "onnx2pytorch";
           version = "0.4.1";
-          
-          pyproject = true;
+
+          format = "pyproject";
 
           src = pkgs.fetchPypi {
             inherit pname version;
             hash = "sha256-+TX2sWL8LbQRG44pSNyiP15pjaCopQoXcSmcCHVL7PM=";
           };
-          
-          nativeBuildInputs = with pkgs.python3Packages; [
-            setuptools
-            wheel
-            torchvision
+
+          nativeBuildInputs = [
+            py.setuptools
+            py.wheel
+            py.onnx
+            py.torchvision
           ];
 
+          pythonImportsCheck = [ "onnx2pytorch" ];
           doCheck = false;
-
-          propagatedBuildInputs = with pkgs.python3Packages; [ 
-            torch 
-            onnx 
-          ];
         };
-      }
-    );
+      });
 }

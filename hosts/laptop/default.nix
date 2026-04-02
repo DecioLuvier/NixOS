@@ -9,6 +9,10 @@
 
   system.stateVersion = "24.11";
 
+  nixpkgs.config = {
+    allowUnfree = true;
+  };
+
   boot = {
     tmp.cleanOnBoot = true;
     loader = {

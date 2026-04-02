@@ -14,7 +14,11 @@
     fonts.packages = [
       pkgs.nerd-fonts.fira-code
       pkgs.font-awesome
+      pkgs.fira-sans       
+      pkgs.nerd-fonts.symbols-only 
+      pkgs.roboto             
     ];
+
 
     home-manager.sharedModules = [
       {
@@ -182,7 +186,7 @@
               on-click = "pavucontrol";
               on-click-right = "amixer sset Master toggle 1>/dev/null";
               format = "<span foreground='#fab387'>󰕾</span>  {volume}%";
-              format-muted = " ";
+              format-muted = "<span foreground='#fa8787'>󰖁</span> 0%";
               format-source = "";
               format-source-muted = "";
               format-icons = {

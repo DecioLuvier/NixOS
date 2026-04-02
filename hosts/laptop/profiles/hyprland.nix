@@ -13,6 +13,18 @@
 
   time.timeZone = "America/Sao_Paulo";
 
+  fonts = {
+    enableDefaultPackages = true;
+    fontconfig = {
+      enable = true;
+      defaultFonts = {
+        monospace = [ "JetBrainsMono Nerd Font" ];
+        sansSerif = [ "DejaVu Sans" ];
+      };
+    };
+  };
+
+
   users.users.luvier = {
     isNormalUser = true;
     extraGroups = [
@@ -29,7 +41,7 @@
       user = "luvier";
     };
   };
-
+  
   home-manager.users.luvier = {
     home = {
       username = "luvier";
@@ -38,6 +50,8 @@
       packages = with pkgs; [
         simulide
         github-desktop
+        melonds
+        brightnessctl
       ];
     };
 

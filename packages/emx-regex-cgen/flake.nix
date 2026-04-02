@@ -32,6 +32,7 @@
             pip
           ];
 
+          pythonRemoveBytecode = true;
           doCheck = false;
         };
       }

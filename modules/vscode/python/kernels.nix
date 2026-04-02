@@ -1,22 +1,31 @@
-{ pkgs, onnx2c, onnx2pytorch, emx-pytorch-cgen, emx-onnx-cgen, ... }:
+{ pkgs, emx-onnx-cgen, onnx2c, onnx2pytorch }:
 
 let
-  pythonFull = pkgs.python3.withPackages (p: [
-    p.ipykernel
-    p.notebook
-    p.pip
-    p.setuptools
-    p.wheel
-    p.torch
-    p.torchvision
-    p.tqdm
-    p.matplotlib
-    p.torchinfo
-    p.onnxscript
-    p.onnxruntime
-    emx-pytorch-cgen
-    emx-onnx-cgen
-    onnx2pytorch
-  ]);
+  python-env = pkgs.buildEnv {
+    name = "python-env";
+    paths = [
+      pkgs.gcc
+      pkgs.perf
+      (pkgs.python3.withPackages (p: [
+        p.ipykernel
+        p.notebook
+        p.pip
+        p.setuptools
+        p.wheel
+        #p.torch
+        #p.torchvision
+        p.tqdm
+        p.matplotlib
+        #p.torchinfo
+        p.onnxscript
+        p.onnxruntime
+        p.tensorflow
+        emx-onnx-cgen
+        #onnx2pytorch
+      ]))
+    ];
+    ignoreCollisions = true;
+  };
+
 in
-"${pkgs.gcc}/bin:${pythonFull}/bin:${onnx2c}/bin"
+  "${python-env}/bin"

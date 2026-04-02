@@ -8,16 +8,18 @@
       flake = false;
     };
 
-    emx_regex_cgen.url = "path:../emx-regex-cgen";
+    emx-regex-cgen = {
+      url = "path:../emx-regex-cgen";
+    };
   };
 
-  outputs = { self, nixpkgs, flake-utils, emx-onnx-cgen-src, emx_regex_cgen, ... }:
+  outputs = { self, nixpkgs, flake-utils, emx-onnx-cgen-src, emx-regex-cgen, ... }:
     flake-utils.lib.eachDefaultSystem (system:
       let
         pkgs = import nixpkgs { inherit system; };
         py = pkgs.python3Packages;
 
-        emxRegex = emx_regex_cgen.packages.${system}.default;
+        emxRegexPkg = emx-regex-cgen.packages.${system}.default;
 
       in {
         packages.default = py.buildPythonPackage rec {
@@ -35,7 +37,7 @@
           ];
 
           propagatedBuildInputs = [
-            emxRegex
+            emxRegexPkg
             py.jinja2
             py.numpy
             py.onnx
@@ -44,11 +46,10 @@
           ];
 
           preBuild = ''
-            export PYTHONPATH=$PWD:$PYTHONPATH
+            export PYTHONPATH=${emxRegexPkg}/${py.python.sitePackages}:$PYTHONPATH
           '';
 
           doCheck = false;
         };
-      }
-    );
+      });
 }

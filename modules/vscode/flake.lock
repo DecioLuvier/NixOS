@@ -3,8 +3,9 @@
     "emx-onnx-cgen": {
       "inputs": {
         "emx-onnx-cgen-src": "emx-onnx-cgen-src",
-        "flake-utils": "flake-utils",
-        "nixpkgs": "nixpkgs"
+        "emx-regex-cgen": "emx-regex-cgen",
+        "flake-utils": "flake-utils_2",
+        "nixpkgs": "nixpkgs_2"
       },
       "locked": {
         "path": "../../packages/emx-onnx-cgen",
@@ -33,37 +34,23 @@
         "type": "github"
       }
     },
-    "emx-pytorch-cgen": {
+    "emx-regex-cgen": {
       "inputs": {
-        "emx-pytorch-src": "emx-pytorch-src",
-        "nixpkgs": "nixpkgs_2",
-        "onnx2pytorch-repo": "onnx2pytorch-repo"
+        "flake-utils": "flake-utils",
+        "nixpkgs": "nixpkgs",
+        "regex-src": "regex-src"
       },
       "locked": {
-        "path": "../../packages/emx-pytorch-cgen",
+        "path": "../emx-regex-cgen",
         "type": "path"
       },
       "original": {
-        "path": "../../packages/emx-pytorch-cgen",
+        "path": "../emx-regex-cgen",
         "type": "path"
       },
-      "parent": []
-    },
-    "emx-pytorch-src": {
-      "flake": false,
-      "locked": {
-        "lastModified": 1771759480,
-        "narHash": "sha256-zMjjwbd7XubStaV5mUQyDxHFDwOVVxDx1CuF+EQZscI=",
-        "owner": "emmtrix",
-        "repo": "emx-pytorch-cgen",
-        "rev": "e78f5737cd871c8e149e2f06f271b26e95e0fef5",
-        "type": "github"
-      },
-      "original": {
-        "owner": "emmtrix",
-        "repo": "emx-pytorch-cgen",
-        "type": "github"
-      }
+      "parent": [
+        "emx-onnx-cgen"
+      ]
     },
     "flake-utils": {
       "inputs": {
@@ -173,11 +160,11 @@
     },
     "nixpkgs_2": {
       "locked": {
-        "lastModified": 1773579282,
-        "narHash": "sha256-LWvZj9Bvm1EuoO6zbX4yjZebwnZNfeTbmCJGS7RGQ3Y=",
+        "lastModified": 1773821835,
+        "narHash": "sha256-TJ3lSQtW0E2JrznGVm8hOQGVpXjJyXY2guAxku2O9A4=",
         "owner": "NixOS",
         "repo": "nixpkgs",
-        "rev": "5a88de74db0e948139be4b46f9a94d64aa11391c",
+        "rev": "b40629efe5d6ec48dd1efba650c797ddbd39ace0",
         "type": "github"
       },
       "original": {
@@ -189,11 +176,11 @@
     },
     "nixpkgs_3": {
       "locked": {
-        "lastModified": 1773579282,
-        "narHash": "sha256-LWvZj9Bvm1EuoO6zbX4yjZebwnZNfeTbmCJGS7RGQ3Y=",
+        "lastModified": 1773821835,
+        "narHash": "sha256-TJ3lSQtW0E2JrznGVm8hOQGVpXjJyXY2guAxku2O9A4=",
         "owner": "NixOS",
         "repo": "nixpkgs",
-        "rev": "5a88de74db0e948139be4b46f9a94d64aa11391c",
+        "rev": "b40629efe5d6ec48dd1efba650c797ddbd39ace0",
         "type": "github"
       },
       "original": {
@@ -205,11 +192,11 @@
     },
     "nixpkgs_4": {
       "locked": {
-        "lastModified": 1773579282,
-        "narHash": "sha256-LWvZj9Bvm1EuoO6zbX4yjZebwnZNfeTbmCJGS7RGQ3Y=",
+        "lastModified": 1773821835,
+        "narHash": "sha256-TJ3lSQtW0E2JrznGVm8hOQGVpXjJyXY2guAxku2O9A4=",
         "owner": "NixOS",
         "repo": "nixpkgs",
-        "rev": "5a88de74db0e948139be4b46f9a94d64aa11391c",
+        "rev": "b40629efe5d6ec48dd1efba650c797ddbd39ace0",
         "type": "github"
       },
       "original": {
@@ -235,26 +222,10 @@
         "type": "github"
       }
     },
-    "nixpkgs_6": {
-      "locked": {
-        "lastModified": 1773579282,
-        "narHash": "sha256-LWvZj9Bvm1EuoO6zbX4yjZebwnZNfeTbmCJGS7RGQ3Y=",
-        "owner": "NixOS",
-        "repo": "nixpkgs",
-        "rev": "5a88de74db0e948139be4b46f9a94d64aa11391c",
-        "type": "github"
-      },
-      "original": {
-        "owner": "NixOS",
-        "ref": "nixos-unstable",
-        "repo": "nixpkgs",
-        "type": "github"
-      }
-    },
     "onnx2c": {
       "inputs": {
         "flake-utils": "flake-utils_4",
-        "nixpkgs": "nixpkgs_5"
+        "nixpkgs": "nixpkgs_4"
       },
       "locked": {
         "path": "../../packages/onnx2c",
@@ -269,7 +240,7 @@
     "onnx2pytorch": {
       "inputs": {
         "flake-utils": "flake-utils_5",
-        "nixpkgs": "nixpkgs_6"
+        "nixpkgs": "nixpkgs_5"
       },
       "locked": {
         "path": "../../packages/onnx2pytorch",
@@ -281,29 +252,28 @@
       },
       "parent": []
     },
-    "onnx2pytorch-repo": {
-      "inputs": {
-        "flake-utils": "flake-utils_2",
-        "nixpkgs": "nixpkgs_3"
-      },
+    "regex-src": {
+      "flake": false,
       "locked": {
-        "path": "../onnx2pytorch",
-        "type": "path"
+        "lastModified": 1773272444,
+        "narHash": "sha256-pMzcVcglQzqz4bYFqF7LeXqy1c6QJQTK3Xl42zDIldc=",
+        "owner": "emmtrix",
+        "repo": "emx-regex-cgen",
+        "rev": "4987e87a09e40b6f01187d568ed5c496fa3186af",
+        "type": "github"
       },
       "original": {
-        "path": "../onnx2pytorch",
-        "type": "path"
-      },
-      "parent": [
-        "emx-pytorch-cgen"
-      ]
+        "owner": "emmtrix",
+        "ref": "v0.2.0",
+        "repo": "emx-regex-cgen",
+        "type": "github"
+      }
     },
     "root": {
       "inputs": {
         "emx-onnx-cgen": "emx-onnx-cgen",
-        "emx-pytorch-cgen": "emx-pytorch-cgen",
         "flake-utils": "flake-utils_3",
-        "nixpkgs": "nixpkgs_4",
+        "nixpkgs": "nixpkgs_3",
         "onnx2c": "onnx2c",
         "onnx2pytorch": "onnx2pytorch"
       }
