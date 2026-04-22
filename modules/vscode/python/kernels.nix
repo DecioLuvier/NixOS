@@ -6,22 +6,25 @@ let
     paths = [
       pkgs.gcc
       pkgs.perf
-      (pkgs.python3.withPackages (p: [
+      pkgs.flamegraph
+      pkgs.clang
+      emx-onnx-cgen
+      (pkgs.python313.withPackages (p: [
         p.ipykernel
         p.notebook
-        p.pip
-        p.setuptools
-        p.wheel
-        #p.torch
-        #p.torchvision
-        p.tqdm
-        p.matplotlib
-        #p.torchinfo
-        p.onnxscript
-        p.onnxruntime
         p.tensorflow
+        p.keras
+        p.sympy
+        p.tqdm
+        p.torchinfo
+        p.torch
+        p.matplotlib
+        p.pandas
+        p.numpy
+        p.torchvision
+        p.onnxconverter-common
+        p.onnxscript
         emx-onnx-cgen
-        #onnx2pytorch
       ]))
     ];
     ignoreCollisions = true;

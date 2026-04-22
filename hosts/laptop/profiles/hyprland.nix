@@ -33,6 +33,12 @@
       "storage"
     ];
   };
+  
+  hardware.bluetooth = {
+    enable = true;
+    powerOnBoot = true;
+  }; 
+  services.blueman.enable = true;
 
   services.greetd = {
     enable = true;
@@ -41,6 +47,18 @@
       user = "luvier";
     };
   };
+
+  security.rtkit.enable = true;
+  services.pipewire = {
+    enable = true; # if not already enabled
+    alsa.enable = true;
+    alsa.support32Bit = true;
+    pulse.enable = true;
+    # If you want to use JACK applications, uncomment the following
+    jack.enable = true;
+  };
+
+  services.pipewire.wireplumber.enable = true;
   
   home-manager.users.luvier = {
     home = {
@@ -52,8 +70,13 @@
         github-desktop
         melonds
         brightnessctl
+        btop
+        gcc
+        discord
       ];
     };
+
+
 
     programs.git = {
       enable = true;
