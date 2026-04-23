@@ -9,6 +9,7 @@
     ../../../modules/wlogout.nix
     ../../../modules/wofi.nix
     ../../../modules/vscode.nix
+    ../../../modules/alacritty.nix
   ];
 
   time.timeZone = "America/Sao_Paulo";

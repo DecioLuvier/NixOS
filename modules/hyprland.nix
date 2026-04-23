@@ -26,7 +26,6 @@ with lib;
         alsa-utils
         udiskie
         kdePackages.polkit-kde-agent-1
-        alacritty
         nautilus
         wofi
         firefox
