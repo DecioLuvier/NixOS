@@ -44,13 +44,11 @@
             extensions = import ./python/extensions.nix { inherit pkgs; };
           };
 
-          js = mkCodium {
-            kernels = import ./js/kernels.nix { inherit pkgs; };
-            settings = import ./js/settings.nix { inherit pkgs; };
-            extensions = import ./js/extensions.nix { inherit pkgs; };
+          c = mkCodium {
+            kernels = import ./c/kernels.nix { inherit pkgs; };
+            settings = import ./c/settings.nix { inherit pkgs; };
+            extensions = import ./c/extensions.nix { inherit pkgs; };
           };
-
-          default = self.packages.${system}.python;
         };
       }
     );

@@ -24,8 +24,7 @@
       };
     };
   };
-
-
+  
   users.users.luvier = {
     isNormalUser = true;
     extraGroups = [

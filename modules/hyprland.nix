@@ -115,7 +115,7 @@ with lib;
               rounding = 4;
 
               blur = {
-                size = 15;
+                size = 3;
                 passes = 2;
                 xray = true;
               };
