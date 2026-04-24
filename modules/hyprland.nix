@@ -56,7 +56,7 @@ with lib;
             bind = [
               "$mainMod, Tab, workspace, previous"
               "$mainMod, N, exec, codium -n ~/NixOS"
-              "$mainMod, C, exec, codium ."
+              "$mainMod, C, exec, alacritty -e sh -c \"nix run /home/luvier/NixOS/modules/vscode\""
               "$mainMod, T, exec, alacritty"
               "$mainMod, M, exec, melonDS"
               ", F1, exec, wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle"
@@ -68,6 +68,7 @@ with lib;
               "$mainMod, B, exec, firefox"
               "$mainMod, G, exec, github-desktop"
               "$mainMod, S, exec, simulide"
+
               "$mainMod, R, exec, alacritty --hold -e sudo nixos-rebuild switch --flake ~/NixOS#$(hostname)"
               "$mainMod, J, exec, alacritty --hold -e nix-shell ~/NixOS/shells/jupyter.nix --pure"
               "$mainMod, SPACE, exec, wofi --show drun" 
