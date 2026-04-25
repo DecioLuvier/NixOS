@@ -73,6 +73,9 @@
         btop
         gcc
         discord
+        ags
+        gjs
+        gtk4
       ];
     };
 

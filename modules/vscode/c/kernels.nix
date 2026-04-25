@@ -7,6 +7,7 @@ let
       pkgs.gcc
       pkgs.perf
       pkgs.clang
+      pkgs.clang-tools
     ];
     ignoreCollisions = true;
   };

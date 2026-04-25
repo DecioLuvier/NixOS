@@ -10,4 +10,12 @@ pkgs.writeText "settings.json"
 
     "security.workspace.trust.enabled" = false;
     "security.workspace.trust.startupPrompt" = "never";
+
+    # C/C++ / clangd setup limpo
+    "C_Cpp.intelliSenseEngine" = "disabled";
+    "clangd.path" = "clangd";
+    "C_Cpp.default.includePath" = [
+      "/run/current-system/sw/include"
+      "/nix/store/**"
+    ];
   })
