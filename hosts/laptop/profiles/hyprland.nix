@@ -75,11 +75,10 @@
         discord
         ags
         gjs
+        gtk3
         gtk4
       ];
     };
-
-
 
     programs.git = {
       enable = true;
