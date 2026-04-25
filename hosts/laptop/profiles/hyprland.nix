@@ -16,6 +16,9 @@
 
   fonts = {
     enableDefaultPackages = true;
+    packages = with pkgs; [
+      nerd-fonts.jetbrains-mono
+    ];
     fontconfig = {
       enable = true;
       defaultFonts = {
@@ -24,7 +27,7 @@
       };
     };
   };
-  
+    
   users.users.luvier = {
     isNormalUser = true;
     extraGroups = [
@@ -48,13 +51,14 @@
     };
   };
 
+  services.upower.enable = true;
+
   security.rtkit.enable = true;
   services.pipewire = {
-    enable = true; # if not already enabled
+    enable = true; 
     alsa.enable = true;
     alsa.support32Bit = true;
     pulse.enable = true;
-    # If you want to use JACK applications, uncomment the following
     jack.enable = true;
   };
 
@@ -73,12 +77,11 @@
         btop
         gcc
         discord
-        ags
-        gjs
-        gtk3
-        gtk4
+        nodejs
       ];
     };
+
+    programs.command-not-found.enable = false;
 
     programs.git = {
       enable = true;

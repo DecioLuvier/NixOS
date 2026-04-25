@@ -55,8 +55,7 @@ with lib;
 
             bind = [
               "$mainMod, Tab, workspace, previous"
-              "$mainMod, N, exec, codium -n ~/NixOS"
-              "$mainMod, C, exec, alacritty -e sh -c \"nix run /home/luvier/NixOS/modules/vscode\""
+              "$mainMod, N, exec, nix run /home/luvier/NixOS/modules/vscode#nix"
               "$mainMod, T, exec, alacritty"
               "$mainMod, M, exec, melonDS"
               ", F1, exec, wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle"

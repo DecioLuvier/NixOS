@@ -22,6 +22,8 @@
             "editor.minimap.enabled" = false;
             "git.enabled" = false;
             "explorer.confirmDelete" = false;
+            "editor.fontFamily" = "JetBrainsMono Nerd Font, monospace";
+            "terminal.integrated.fontFamily" = "JetBrainsMono Nerd Font";
           };
         };
       })

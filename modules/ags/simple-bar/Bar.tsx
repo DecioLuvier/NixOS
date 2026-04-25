@@ -252,6 +252,7 @@ export default function Bar({ gdkmonitor }: { gdkmonitor: Gdk.Monitor }) {
     <window
       $={(self) => (win = self)}
       visible
+      cssName="bar"
       namespace="my-bar"
       name={`bar-${gdkmonitor.connector}`}
       gdkmonitor={gdkmonitor}
