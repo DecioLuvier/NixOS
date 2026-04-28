@@ -8,7 +8,6 @@
     ../../../modules/waybar.nix
     ../../../modules/wlogout.nix
     ../../../modules/wofi.nix
-    ../../../modules/vscode.nix
     ../../../modules/alacritty.nix
   ];
 
@@ -18,6 +17,8 @@
     enableDefaultPackages = true;
     packages = with pkgs; [
       nerd-fonts.jetbrains-mono
+      adwaita-icon-theme
+      hicolor-icon-theme
     ];
     fontconfig = {
       enable = true;
@@ -78,7 +79,17 @@
         gcc
         discord
         nodejs
+        jc
       ];
+    };
+
+    
+    gtk = {
+      enable = true;
+      iconTheme = {
+        name = "Adwaita";
+        package = pkgs.adwaita-icon-theme;
+      };
     };
 
     programs.command-not-found.enable = false;

@@ -57,6 +57,8 @@
             settings = import ./nix/settings.nix { inherit pkgs; };
             extensions = import ./nix/extensions.nix { inherit pkgs; };
           };
+
+          default = self.packages.${system}.nix;
         };
       }
     );

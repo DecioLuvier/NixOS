@@ -45,6 +45,12 @@ with lib;
           settings = {
             "$mainMod" = "SUPER";
 
+
+            windowrulev2 = [
+              "nofocus, class:^(ags)$, floating:1"
+            ];
+
+
             exec-once = [
               "waybar"
               "mako"
@@ -55,7 +61,7 @@ with lib;
 
             bind = [
               "$mainMod, Tab, workspace, previous"
-              "$mainMod, N, exec, nix run /home/luvier/NixOS/modules/vscode#nix"
+              "$mainMod, N, exec, alacritty -e nix run ~/NixOS/modules/vscode"
               "$mainMod, T, exec, alacritty"
               "$mainMod, M, exec, melonDS"
               ", F1, exec, wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle"

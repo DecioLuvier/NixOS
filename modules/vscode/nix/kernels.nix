@@ -1,4 +1,4 @@
-{ pkgs, emx-onnx-cgen, onnx2c, onnx2pytorch }:
+{ pkgs }:
 
 let
   nix-env = pkgs.buildEnv {
