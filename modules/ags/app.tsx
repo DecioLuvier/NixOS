@@ -1,7 +1,7 @@
 import app from "ags/gtk4/app"
 
 import style from "./style.scss"
-import Bar from "./widget/waybar/waybar"
+import Bar from "./waybar/waybar"
 
 app.start({
   css: style,

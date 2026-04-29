@@ -42,8 +42,7 @@
         ] ++ [ pkgs.glib pkgs.gjs ];
 
         installPhase = ''
-          mkdir -p $out/bin
-          ags bundle app.ts $out/bin/my-shell
+          ags bundle app.tsx $out/bin/my-shell
         '';
 
         preFixup = ''
