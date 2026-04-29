@@ -20,7 +20,7 @@
       packages.default = pkgs.stdenv.mkDerivation {
         pname = "my-shell";
         version = "0.1.0";
-        src = ./.;
+        src = ./src;
 
         nativeBuildInputs = [
           pkgs.wrapGAppsHook3
@@ -42,6 +42,7 @@
         ] ++ [ pkgs.glib pkgs.gjs ];
 
         installPhase = ''
+          mkdir -p $out/bin
           ags bundle app.tsx $out/bin/my-shell
         '';
 
