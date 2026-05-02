@@ -1,26 +1,46 @@
 import { For } from "ags"
 import { Gtk } from "ags/gtk4"
-import { networks, setSelectedNetwork } from "./common"
+import Pango from "gi://Pango"
+import { networks, setSelectedNetwork, getWifiStrengthIcon, getWifiStatusIcon } from "./common"
 
 export function NetworkList({ stack }: { stack: Gtk.Stack }) {
   return (
-    <scrolledwindow heightRequest={300} vscrollbarPolicy={Gtk.PolicyType.AUTOMATIC}>
-      <box orientation={Gtk.Orientation.VERTICAL}>
+    <scrolledwindow
+      heightRequest={300}
+      widthRequest={325}
+      vscrollbarPolicy={Gtk.PolicyType.AUTOMATIC}
+    >
+      <box orientation={Gtk.Orientation.VERTICAL} css={`padding-right: 12px;`}>
         <For each={networks}>
           {(net) => (
-            <box spacing={4}>
+            <box spacing={4} hexpand>
               <button
                 hexpand
-                onClicked={() => { setSelectedNetwork(net); stack.set_visible_child_name("login") }}
-                cssClasses={["wifi-connect-btn", net.active ? "active" : ""]}
+                cssClasses={net.active ? ["wifi-item", "active"] : ["wifi-item"]}
+                onClicked={() => {
+                  setSelectedNetwork(net)
+                  stack.set_visible_child_name("details")
+                }}
               >
-                <box spacing={8}>
-                  <label label={net.ssid} hexpand xalign={0} />
-                  {net.active && <label label="✔" />}
-                  {net.locked && !net.active && <label label="🔒" />}
+                <box spacing={10} hexpand>
+                  <image iconName={getWifiStrengthIcon(net)} />
+                  <label
+                    label={net.ssid}
+                    hexpand
+                    xalign={0}
+                    ellipsize={Pango.EllipsizeMode.END}
+                    maxWidthChars={22}
+                  />
+                  <image iconName={getWifiStatusIcon(net)} />
                 </box>
               </button>
-              <button onClicked={() => { setSelectedNetwork(net); stack.set_visible_child_name("details") }}>
+              <button
+                cssClasses={["wifi-item"]}
+                onClicked={() => {
+                  setSelectedNetwork(net)
+                  stack.set_visible_child_name("login")
+                }}
+              >
                 <image iconName="go-next-symbolic" />
               </button>
             </box>

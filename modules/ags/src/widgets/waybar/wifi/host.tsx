@@ -1,40 +1,38 @@
 import { createState } from "ags"
 import { Gtk } from "ags/gtk4"
-import { selectedNetwork, connect } from "./common"
+import { execAsync } from "ags/process"
 
-const [password, setPassword] = createState("")
-const [showPassword, setShowPassword] = createState(false)
 const [ssid, setSsid] = createState("")
+const [password, setPassword] = createState("")
+const [active, setActive] = createState(false)
+const [showPassword, setShowPassword] = createState(false)
 
-export function NetworkLogin({ stack }: { stack: Gtk.Stack }) {
-  const tryConnect = () => {
-    const net = selectedNetwork()
-    if (net) connect(
-      net.hidden ? ssid() : net.ssid,
-      password() || undefined,
-      net.hidden,
-      net.bssid,
-    )
-    stack.set_visible_child_name("main")
+async function toggleHotspot() {
+  if (active()) {
+    await execAsync("nmcli connection down Hotspot")
+    setActive(false)
+  } else {
+    await execAsync(`nmcli device wifi hotspot ssid "${ssid()}" password "${password()}"`)
+    setActive(true)
   }
+}
 
+export function NetworkHost({ stack }: { stack: Gtk.Stack }) {
   return (
     <box orientation={Gtk.Orientation.VERTICAL} spacing={12} marginTop={8} marginBottom={8} marginStart={8} marginEnd={8}>
       <box orientation={Gtk.Orientation.VERTICAL} spacing={2} halign={Gtk.Align.CENTER}>
-        <label label="Conectar à rede" cssClasses={["dim-label"]} />
-        <label label={selectedNetwork(n => n?.ssid ?? "—")} cssClasses={["title-3"]} />
+        <label label="Hotspot" cssClasses={["title-3"]} />
+        <label label="Compartilhar sua conexão" cssClasses={["dim-label"]} />
       </box>
 
-      {selectedNetwork(n => !!n?.hidden) && (
-<box visible={selectedNetwork(n => !!n?.hidden)} orientation={Gtk.Orientation.VERTICAL} spacing={4}>
-  <label label="Nome da rede (SSID)" xalign={0} cssClasses={["caption"]} />
-  <entry
-    hexpand
-    placeholderText="Digite o SSID..."
-    onNotifyText={self => setSsid(self.text)}
-  />
-</box>
-      )}
+      <box orientation={Gtk.Orientation.VERTICAL} spacing={4}>
+        <label label="Nome da rede (SSID)" xalign={0} cssClasses={["caption"]} />
+        <entry
+          hexpand
+          placeholderText="Nome do hotspot..."
+          onNotifyText={self => setSsid(self.text)}
+        />
+      </box>
 
       <box orientation={Gtk.Orientation.VERTICAL} spacing={4}>
         <label label="Senha" xalign={0} cssClasses={["caption"]} />
@@ -42,9 +40,8 @@ export function NetworkLogin({ stack }: { stack: Gtk.Stack }) {
           <entry
             hexpand
             visibility={showPassword(v => v)}
-            placeholderText="Digite a senha..."
+            placeholderText="Senha do hotspot..."
             onNotifyText={self => setPassword(self.text)}
-            onActivate={tryConnect}
           />
           <button onClicked={() => setShowPassword(v => !v)}>
             <image iconName={showPassword(v => v ? "view-conceal-symbolic" : "view-reveal-symbolic")} />
@@ -54,10 +51,10 @@ export function NetworkLogin({ stack }: { stack: Gtk.Stack }) {
 
       <box spacing={8} halign={Gtk.Align.END} marginTop={4}>
         <button onClicked={() => stack.set_visible_child_name("main")}>
-          <label label="Cancelar" />
+          <label label="Voltar" />
         </button>
-        <button cssClasses={["suggested-action"]} onClicked={tryConnect}>
-          <label label="Conectar" />
+        <button cssClasses={["suggested-action"]} onClicked={toggleHotspot}>
+          <label label={active(v => v ? "Desligar" : "Ligar")} />
         </button>
       </box>
     </box>
