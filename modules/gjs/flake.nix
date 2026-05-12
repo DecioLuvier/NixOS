@@ -11,7 +11,7 @@
       packages.default = pkgs.stdenv.mkDerivation {
         pname   = "my-shell";
         version = "0.1.0";
-        src     = ./widgets;
+        src     = ./modules;
 
         nativeBuildInputs = with pkgs; [
           wrapGAppsHook4
