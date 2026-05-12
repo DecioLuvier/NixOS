@@ -135,11 +135,11 @@ function _createPasswordEntry(onConnect) {
     createEffect(
         showPassword,
         visible => {
-            icon.set_icon_name(
-                visible
+            icon.set({
+                icon_name: visible
                     ? "view-conceal-symbolic"
                     : "view-reveal-symbolic"
-            )
+            })
         }
     )
 

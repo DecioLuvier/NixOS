@@ -41,6 +41,7 @@
               networkmanager
               wireplumber
               playerctl
+              xdg-utils
               brightnessctl
             ])}
             --set LD_PRELOAD ${pkgs.gtk4-layer-shell}/lib/libgtk4-layer-shell.so

@@ -1,4 +1,5 @@
-import { exec, createState } from "../../../common.js"
+import Gio from "gi://Gio";
+import { exec, execAsync, createState } from "../../../common.js"
 
 export const networks = createState([])
 export const selectedNetwork = createState(null)
@@ -85,41 +86,37 @@ export function scan() {
 
         networks.set(parsedNetworks)
     } catch(e) {
-        logError(e)
+        console.log(e)
         networks.set([])
     }
 }
 
 export async function connect(ssid, password = null, hidden = false, bssid = null) {
     try {
-        if(password && password.length < 8)
+        if (password && password.length < 8)
             return ConnectionStatus.WRONG_PASSWORD
 
-        let cmd = `nmcli -w 5 dev wifi connect "${ssid}"`
-        if(password)
-            cmd += ` password "${password}"`
-        if(bssid)
-            cmd += ` bssid "${bssid}"`
-        if(hidden)
-            cmd += ` hidden yes`
+        let args = "nmcli dev wifi connect " + ssid
 
-        await execAsync(cmd)
-        const out = await execAsync("curl -I -s --max-time 1 --connect-timeout 1 http://neverssl.com")
+        if (password)
+            args += " password " + password
+        if (bssid)
+            args += " bssid " + bssid
+        if (hidden)
+            args += " hidden yes"
 
-        if(out.includes(" 30")) {
-            execAsync("xdg-open http://neverssl.com")
-            return ConnectionStatus.LOGIN_REQUIRED
-        }
-        else if(out.includes(" 200"))
-            return ConnectionStatus.CONNECTED
-        else
-          return ConnectionStatus.NO_INTERNET
-    } catch(e) {
+        await execAsync(args)
+        await execAsync("curl -I -s --max-time 1 --connect-timeout 1 http://neverssl.com")
+
+        return ConnectionStatus.LOGIN_REQUIRED
+    } catch (e) {
+        console.log(e)
+
         const msg = String(e)
 
-        if(msg.includes("Timeout"))
-            return ConnectionStatus.WRONG_PASSWORD
-        else
-          return ConnectionStatus.DISCONNECTED
+        if (msg.includes(" 28"))
+            return ConnectionStatus.CONNECTED
+
+        return ConnectionStatus.NO_INTERNET
     }
 }
