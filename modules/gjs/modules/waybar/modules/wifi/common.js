@@ -1,6 +1,7 @@
-import { exec, execAsync } from "../../../common.js"
+import { exec, createState } from "../../../common.js"
 
-export const wifiState = { networks: [], selectedNetwork: null }
+export const networks = createState([])
+export const selectedNetwork = createState(null)
 
 export const ConnectionStatus = {
     CONNECTED: "connected",
@@ -64,7 +65,7 @@ function compareNetwork(a, b) {
 export function scan() {
     try {
         const out = exec("nmcli -t -f IN-USE,BSSID,SSID,MODE,CHAN,RATE,SIGNAL,BARS,SECURITY --escape yes dev wifi")
-        const networks = []
+        const parsedNetworks = []
 
         for(const line of out.trim().split("\n")) {
             if(!line.trim())
@@ -72,20 +73,20 @@ export function scan() {
 
             const network = parseLine(line)
 
-            const existing = networks.find(n => n.ssid === network.ssid)
+            const existing = parsedNetworks.find(n => n.ssid === network.ssid)
 
             if(!existing)
-                networks.push(network)
+                parsedNetworks.push(network)
             else if(compareNetwork(existing, network) > 0)
-                networks.splice(networks.indexOf(existing), 1, network)
+                parsedNetworks.splice(parsedNetworks.indexOf(existing), 1, network)
         }
 
-        networks.sort(compareNetwork)
+        parsedNetworks.sort(compareNetwork)
 
-        wifiState.networks = networks
+        networks.set(parsedNetworks)
     } catch(e) {
         logError(e)
-        wifiState.networks = []
+        networks.set([])
     }
 }
 

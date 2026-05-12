@@ -1,6 +1,12 @@
 import Gtk from "gi://Gtk?version=4.0"
 
-import { wifiState } from "./common.js"
+import {
+    selectedNetwork
+} from "./common.js"
+
+import {
+    createEffect,
+} from "../../../common.js"
 
 function _createRow(label, value) {
     const row = new Gtk.Box({
@@ -121,53 +127,74 @@ function _createInfoBox(stack) {
     box.append(card)
     box.append(footer)
 
-    function update() {
-        const network = wifiState.selectedNetwork
+    createEffect(
+        selectedNetwork,
+        network => {
+            if (!network)
+                return
 
-        if (!network)
-            return
+            title.set_label(network.ssid ?? "")
 
-        title.set_label(network.ssid ?? "")
+            subtitle.set_label(
+                network.active
+                    ? "Conectado"
+                    : "Disponível"
+            )
 
-        subtitle.set_label(
-            network.active
-                ? "Conectado"
-                : "Disponível"
-        )
+            rows.bssid.right.set_label(
+                network.bssid ?? ""
+            )
 
-        rows.bssid.right.set_label(network.bssid ?? "")
-        rows.signal.right.set_label(`${network.strength ?? 0}%`)
-        rows.channel.right.set_label(network.channel ?? "")
-        rows.mode.right.set_label(network.mode ?? "")
-        rows.rate.right.set_label(network.rate ?? "")
+            rows.signal.right.set_label(
+                `${network.strength ?? 0}%`
+            )
 
-        rows.security.right.set_label(
-            network.locked
-                ? "Protegida"
-                : "Aberta"
-        )
-    }
+            rows.channel.right.set_label(
+                network.channel ?? ""
+            )
 
-    update()
+            rows.mode.right.set_label(
+                network.mode ?? ""
+            )
+
+            rows.rate.right.set_label(
+                network.rate ?? ""
+            )
+
+            rows.security.right.set_label(
+                network.locked
+                    ? "Protegida"
+                    : "Aberta"
+            )
+        }
+    )
 
     return box
 }
 
 export default function NetworkInfo(stack) {
     const container = new Gtk.Stack({
-        transition_type: Gtk.StackTransitionType.CROSSFADE,
+        transition_type:
+            Gtk.StackTransitionType.CROSSFADE,
     })
 
     const empty = _createEmptyBox()
+
     const info = _createInfoBox(stack)
 
     container.add_named(empty, "empty")
+
     container.add_named(info, "info")
 
-    container.set_visible_child_name(
-        selectedNetwork()
-            ? "info"
-            : "empty"
+    createEffect(
+        selectedNetwork,
+        network => {
+            container.set_visible_child_name(
+                network
+                    ? "info"
+                    : "empty"
+            )
+        }
     )
 
     return container

@@ -2,6 +2,9 @@ import Gtk from "gi://Gtk?version=4.0"
 import GLib from "gi://GLib"
 
 import NetworkList from "./list.js"
+import NetworkInfo from "./info.js"
+import NetworkLogin from "./login.js"
+
 import { scan } from "./common.js"
 
 export default function WifiModule() {
@@ -23,6 +26,16 @@ export default function WifiModule() {
         "main"
     )
 
+    stack.add_named(
+        NetworkInfo(stack),
+        "info"
+    )
+
+    stack.add_named(
+        NetworkLogin(stack),
+        "login"
+    )
+
     stack.set_visible_child_name("main")
 
     popover.set_child(stack)
@@ -34,6 +47,7 @@ export default function WifiModule() {
         5,
         () => {
             scan()
+
             return GLib.SOURCE_CONTINUE
         }
     )
