@@ -19,22 +19,22 @@ export function NetworkLogin({ stack }: { stack: Gtk.Stack }) {
   }
 
   return (
-    <box orientation={Gtk.Orientation.VERTICAL} spacing={12} marginTop={8} marginBottom={8} marginStart={8} marginEnd={8}>
-      <box orientation={Gtk.Orientation.VERTICAL} spacing={2} halign={Gtk.Align.CENTER}>
+    <box orientation={Gtk.Orientation.VERTICAL} spacing={16} marginTop={12} marginBottom={12} marginStart={12} marginEnd={12}>
+
+      <box orientation={Gtk.Orientation.VERTICAL} spacing={4} halign={Gtk.Align.CENTER}>
+        <image iconName="network-wireless-symbolic" pixelSize={32} />
         <label label="Conectar à rede" cssClasses={["dim-label"]} />
         <label label={selectedNetwork(n => n?.ssid ?? "—")} cssClasses={["title-3"]} />
       </box>
 
-      {selectedNetwork(n => !!n?.hidden) && (
-<box visible={selectedNetwork(n => !!n?.hidden)} orientation={Gtk.Orientation.VERTICAL} spacing={4}>
-  <label label="Nome da rede (SSID)" xalign={0} cssClasses={["caption"]} />
-  <entry
-    hexpand
-    placeholderText="Digite o SSID..."
-    onNotifyText={self => setSsid(self.text)}
-  />
-</box>
-      )}
+      <box visible={selectedNetwork(n => !!n?.hidden)} orientation={Gtk.Orientation.VERTICAL} spacing={4}>
+        <label label="Nome da rede (SSID)" xalign={0} cssClasses={["caption"]} />
+        <entry
+          hexpand
+          placeholderText="Digite o SSID..."
+          onNotifyText={self => setSsid(self.text)}
+        />
+      </box>
 
       <box orientation={Gtk.Orientation.VERTICAL} spacing={4}>
         <label label="Senha" xalign={0} cssClasses={["caption"]} />
@@ -46,20 +46,21 @@ export function NetworkLogin({ stack }: { stack: Gtk.Stack }) {
             onNotifyText={self => setPassword(self.text)}
             onActivate={tryConnect}
           />
-          <button onClicked={() => setShowPassword(v => !v)}>
+          <button cssClasses={["icon-button"]} onClicked={() => setShowPassword(v => !v)}>
             <image iconName={showPassword(v => v ? "view-conceal-symbolic" : "view-reveal-symbolic")} />
           </button>
         </box>
       </box>
 
-      <box spacing={8} halign={Gtk.Align.END} marginTop={4}>
-        <button onClicked={() => stack.set_visible_child_name("main")}>
+      <box spacing={8} halign={Gtk.Align.END}>
+        <button cssClasses={["flat"]} onClicked={() => stack.set_visible_child_name("main")}>
           <label label="Cancelar" />
         </button>
         <button cssClasses={["suggested-action"]} onClicked={tryConnect}>
           <label label="Conectar" />
         </button>
       </box>
+
     </box>
   )
 }

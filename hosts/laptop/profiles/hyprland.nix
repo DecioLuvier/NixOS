@@ -80,6 +80,8 @@
         discord
         nodejs
         jc
+        qbittorrent
+        valgrind
       ];
     };
 

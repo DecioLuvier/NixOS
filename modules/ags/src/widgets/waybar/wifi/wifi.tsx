@@ -3,9 +3,8 @@ import { scan } from "./common"
 import { NetworkList } from "./list"
 import { NetworkInfo } from "./info"
 import { NetworkLogin } from "./login"
-import { NetworkHost } from "./host"
 
-function Header({ stack }: { stack: Gtk.Stack }) {
+function Header() {
   return (
     <box
       orientation={Gtk.Orientation.VERTICAL}
@@ -17,12 +16,6 @@ function Header({ stack }: { stack: Gtk.Stack }) {
         <switch valign={Gtk.Align.CENTER} active />
       </box>
       <Gtk.Separator orientation={Gtk.Orientation.HORIZONTAL} hexpand />
-      <box orientation={Gtk.Orientation.HORIZONTAL} hexpand>
-        <label label="Wi-Fi Networks" xalign={0} hexpand />
-        <button onClicked={() => stack.set_visible_child_name("host")}>
-          <label label="Hotspot" />
-        </button>
-      </box>
     </box>
   )
 }
@@ -35,14 +28,13 @@ export default function Wireless() {
 
   stack.add_named(
     <box orientation={Gtk.Orientation.VERTICAL}>
-      <Header stack={stack} />
+
       <NetworkList stack={stack} />
     </box> as any,
     "main"
   )
   stack.add_named(<NetworkInfo stack={stack} /> as any, "details")
   stack.add_named(<NetworkLogin stack={stack} /> as any, "login")
-  stack.add_named(<NetworkHost stack={stack} /> as any, "host")
   stack.set_visible_child_name("main")
 
   scan()
@@ -53,6 +45,7 @@ export default function Wireless() {
       <image iconName="network-wireless-signal-excellent-symbolic" />
       <popover>
         <box orientation={Gtk.Orientation.VERTICAL} widthRequest={350}>
+          <Header />
           {stack}
         </box>
       </popover>

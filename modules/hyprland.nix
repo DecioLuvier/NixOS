@@ -46,9 +46,7 @@ with lib;
             "$mainMod" = "SUPER";
 
 
-            windowrulev2 = [
-              "nofocus, class:^(ags)$, floating:1"
-            ];
+
 
 
             exec-once = [
