@@ -43,6 +43,7 @@
               playerctl
               brightnessctl
             ])}
+            --set LD_PRELOAD ${pkgs.gtk4-layer-shell}/lib/libgtk4-layer-shell.so
           )
         '';
       };
