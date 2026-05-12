@@ -3,11 +3,7 @@
 import Gtk from "gi://Gtk?version=4.0"
 import Pango from "gi://Pango"
 
-import {
-    wifiState,
-    getWifiStrengthIcon,
-    getWifiStatusIcon,
-} from "./WifiService.js"
+import { wifiState, getWifiStrengthIcon, getWifiStatusIcon,} from "./common.js"
 
 export default function NetworkList(stack) {
     const scrolled = new Gtk.ScrolledWindow({
