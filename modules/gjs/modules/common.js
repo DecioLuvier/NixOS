@@ -39,3 +39,39 @@ export function execAsync(argv) {
         })
     })
 }
+
+export function createState(initial) {
+    let value = initial
+
+    const listeners = new Set()
+
+    return {
+        get() {
+            return value
+        },
+
+        set(newValue) {
+            if (value === newValue)
+                return
+
+            value = newValue
+
+            for (const callback of listeners)
+                callback(value)
+        },
+
+        subscribe(callback) {
+            listeners.add(callback)
+
+            return () => {
+                listeners.delete(callback)
+            }
+        },
+    }
+}
+
+export function createEffect(state, callback) {
+    callback(state.get())
+
+    return state.subscribe(callback)
+}

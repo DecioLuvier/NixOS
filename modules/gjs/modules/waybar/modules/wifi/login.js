@@ -3,215 +3,23 @@ import Gtk from "gi://Gtk?version=4.0"
 import {
     selectedNetwork,
     connect,
+    ConnectionStatus,
 } from "./common.js"
 
 import {
     createState,
-    createEffect,
 } from "../../../common.js"
 
-const password =
-    createState("")
+const password = createState("")
+const showPassword = createState(false)
+const ssid = createState("")
 
-const showPassword =
-    createState(false)
-
-const ssid =
-    createState("")
-
-function _createHeader() {
-    const box = new Gtk.Box({
-        orientation: Gtk.Orientation.VERTICAL,
-        spacing: 4,
-        halign: Gtk.Align.CENTER,
+export default function NetworkLogin() {
+    const stack = new Gtk.Stack({
+        transition_type: Gtk.StackTransitionType.SLIDE_LEFT_RIGHT,
     })
 
-    const icon = new Gtk.Image({
-        icon_name: "network-wireless-symbolic",
-        pixel_size: 32,
-    })
-
-    const subtitle = new Gtk.Label({
-        label: "Conectar à rede",
-        css_classes: ["dim-label"],
-    })
-
-    const title = new Gtk.Label({
-        css_classes: ["title-3"],
-    })
-
-    createEffect(
-        selectedNetwork,
-        network => {
-            title.set_label(
-                network?.ssid ?? "—"
-            )
-        }
-    )
-
-    box.append(icon)
-    box.append(subtitle)
-    box.append(title)
-
-    return box
-}
-
-function _createSSIDEntry() {
-    const container = new Gtk.Box({
-        orientation: Gtk.Orientation.VERTICAL,
-        spacing: 4,
-    })
-
-    const label = new Gtk.Label({
-        label: "Nome da rede (SSID)",
-        xalign: 0,
-        css_classes: ["caption"],
-    })
-
-    const entry = new Gtk.Entry({
-        hexpand: true,
-        placeholder_text: "Digite o SSID...",
-    })
-
-    entry.connect("notify::text", () => {
-        ssid.set(entry.text)
-    })
-
-    createEffect(
-        selectedNetwork,
-        network => {
-            container.set_visible(
-                !!network?.hidden
-            )
-        }
-    )
-
-    container.append(label)
-    container.append(entry)
-
-    return container
-}
-
-function _createPasswordEntry(onConnect) {
-    const container = new Gtk.Box({
-        orientation: Gtk.Orientation.VERTICAL,
-        spacing: 4,
-    })
-
-    const label = new Gtk.Label({
-        label: "Senha",
-        xalign: 0,
-        css_classes: ["caption"],
-    })
-
-    const row = new Gtk.Box({
-        spacing: 4,
-    })
-
-    const entry = new Gtk.Entry({
-        hexpand: true,
-        placeholder_text: "Digite a senha...",
-    })
-
-    createEffect(
-        showPassword,
-        visible => {
-            entry.set_visibility(visible)
-        }
-    )
-
-    entry.connect("notify::text", () => {
-        password.set(entry.text)
-    })
-
-    entry.connect("activate", onConnect)
-
-    const toggle = new Gtk.Button({
-        css_classes: ["icon-button"],
-    })
-
-    const icon = new Gtk.Image()
-
-    createEffect(
-        showPassword,
-        visible => {
-            icon.set({
-                icon_name: visible
-                    ? "view-conceal-symbolic"
-                    : "view-reveal-symbolic"
-            })
-        }
-    )
-
-    toggle.connect("clicked", () => {
-        showPassword.set(
-            !showPassword.get()
-        )
-    })
-
-    toggle.set_child(icon)
-
-    row.append(entry)
-    row.append(toggle)
-
-    container.append(label)
-    container.append(row)
-
-    return container
-}
-
-function _createActions(stack, onConnect) {
-    const box = new Gtk.Box({
-        spacing: 8,
-        halign: Gtk.Align.END,
-    })
-
-    const cancel = new Gtk.Button({
-        label: "Cancelar",
-        css_classes: ["flat"],
-    })
-
-    cancel.connect("clicked", () => {
-        stack.set_visible_child_name("main")
-    })
-
-    const submit = new Gtk.Button({
-        label: "Conectar",
-        css_classes: ["suggested-action"],
-    })
-
-    submit.connect("clicked", onConnect)
-
-    box.append(cancel)
-    box.append(submit)
-
-    return box
-}
-
-export default function NetworkLogin(stack) {
-    async function tryConnect() {
-        const network =
-            selectedNetwork.get()
-
-        if (!network)
-            return
-
-        await connect(
-            network.hidden
-                ? ssid.get()
-                : network.ssid,
-
-            password.get() || undefined,
-
-            network.hidden,
-
-            network.bssid
-        )
-
-        stack.set_visible_child_name("main")
-    }
-
-    const box = new Gtk.Box({
+    const form = new Gtk.Box({
         orientation: Gtk.Orientation.VERTICAL,
         spacing: 16,
         margin_top: 12,
@@ -220,26 +28,110 @@ export default function NetworkLogin(stack) {
         margin_end: 12,
     })
 
-    box.append(
-        _createHeader()
-    )
+    const errorBox = new Gtk.Box({
+        orientation: Gtk.Orientation.VERTICAL,
+        spacing: 12,
+        halign: Gtk.Align.CENTER,
+        valign: Gtk.Align.CENTER,
+    })
 
-    box.append(
-        _createSSIDEntry()
-    )
+    const errorLabel = new Gtk.Label({
+        css_classes: ["title-3"],
+    })
 
-    box.append(
-        _createPasswordEntry(
-            tryConnect
+    errorBox.append(errorLabel)
+
+    const success = new Gtk.Box({
+        orientation: Gtk.Orientation.VERTICAL,
+        spacing: 12,
+        halign: Gtk.Align.CENTER,
+        valign: Gtk.Align.CENTER,
+    })
+
+    success.append(new Gtk.Label({
+        label: "Conectado",
+        css_classes: ["title-2"],
+    }))
+
+    const setError = (text) => {
+        errorLabel.set_label(text)
+        stack.set_visible_child_name("error")
+    }
+
+    const tryConnect = async () => {
+        const network = selectedNetwork.get()
+        if (!network)
+            return
+
+        const result = await connect(
+            network.hidden ? ssid.get() : network.ssid,
+            password.get() || undefined,
+            network.hidden,
+            network.bssid
         )
-    )
 
-    box.append(
-        _createActions(
-            stack,
-            tryConnect
-        )
-    )
+        if (result === ConnectionStatus.CONNECTED) {
+            stack.set_visible_child_name("success")
+            return
+        }
 
-    return box
+        if (result === ConnectionStatus.NO_INTERNET) {
+            setError("Sem internet")
+            return
+        }
+
+        if (result === ConnectionStatus.WRONG_PASSWORD) {
+            setError("Senha incorreta")
+            return
+        }
+
+        if (result === ConnectionStatus.DISCONNECTED) {
+            setError("Desconectado")
+            return
+        }
+
+        setError("Erro")
+    }
+
+    const entry = new Gtk.Entry({
+        hexpand: true,
+        placeholder_text: "Senha",
+    })
+
+    entry.connect("notify::text", () => {
+        password.set(entry.text)
+    })
+
+    entry.connect("activate", tryConnect)
+
+    const btn = new Gtk.Button({
+        label: "Conectar",
+        css_classes: ["suggested-action"],
+    })
+
+    btn.connect("clicked", tryConnect)
+
+    form.append(new Gtk.Label({
+        label: "Conectar à rede",
+        css_classes: ["title-3"],
+    }))
+
+    form.append(entry)
+    form.append(btn)
+
+    const backError = new Gtk.Button({ label: "Voltar", css_classes: ["flat"] })
+    backError.connect("clicked", () => stack.set_visible_child_name("form"))
+    errorBox.append(backError)
+
+    const backSuccess = new Gtk.Button({ label: "Voltar", css_classes: ["flat"] })
+    backSuccess.connect("clicked", () => stack.set_visible_child_name("form"))
+    success.append(backSuccess)
+
+    stack.add_named(form, "form")
+    stack.add_named(success, "success")
+    stack.add_named(errorBox, "error")
+
+    stack.set_visible_child_name("form")
+
+    return stack
 }

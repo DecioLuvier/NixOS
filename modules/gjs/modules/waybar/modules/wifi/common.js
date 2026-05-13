@@ -1,16 +1,15 @@
-import Gio from "gi://Gio";
 import { exec, execAsync, createState } from "../../../common.js"
 
 export const networks = createState([])
 export const selectedNetwork = createState(null)
 
-export const ConnectionStatus = {
-    CONNECTED: "connected",
-    DISCONNECTED: "disconnected",
-    NO_INTERNET: "no-internet",
-    LOGIN_REQUIRED: "login-required",
-    WRONG_PASSWORD: "wrong-password"
-}
+export const ConnectionStatus = Object.freeze({
+    CONNECTED: 200,
+    DISCONNECTED: 503,
+    NO_INTERNET: 504,
+    LOGIN_REQUIRED: 401,
+    WRONG_PASSWORD: 403
+});
 
 export function getWifiStrengthIcon(network) {
     if(network.strength >= 80)
@@ -35,57 +34,51 @@ export function getWifiStatusIcon(network) {
 }
 
 function parseLine(line) {
-    const [inUse, bssid, ssid, mode, channel, rate, signal, bars, security] = line.split(/(?<!\\):/)
-    const parsedSSID = ssid.replace(/\\:/g, ":").trim()
+    const [inUse, bssid, ssid, channel, frequency, rate, signal, security] = line.split(/(?<!\\):/)
 
     return {
-        ssid: parsedSSID || "Hidden",
-        bssid: bssid.replace(/\\:/g, ":").trim(),
-        strength: Number(signal) || 0,
-        active: inUse.trim() === "*",
-        locked: security !== "--" && security?.trim() !== "",
-        hidden: parsedSSID === "",
-        mode,
+        active: inUse?.trim() === "*",
+        ssid: (ssid || "").replace(/\\:/g, ":").trim(),
+        bssid: (bssid || "").replace(/\\:/g, ":").trim(),
         channel,
+        frequency,
         rate,
-        bars
+        signal: Number(signal) || 0,
+        security: (security || "").trim()
     }
 }
 
 function compareNetwork(a, b) {
-    if(a.active !== b.active) {
-        if(b.active)
-            return 1
-        else
-            return -1
-    } 
-    else
-        return b.strength - a.strength
+    if (a.active !== b.active)
+        return b.active - a.active
+    return b.strength - a.strength
+}
+
+function addOrReplaceNetwork(list, network) {
+    if (!network.ssid) return
+
+    const index = list.findIndex(n => n.ssid === network.ssid)
+
+    if (index === -1) {
+        list.push(network)
+        return
+    }
+
+    if (compareNetwork(list[index], network) > 0) 
+        list[index] = network
 }
 
 export function scan() {
     try {
-        const out = exec("nmcli -t -f IN-USE,BSSID,SSID,MODE,CHAN,RATE,SIGNAL,BARS,SECURITY --escape yes dev wifi")
-        const parsedNetworks = []
+        const out = exec(["nmcli", "-t", "-f IN-USE,BSSID,SSID,CHAN,FREQ,RATE,SIGNAL,SECURITY", "--escape yes", "dev wifi"])
+        const networks = []
 
-        for(const line of out.trim().split("\n")) {
-            if(!line.trim())
-                continue
-
-            const network = parseLine(line)
-
-            const existing = parsedNetworks.find(n => n.ssid === network.ssid)
-
-            if(!existing)
-                parsedNetworks.push(network)
-            else if(compareNetwork(existing, network) > 0)
-                parsedNetworks.splice(parsedNetworks.indexOf(existing), 1, network)
-        }
-
-        parsedNetworks.sort(compareNetwork)
-
-        networks.set(parsedNetworks)
-    } catch(e) {
+        for (const line of out.trim().split("\n")) 
+            addOrReplaceNetwork(networks, parseLine(line))
+        
+        networks.sort(compareNetwork)
+        networks.set(networks)
+    } catch (e) {
         console.log(e)
         networks.set([])
     }
@@ -96,27 +89,52 @@ export async function connect(ssid, password = null, hidden = false, bssid = nul
         if (password && password.length < 8)
             return ConnectionStatus.WRONG_PASSWORD
 
-        let args = "nmcli dev wifi connect " + ssid
+        const args = [
+            "nmcli", 
+            "dev", 
+            "wifi", 
+            "connect", 
+            ssid
+        ]
 
-        if (password)
-            args += " password " + password
-        if (bssid)
-            args += " bssid " + bssid
-        if (hidden)
-            args += " hidden yes"
+        if (password) args.push("password", password)
+        if (bssid) args.push("bssid", bssid)
+        if (hidden) args.push("hidden", "yes")
 
         await execAsync(args)
-        await execAsync("curl -I -s --max-time 1 --connect-timeout 1 http://neverssl.com")
 
-        return ConnectionStatus.LOGIN_REQUIRED
+        let hasInternet = false
+
+        try {
+
+        } catch (e) {
+            hasInternet = true
+        }
+
+        if (!hasInternet)
+            return ConnectionStatus.LOGIN_REQUIRED
+
+        return ConnectionStatus.CONNECTED
+
     } catch (e) {
-        console.log(e)
-
         const msg = String(e)
+        console.log(msg)
+        if (msg.includes("secrets") || msg.includes("password"))
+            return ConnectionStatus.WRONG_PASSWORD
 
-        if (msg.includes(" 28"))
-            return ConnectionStatus.CONNECTED
-
-        return ConnectionStatus.NO_INTERNET
+        return ConnectionStatus.DISCONNECTED
     }
 }
+
+/*
+            await execAsync([
+                "curl",
+                "-I",
+                "-s",
+                "--max-time",
+                "2",
+                "--connect-timeout",
+                "2",
+                "http://neverssl.com"
+            ])
+*/
