@@ -36,5 +36,32 @@
         }
       ];
     };
+    nixosConfigurations.desktop = nixpkgs.lib.nixosSystem {
+      system = "x86_64-linux";
+      modules = [
+        home-manager.nixosModules.home-manager
+        ./hosts/desktop/default.nix
+        ./hosts/desktop/hardware.nix
+        ./hosts/desktop/profiles/hyprland.nix
+        {
+          environment.systemPackages = [
+            (ags.packages.x86_64-linux.default.override {
+              extraPackages = [
+                ags.packages.x86_64-linux.io
+                ags.packages.x86_64-linux.astal4
+                ags.packages.x86_64-linux.battery
+                ags.packages.x86_64-linux.powerprofiles
+                ags.packages.x86_64-linux.wireplumber
+                ags.packages.x86_64-linux.network
+                ags.packages.x86_64-linux.tray
+                ags.packages.x86_64-linux.mpris
+                ags.packages.x86_64-linux.apps
+                ags.packages.x86_64-linux.hyprland
+              ];
+            })
+          ];
+        }
+      ];
+    };
   };
 }
