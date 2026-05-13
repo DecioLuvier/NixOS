@@ -6,7 +6,7 @@ import app from "ags/gtk4/app"
 import Clock from "./clock"
 import Workspaces from "./workspaces"
 import Mpris from "./player"
-import Wireless from "./wifi"
+import Wireless from "./wifi/wifi"
 import AudioOutput from "./audio"
 import Battery from "./battery"
 
