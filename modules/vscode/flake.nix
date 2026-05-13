@@ -31,7 +31,7 @@
             mkdir -p "$VSCODE_USER_DATA/User"
             cp ${settings} "$VSCODE_USER_DATA/User/settings.json"
 
-            exec ${codium-base}/bin/codium --user-data-dir="$VSCODE_USER_DATA" "$@"
+            exec ${codium-base}/bin/codium --user-data-dir="/home/luvier/Nixos" "$@"
           '';
       in {
         packages = {

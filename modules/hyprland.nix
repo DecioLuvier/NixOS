@@ -45,12 +45,6 @@ with lib;
           settings = {
             "$mainMod" = "SUPER";
 
-
-            windowrulev2 = [
-              "nofocus, class:^(ags)$, floating:1"
-            ];
-
-
             exec-once = [
               "waybar"
               "mako"
@@ -194,14 +188,11 @@ with lib;
               window_direction_monitor_fallback = true;
             };
 
-            # Repeatable bindings
             bindel = [
-              # Volume control
               ", XF86AudioRaiseVolume, exec, pactl set-sink-volume @DEFAULT_SINK@ +5% && pactl get-sink-volume @DEFAULT_SINK@ | grep -oP '\\d+(?=%)' | awk '{if($1>100) system(\"pactl set-sink-volume @DEFAULT_SINK@ 100%\")}' && pactl get-sink-volume @DEFAULT_SINK@ | grep -oP '\\d+(?=%)' | awk '{print $1}' | head -1 > /tmp/$HYPRLAND_INSTANCE_SIGNATURE.wob"
               ", XF86AudioLowerVolume, exec, pactl set-sink-volume @DEFAULT_SINK@ -5% && pactl get-sink-volume @DEFAULT_SINK@ | grep -oP '\\d+(?=%)' | awk '{print $1}' | head -1 > /tmp/$HYPRLAND_INSTANCE_SIGNATURE.wob"
               ", XF86AudioMute, exec, amixer sset Master toggle | sed -En '/\\[on\\]/ s/.*\\[([0-9]+)%\\].*/\\1/ p; /\\[off\\]/ s/.*/0/p' | head -1 > /tmp/$HYPRLAND_INSTANCE_SIGNATURE.wob"
 
-              # Brightness control
               ", XF86MonBrightnessUp, exec, brightnessctl s +5%"
               ", XF86MonBrightnessDown, exec, brightnessctl s 5%-"
             ];
