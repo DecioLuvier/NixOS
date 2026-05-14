@@ -71,18 +71,11 @@
       homeDirectory = "/home/luvier";
       stateVersion = "24.11";
       packages = with pkgs; [
-        simulide
         github-desktop
-        melonds
         brightnessctl
-        btop
         gcc
-        discord
-        nodejs
-        jc
       ];
     };
-
     
     gtk = {
       enable = true;

@@ -10,7 +10,7 @@
     home-manager.sharedModules = [
       {
         wayland.windowManager.hyprland.extraConfig = ''
-          exec-once = swaybg -o eDP-1 -i /home/luvier/wallpaper.jpg -m fill
+          exec-once = swaybg -i /home/luvier/wallpaper.jpg -m fill
         '';
       }
     ];

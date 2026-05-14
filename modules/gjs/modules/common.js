@@ -71,7 +71,6 @@ export function createState(initial) {
 }
 
 export function createEffect(state, callback) {
-    callback(state.get())
-
+    callback()
     return state.subscribe(callback)
 }

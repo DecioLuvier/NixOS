@@ -2,10 +2,14 @@ import { exec, execAsync, createState } from "../../../common.js"
 
 export const networks = createState([])
 export const selectedNetwork = createState(null)
+export const stack = new Gtk.Stack({
+    transition_type: Gtk.StackTransitionType.SLIDE_LEFT_RIGHT,
+    transition_duration: 300,
+})
 
 export const ConnectionStatus = Object.freeze({
     CONNECTED: 200,
-    DISCONNECTED: 503,
+    FAILED: 503,
     NO_INTERNET: 504,
     LOGIN_REQUIRED: 401,
     WRONG_PASSWORD: 403
@@ -57,25 +61,22 @@ function compareNetwork(a, b) {
 function addOrReplaceNetwork(list, network) {
     if (!network.ssid) return
 
-    const index = list.findIndex(n => n.ssid === network.ssid)
+    const i = list.findIndex(n => n.ssid === network.ssid)
 
-    if (index === -1) {
+    if (i === -1) 
         list.push(network)
-        return
-    }
-
-    if (compareNetwork(list[index], network) > 0) 
-        list[index] = network
+    else if (compareNetwork(network, list[i]) > 0) 
+        list[i] = network
+    
 }
 
 export function scan() {
     try {
-        const out = exec(["nmcli", "-t", "-f IN-USE,BSSID,SSID,CHAN,FREQ,RATE,SIGNAL,SECURITY", "--escape yes", "dev wifi"])
+        const out = exec(["nmcli", "-t", "-f IN-USE,BSSID,SSID,CHAN,FREQ,RATE,SIGNAL,SECURITY", "--escape yes", "dev wifi"]).trim().split("\n")
         const networks = []
 
-        for (const line of out.trim().split("\n")) 
+        for (const line of out) 
             addOrReplaceNetwork(networks, parseLine(line))
-        
         networks.sort(compareNetwork)
         networks.set(networks)
     } catch (e) {
@@ -89,13 +90,7 @@ export async function connect(ssid, password = null, hidden = false, bssid = nul
         if (password && password.length < 8)
             return ConnectionStatus.WRONG_PASSWORD
 
-        const args = [
-            "nmcli", 
-            "dev", 
-            "wifi", 
-            "connect", 
-            ssid
-        ]
+        const args = ["nmcli", "dev", "wifi", "connect", ssid]
 
         if (password) args.push("password", password)
         if (bssid) args.push("bssid", bssid)
@@ -103,38 +98,15 @@ export async function connect(ssid, password = null, hidden = false, bssid = nul
 
         await execAsync(args)
 
-        let hasInternet = false
-
-        try {
-
-        } catch (e) {
-            hasInternet = true
-        }
-
-        if (!hasInternet)
-            return ConnectionStatus.LOGIN_REQUIRED
-
         return ConnectionStatus.CONNECTED
 
     } catch (e) {
-        const msg = String(e)
-        console.log(msg)
+        console.log(e);
+        const msg = String(e).toLowerCase()
+
         if (msg.includes("secrets") || msg.includes("password"))
             return ConnectionStatus.WRONG_PASSWORD
 
-        return ConnectionStatus.DISCONNECTED
+        return ConnectionStatus.FAILED
     }
 }
-
-/*
-            await execAsync([
-                "curl",
-                "-I",
-                "-s",
-                "--max-time",
-                "2",
-                "--connect-timeout",
-                "2",
-                "http://neverssl.com"
-            ])
-*/

@@ -26,13 +26,12 @@ with lib;
         alsa-utils
         udiskie
         kdePackages.polkit-kde-agent-1
-        nautilus
+        thunar
         wofi
         firefox
       ];
 
     home-manager.sharedModules = [{
-
         home.pointerCursor = {
           name = "Bibata-Modern-Classic";
           size = 24;
@@ -57,19 +56,17 @@ with lib;
               "$mainMod, Tab, workspace, previous"
               "$mainMod, N, exec, alacritty -e nix run ~/NixOS/modules/vscode"
               "$mainMod, T, exec, alacritty"
-              "$mainMod, M, exec, melonDS"
               ", F1, exec, wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle"
               ", F2, exec, wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%-"
               ", F3, exec, wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%+"
               ", F11, exec, brightnessctl set 3%-"
               ", F12, exec, brightnessctl set 3%+"
-              "$mainMod, E, exec, nautilus"
+              "$mainMod, E, exec, thunar"
               "$mainMod, B, exec, firefox"
               "$mainMod, G, exec, github-desktop"
-              "$mainMod, S, exec, simulide"
 
               "$mainMod, R, exec, alacritty --hold -e sudo nixos-rebuild switch --flake ~/NixOS#$(hostname)"
-              "$mainMod, J, exec, alacritty --hold -e nix-shell ~/NixOS/shells/jupyter.nix --pure"
+
               "$mainMod, SPACE, exec, wofi --show drun" 
               "$mainMod, Q, killactive"
               "$mainMod, F, fullscreen"
@@ -171,7 +168,6 @@ with lib;
               "col.splash" = "rgb(41b883)";
               background_color = "rgb(163249)";
               enable_swallow = true;
-              swallow_regex = "^(nautilus|nemo|thunar|btrfs-assistant.)$";
               focus_on_activate = true;
               vrr = 2;
             };
