@@ -1,4 +1,4 @@
-{ pkgs, emx-onnx-cgen }:
+{ pkgs, code-carbon, emx-onnx-cgen }:
 
 let
   python-env = pkgs.buildEnv {
