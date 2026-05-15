@@ -9,6 +9,7 @@ let
       pkgs.flamegraph
       pkgs.clang
       emx-onnx-cgen
+      code-carbon
       (pkgs.python313.withPackages (p: [
         p.ipykernel
         p.notebook
@@ -24,6 +25,7 @@ let
         p.torchvision
         p.onnxconverter-common
         p.onnxscript
+        code-carbon
       ]))
     ];
     ignoreCollisions = true;

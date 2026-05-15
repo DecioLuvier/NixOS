@@ -1,5 +1,5 @@
 {
-  description = "codecarbon 3.2.6 — carbon emissions tracker";
+  description = "codecarbon 3.2.6 (simple nix package)";
 
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
@@ -9,25 +9,29 @@
   outputs = { self, nixpkgs, flake-utils }:
     flake-utils.lib.eachDefaultSystem (system:
       let
-        pkgs = nixpkgs.legacyPackages.${system};
-        python = pkgs.python312;
-
-        codecarbon = python.pkgs.buildPythonPackage rec {
-          pname   = "codecarbon";
+        pkgs = import nixpkgs { inherit system; };
+        py = pkgs.python3Packages;
+      in
+      {
+        packages.default = py.buildPythonPackage {
+          pname = "codecarbon";
           version = "3.2.6";
-          format  = "pyproject";
 
-          src = pkgs.fetchPypi {
-            inherit pname version;
-            sha256 = "sha256-RGQ921cfz13jbBo15/2fDMi9K7Eky5e9vS3W8H6mv8k=";
+          format = "pyproject";
+
+          src = pkgs.fetchFromGitHub {
+            owner = "mlco2";
+            repo = "codecarbon";
+            rev = "v3.2.6";
+            hash = "sha256-Nzt+CKXnv6zvWKsFD7duguVj0AA4eWZgFUlBdIEujD8="; 
           };
 
-          nativeBuildInputs = with python.pkgs; [
+          nativeBuildInputs = with py; [
             setuptools
             wheel
           ];
 
-          propagatedBuildInputs = with python.pkgs; [
+          propagatedBuildInputs = with py; [
             arrow
             authlib
             click
@@ -48,36 +52,6 @@
           doCheck = false;
 
           pythonImportsCheck = [ "codecarbon" ];
-
-          meta = {
-            description  = "Track and reduce CO2 emissions from machine learning";
-            homepage     = "https://codecarbon.io/";
-            changelog    = "https://github.com/mlco2/codecarbon/releases/tag/v${version}";
-            license      = pkgs.lib.licenses.mit;
-            maintainers  = [ ];
-          };
-        };
-
-        pythonEnv = python.withPackages (ps: [
-          codecarbon
-          ps.numpy
-          ps.pandas
-          ps.tqdm
-        ]);
-
-      in {
-        packages = {
-          inherit codecarbon;
-          default = codecarbon;
-        };
-
-        devShells.default = pkgs.mkShell {
-          packages = [ pythonEnv ];
-
-          shellHook = ''
-            echo "codecarbon ${codecarbon.version} available"
-            echo "Python: $(python --version)"
-          '';
         };
       });
 }
