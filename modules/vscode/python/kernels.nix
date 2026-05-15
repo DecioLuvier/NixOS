@@ -1,4 +1,4 @@
-{ pkgs, emx-onnx-cgen, onnx2c, onnx2pytorch }:
+{ pkgs, emx-onnx-cgen }:
 
 let
   python-env = pkgs.buildEnv {
@@ -24,7 +24,6 @@ let
         p.torchvision
         p.onnxconverter-common
         p.onnxscript
-        emx-onnx-cgen
       ]))
     ];
     ignoreCollisions = true;

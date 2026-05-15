@@ -3,12 +3,11 @@
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
     flake-utils.url = "github:numtide/flake-utils";
 
-    onnx2c.url = "path:../../packages/onnx2c";
-    onnx2pytorch.url = "path:../../packages/onnx2pytorch";
+    code-carbon.url = "path:../../packages/code-carbon";
     emx-onnx-cgen.url = "path:../../packages/emx-onnx-cgen";
   };
 
-  outputs = { self, nixpkgs, flake-utils, onnx2c, onnx2pytorch, emx-onnx-cgen }:
+  outputs = { self, nixpkgs, flake-utils, code-carbon, emx-onnx-cgen }:
     flake-utils.lib.eachDefaultSystem (system:
       let
         pkgs = import nixpkgs {
@@ -38,8 +37,7 @@
           python = mkCodium {
             kernels = import ./python/kernels.nix {
               inherit pkgs;
-              onnx2c = onnx2c.packages.${system}.default;
-              onnx2pytorch = onnx2pytorch.packages.${system}.default;
+              code-carbon = code-carbon.packages.${system}.default;
               emx-onnx-cgen = emx-onnx-cgen.packages.${system}.default;
             };
             settings = import ./python/settings.nix { inherit pkgs; };
