@@ -5,9 +5,10 @@
 
     code-carbon.url = "path:../../packages/code-carbon";
     emx-onnx-cgen.url = "path:../../packages/emx-onnx-cgen";
+    onnx2pytorch.url = "path:../../packages/onnx2pytorch";
   };
 
-  outputs = { self, nixpkgs, flake-utils, code-carbon, emx-onnx-cgen }:
+  outputs = { self, nixpkgs, flake-utils, code-carbon, emx-onnx-cgen, onnx2pytorch }:
     flake-utils.lib.eachDefaultSystem (system:
       let
         pkgs = import nixpkgs {
@@ -38,7 +39,9 @@
             kernels = import ./python/kernels.nix {
               inherit pkgs;
               code-carbon = code-carbon.packages.${system}.default;
+              onnx2pytorch = onnx2pytorch.packages.${system}.default;
               emx-onnx-cgen = emx-onnx-cgen.packages.${system}.default;
+
             };
             settings = import ./python/settings.nix { inherit pkgs; };
             extensions = import ./python/extensions.nix { inherit pkgs; };

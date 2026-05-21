@@ -1,4 +1,4 @@
-{ pkgs, code-carbon, emx-onnx-cgen }:
+{ pkgs, code-carbon, emx-onnx-cgen, onnx2pytorch }:
 
 let
   python-env = pkgs.buildEnv {
@@ -26,6 +26,7 @@ let
         p.onnxconverter-common
         p.onnxscript
         code-carbon
+        onnx2pytorch
       ]))
     ];
     ignoreCollisions = true;
