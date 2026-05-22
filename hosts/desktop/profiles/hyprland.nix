@@ -74,6 +74,7 @@
         github-desktop
         brightnessctl
         gcc
+        grimblast
       ];
     };
     

@@ -84,7 +84,7 @@ with lib;
               "$mainMod, 8, workspace, 8"
               "$mainMod, 9, workspace, 9"
               "$mainMod, 0, workspace, 10"
-            ];
+              "$mainMod, P, exec, grimblast --notify copysave area ~/Pictures/$(TZ=utc date +'screenshot_%Y-%m-%d-%H%M%S.%3N.png')"            ];
 
             monitor = [ ",preferred,auto,1" ];
 

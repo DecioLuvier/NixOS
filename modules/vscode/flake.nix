@@ -6,7 +6,7 @@
     code-carbon.url = "path:../../packages/code-carbon";
     emx-onnx-cgen.url = "path:../../packages/emx-onnx-cgen";
     onnx2pytorch.url = "path:../../packages/onnx2pytorch";
-
+    onnx2torch.url = "path:../../packages/onnx2torch";
   };
 
   outputs = { self, nixpkgs, flake-utils, code-carbon, emx-onnx-cgen, onnx2pytorch, onnx2torch }:

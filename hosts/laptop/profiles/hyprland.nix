@@ -82,6 +82,7 @@
         jc
         qbittorrent
         valgrind
+        grimblast
       ];
     };
 
