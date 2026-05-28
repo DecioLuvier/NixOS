@@ -5,7 +5,19 @@
     ./hardware.nix
   ];
 
-  hardware.enableAllHardware = true;
+  hardware = {
+    enableAllHardware = true;
+
+    graphics = {
+      enable = true;
+
+      extraPackages = with pkgs; [
+        rocmPackages.clr.icd
+        rocmPackages.rocm-runtime
+      ];
+    };
+
+  };
 
   nix.settings.experimental-features = [ "nix-command" "flakes" ];
 
@@ -17,12 +29,15 @@
 
   boot = {
     tmp.cleanOnBoot = true;
+
+    kernelModules = [ "amdgpu" "kfd" ];
+
     loader = {
       systemd-boot.enable = true;
       efi.canTouchEfiVariables = true;
     };
   };
-  
+
   networking = {
     hostName = "desktop";
     networkmanager.enable = true;
@@ -38,8 +53,18 @@
 
   environment = {
     defaultPackages = [ ];
+
     stub-ld.enable = false;
+
+    variables = {
+      ROCM_PATH = "${pkgs.rocmPackages.clr}";
+    };
   };
+
+  users.users.luvier.extraGroups = [
+    "video"
+    "render"
+  ];
 
   programs = {
     command-not-found.enable = true;

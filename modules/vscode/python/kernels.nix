@@ -1,21 +1,37 @@
 { pkgs, code-carbon, emx-onnx-cgen, onnx2pytorch, onnx2torch }:
 
 let
-  python-env = pkgs.buildEnv {
+  pkgs' = import pkgs.path {
+    system = pkgs.stdenv.hostPlatform.system;
+    overlays = [
+      (final: prev: {
+        pythonPackagesExtensions = prev.pythonPackagesExtensions ++ [
+          (py-final: py-prev: {
+            torch = py-prev.torch.override {
+              triton = py-prev.triton-no-cuda;
+              rocmSupport = true;
+            };
+          })
+        ];
+      })
+    ];
+  };
+
+  python-env = pkgs'.buildEnv {
     name = "python-env";
     paths = [
-      pkgs.gcc
-      pkgs.perf
-      pkgs.flamegraph
-      pkgs.clang
+      pkgs'.gcc
+      pkgs'.perf
+      pkgs'.flamegraph
+      pkgs'.clang
       emx-onnx-cgen
-      code-carbon
-      (pkgs.python313.withPackages (p: [
+      (pkgs'.python313.withPackages (p: [
         p.ipykernel
         p.notebook
         p.tensorflow
         p.keras
         p.sympy
+        p.torchao
         p.tqdm
         p.torchinfo
         p.torch
@@ -27,7 +43,6 @@ let
         p.onnxscript
         code-carbon
         onnx2pytorch
-        onnx2torch
       ]))
     ];
     ignoreCollisions = true;
