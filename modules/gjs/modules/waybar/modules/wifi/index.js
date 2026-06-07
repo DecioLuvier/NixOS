@@ -5,9 +5,16 @@ import NetworkList from "./list.js"
 import NetworkInfo from "./info.js"
 import NetworkLogin from "./login.js"
 
-import { scan, stack } from "./common.js"
+import { scan } from "./common.js"
+
+export let stack;
 
 export default function WifiModule() {
+    stack = new Gtk.Stack({
+        transition_type: Gtk.StackTransitionType.SLIDE_LEFT_RIGHT,
+        transition_duration: 300,
+    })
+    
     stack.add_named(NetworkList(), "list" )
     stack.add_named(NetworkInfo(), "info")
     stack.add_named(NetworkLogin(), "login")

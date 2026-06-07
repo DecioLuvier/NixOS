@@ -1,7 +1,9 @@
 import Gtk from "gi://Gtk?version=4.0"
 import Pango from "gi://Pango"
-import { networks, selectedNetwork, stack, getWifiStrengthIcon, getWifiStatusIcon } from "./common.js"
+
+import { networks, selectedNetwork, getWifiStrengthIcon, getWifiStatusIcon } from "./common.js"
 import { createEffect } from "../../../common.js"
+import { stack } from "./index.js"
 
 function createConnectBtn(net) {
     const btn = new Gtk.Button({ hexpand: true })

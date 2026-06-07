@@ -74,3 +74,4 @@ export function createEffect(state, callback) {
     callback()
     return state.subscribe(callback)
 }
+

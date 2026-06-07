@@ -1,201 +1,73 @@
 import Gtk from "gi://Gtk?version=4.0"
+import { selectedNetwork } from "./common.js"
+import { createEffect } from "../../../common.js"
+import { stack } from "./index.js"
 
-import {
-    selectedNetwork
-} from "./common.js"
-
-import {
-    createEffect,
-} from "../../../common.js"
-
-function _createRow(label, value) {
-    const row = new Gtk.Box({
-        spacing: 8,
-    })
-
-    const left = new Gtk.Label({
-        label,
-        xalign: 0,
-        hexpand: true,
-        css_classes: ["dim-label"],
-    })
-
-    const right = new Gtk.Label({
-        label: value,
-        xalign: 1,
-    })
-
-    row.append(left)
-    row.append(right)
-
-    return {
-        row,
-        right,
-    }
+function createRow(label) {
+  const box = new Gtk.Box({ spacing: 8 })
+  const right = new Gtk.Label({ xalign: 1 })
+  box.append(new Gtk.Label({ label, xalign: 0, hexpand: true, css_classes: ["dim-label"] }))
+  box.append(right)
+  return right
 }
 
-function _createEmptyBox() {
-    const box = new Gtk.Box({
-        orientation: Gtk.Orientation.VERTICAL,
-        spacing: 8,
-        vexpand: true,
-        valign: Gtk.Align.CENTER,
-        halign: Gtk.Align.CENTER,
-    })
-
-    box.append(new Gtk.Label({
-        label: "📡",
-        css_classes: ["title-1"],
-    }))
-
-    box.append(new Gtk.Label({
-        label: "Nenhuma rede selecionada",
-        css_classes: ["title-3"],
-    }))
-
-    box.append(new Gtk.Label({
-        label: "Selecione uma rede na lista",
-        css_classes: ["dim-label"],
-    }))
-
-    return box
+function createEmptyBox() {
+  const box = new Gtk.Box({
+    orientation: Gtk.Orientation.VERTICAL,
+    spacing: 8,
+    vexpand: true,
+    valign: Gtk.Align.CENTER,
+    halign: Gtk.Align.CENTER,
+  })
+  box.append(new Gtk.Label({ label: "📡", css_classes: ["title-1"] }))
+  box.append(new Gtk.Label({ label: "Nenhuma rede selecionada", css_classes: ["title-3"] }))
+  box.append(new Gtk.Label({ label: "Selecione uma rede na lista", css_classes: ["dim-label"] }))
+  return box
 }
 
-function _createInfoBox(stack) {
-    const box = new Gtk.Box({
-        orientation: Gtk.Orientation.VERTICAL,
-        spacing: 12,
-        margin_top: 8,
-        margin_bottom: 8,
-        margin_start: 8,
-        margin_end: 8,
-    })
+function createInfoBox() {
+  const title    = new Gtk.Label({ xalign: 0, css_classes: ["title-2"] })
+  const subtitle = new Gtk.Label({ xalign: 0, css_classes: ["dim-label"] })
 
-    const header = new Gtk.Box({
-        orientation: Gtk.Orientation.VERTICAL,
-        spacing: 2,
-    })
+  const bssid    = createRow("BSSID")
+  const signal   = createRow("Sinal")
+  const channel  = createRow("Canal")
+  const mode     = createRow("Modo")
+  const rate     = createRow("Velocidade")
+  const security = createRow("Segurança")
 
-    const title = new Gtk.Label({
-        xalign: 0,
-        css_classes: ["title-2"],
-    })
+  const card = new Gtk.Box({ orientation: Gtk.Orientation.VERTICAL, spacing: 6, css_classes: ["card"] })
+  for (const r of [bssid, signal, channel, mode, rate, security])
+    card.append(r.get_parent())
 
-    const subtitle = new Gtk.Label({
-        xalign: 0,
-        css_classes: ["dim-label"],
-    })
+  const back = new Gtk.Button({ label: "← Voltar" })
+  back.connect("clicked", () => stack.set_visible_child_name("list"))
 
-    header.append(title)
-    header.append(subtitle)
+  const box = new Gtk.Box({ orientation: Gtk.Orientation.VERTICAL, spacing: 12, margin_top: 8, margin_bottom: 8, margin_start: 8, margin_end: 8 })
+  box.append(title)
+  box.append(subtitle)
+  box.append(card)
+  box.append(back)
 
-    const card = new Gtk.Box({
-        orientation: Gtk.Orientation.VERTICAL,
-        spacing: 6,
-        css_classes: ["card"],
-    })
+  createEffect(selectedNetwork, net => {
+    if (!net) return
+    title.set_label(net.ssid ?? "")
+    subtitle.set_label(net.active ? "Conectado" : "Disponível")
+    bssid.set_label(net.bssid ?? "")
+    signal.set_label(`${net.strength ?? 0}%`)
+    channel.set_label(net.channel ?? "")
+    mode.set_label(net.mode ?? "")
+    rate.set_label(net.rate ?? "")
+    security.set_label(net.locked ? "Protegida" : "Aberta")
+  })
 
-    const rows = {
-        bssid: _createRow("BSSID", ""),
-        signal: _createRow("Sinal", ""),
-        channel: _createRow("Canal", ""),
-        mode: _createRow("Modo", ""),
-        rate: _createRow("Velocidade", ""),
-        security: _createRow("Segurança", ""),
-    }
-
-    Object.values(rows).forEach(({ row }) => {
-        card.append(row)
-    })
-
-    const footer = new Gtk.Box({
-        halign: Gtk.Align.END,
-        margin_top: 8,
-    })
-
-    const back = new Gtk.Button({
-        label: "← Voltar",
-    })
-
-    back.connect("clicked", () => {
-        stack.set_visible_child_name("main")
-    })
-
-    footer.append(back)
-
-    box.append(header)
-    box.append(card)
-    box.append(footer)
-
-    createEffect(
-        selectedNetwork,
-        network => {
-            if (!network)
-                return
-
-            title.set_label(network.ssid ?? "")
-
-            subtitle.set_label(
-                network.active
-                    ? "Conectado"
-                    : "Disponível"
-            )
-
-            rows.bssid.right.set_label(
-                network.bssid ?? ""
-            )
-
-            rows.signal.right.set_label(
-                `${network.strength ?? 0}%`
-            )
-
-            rows.channel.right.set_label(
-                network.channel ?? ""
-            )
-
-            rows.mode.right.set_label(
-                network.mode ?? ""
-            )
-
-            rows.rate.right.set_label(
-                network.rate ?? ""
-            )
-
-            rows.security.right.set_label(
-                network.locked
-                    ? "Protegida"
-                    : "Aberta"
-            )
-        }
-    )
-
-    return box
+  return box
 }
 
-export default function NetworkInfo(stack) {
-    const container = new Gtk.Stack({
-        transition_type:
-            Gtk.StackTransitionType.CROSSFADE,
-    })
-
-    const empty = _createEmptyBox()
-
-    const info = _createInfoBox(stack)
-
-    container.add_named(empty, "empty")
-
-    container.add_named(info, "info")
-
-    createEffect(
-        selectedNetwork,
-        network => {
-            container.set_visible_child_name(
-                network
-                    ? "info"
-                    : "empty"
-            )
-        }
-    )
-
-    return container
+export default function NetworkInfo() {
+  const container = new Gtk.Stack({ transition_type: Gtk.StackTransitionType.CROSSFADE })
+  container.add_named(createEmptyBox(), "empty")
+  container.add_named(createInfoBox(), "info")
+  createEffect(selectedNetwork, net => container.set_visible_child_name(net ? "info" : "empty"))
+  return container
 }
