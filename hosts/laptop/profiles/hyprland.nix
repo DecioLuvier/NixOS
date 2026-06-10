@@ -63,6 +63,16 @@
     jack.enable = true;
   };
 
+  xdg.portal = {
+    enable = true;
+    extraPortals = [ 
+      pkgs.xdg-desktop-portal-gtk     # Fornece o seletor de arquivos e configurações GTK
+      pkgs.xdg-desktop-portal-hyprland # Fornece o compartilhamento de tela do Hyprland
+    ];
+    config.common.default = "*";      # Diz ao sistema para usar qualquer portal disponível
+  };
+
+
   services.pipewire.wireplumber.enable = true;
   
   home-manager.users.luvier = {
