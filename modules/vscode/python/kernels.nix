@@ -22,6 +22,9 @@ let
     paths = [
       pkgs'.gcc
       pkgs'.perf
+      pkgs'.renode
+      pkgs'.gnumake
+      pkgs'.gcc-arm-embedded
       pkgs'.flamegraph
       pkgs'.clang
       emx-onnx-cgen
@@ -29,7 +32,6 @@ let
         p.ipykernel
         p.notebook
         p.tensorflow
-        p.keras
         p.sympy
         p.torchao
         p.tqdm
@@ -37,6 +39,7 @@ let
         p.torch
         p.matplotlib
         p.pandas
+        p.onnxruntime
         p.numpy
         p.torchvision
         p.onnxconverter-common
