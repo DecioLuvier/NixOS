@@ -10,7 +10,7 @@
     utils.lib.eachDefaultSystem (system:
       let
         pkgs = import nixpkgs { inherit system; };
-        
+
         my-app = pkgs.stdenv.mkDerivation {
           pname = "my-app";
           version = "0.1.0";
@@ -35,14 +35,17 @@
             mkdir -p $out/bin
             cp my_app $out/bin/my_app
           '';
+
+          postFixup = ''
+            wrapProgram $out/bin/my_app --set GDK_DEBUG no-portals
+          '';
         };
-      in
-      {
+      in {
         packages.default = my-app;
+
         apps.default = {
           type = "app";
           program = "${my-app}/bin/my_app";
-          wrapperArgs = [ "--set" "G_MESSAGES_TO_CONSOLE" "critical" ];
         };
       });
 }
