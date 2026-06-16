@@ -12,6 +12,7 @@ let
     name = "c-env";
     paths = [
       pkgs.gcc
+      pkgs.gnumake      
       pkgs.perf
       pkgs.clang
       pkgs.clang-tools

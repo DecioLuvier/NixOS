@@ -5,6 +5,8 @@ let
 in
 pkgs.writeText "settings.json"
   (builtins.toJSON {
+    "window.menuBarVisibility" = "visible";
+    "window.titleBarStyle" = "custom";
     "editor.stickyScroll.enabled" = false;
     "editor.minimap.enabled" = false;
     "git.enabled" = false;

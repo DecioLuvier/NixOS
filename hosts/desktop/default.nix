@@ -5,6 +5,8 @@
     ./hardware.nix
   ];
 
+  nix.settings.warn-dirty = false;
+
   hardware = {
     enableAllHardware = true;
 
