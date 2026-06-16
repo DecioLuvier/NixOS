@@ -14,4 +14,5 @@ with pkgs.vscode-extensions; [
   ms-vscode.cmake-tools
   twxs.cmake
   ms-vscode.makefile-tools
+  dracula-theme.theme-dracula
 ]
