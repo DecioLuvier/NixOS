@@ -14,4 +14,4 @@ pkgs.writeText "settings.json"
     "chat.disableAIFeatures" = true;
     "workbench.secondarySideBar.defaultVisibility" = "hidden";
     "workbench.colorTheme" = "Dracula Theme";
-})  
+  })
