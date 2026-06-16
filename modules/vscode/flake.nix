@@ -46,6 +46,12 @@
             settings = import ./nix/settings.nix { inherit inputs system; };
             extensions = import ./nix/extensions.nix { inherit inputs system; };
           };
+
+          default = mkVSCode {
+            kernels = import ./default/kernels.nix { inherit inputs system; };
+            settings = import ./default/settings.nix { inherit inputs system; };
+            extensions = import ./default/extensions.nix { inherit inputs system; };
+          };
         };
       }
     );

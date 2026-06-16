@@ -3,7 +3,6 @@
 let
   pkgs = inputs.nixpkgs.legacyPackages.${system};
 
-  # Resolução dos pacotes vindo dos outros inputs do flake
   emx-onnx-cgen-pkg = inputs.emx-onnx-cgen.packages.${system}.default;
   code-carbon-pkg = inputs.code-carbon.packages.${system}.default;
   onnx2pytorch-pkg = inputs.onnx2pytorch.packages.${system}.default;

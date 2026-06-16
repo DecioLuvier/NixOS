@@ -1,7 +1,12 @@
 { inputs, system }:
 
 let
-  pkgs = inputs.nixpkgs.legacyPackages.${system};
+  pkgs = import inputs.nixpkgs {
+    inherit system;
+    config = {
+      allowUnfree = true;
+    };
+  };
 
   c-env = pkgs.buildEnv {
     name = "c-env";

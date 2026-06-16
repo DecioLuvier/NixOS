@@ -14,10 +14,13 @@ pkgs.writeText "settings.json"
     "security.workspace.trust.enabled" = false;
     "security.workspace.trust.startupPrompt" = "never";
 
-    "C_Cpp.intelliSenseEngine" = "disabled";
-    "clangd.path" = "clangd";
-    "C_Cpp.default.includePath" = [
-      "/run/current-system/sw/include"
-      "/nix/store/**"
-    ];
+    "telemetry.telemetryLevel" = "off";
+    "editor.inlineSuggest.enabled" = false;
+    "editor.quickSuggestions" = {
+      "other" = "on";
+      "comments" = "off";
+      "strings" = "off";
+    };
+    "workbench.enableExperiments" = false;
+    "ai.experimental.generateConfiguration" = false;
   })
