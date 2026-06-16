@@ -1,5 +1,8 @@
-{ pkgs }:
+{ inputs, system }:
 
+let
+  pkgs = inputs.nixpkgs.legacyPackages.${system};
+in
 pkgs.writeText "settings.json"
   (builtins.toJSON {
     "editor.stickyScroll.enabled" = false;
@@ -11,7 +14,6 @@ pkgs.writeText "settings.json"
     "security.workspace.trust.enabled" = false;
     "security.workspace.trust.startupPrompt" = "never";
 
-    # C/C++ / clangd setup limpo
     "C_Cpp.intelliSenseEngine" = "disabled";
     "clangd.path" = "clangd";
     "C_Cpp.default.includePath" = [

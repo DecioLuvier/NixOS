@@ -1,6 +1,8 @@
-{ pkgs }:
+{ inputs, system }:
 
 let
+  pkgs = inputs.nixpkgs.legacyPackages.${system};
+
   nix-env = pkgs.buildEnv {
     name = "nix-env";
     paths = [
@@ -8,6 +10,5 @@ let
     ];
     ignoreCollisions = true;
   };
-
 in
-  "${nix-env}/bin"
+"${nix-env}/bin"

@@ -1,5 +1,8 @@
-{ pkgs }:
+{ inputs, system }:
 
+let
+  pkgs = inputs.nixpkgs.legacyPackages.${system};
+in
 pkgs.writeText "settings.json"
   (builtins.toJSON {
     "editor.stickyScroll.enabled" = false;

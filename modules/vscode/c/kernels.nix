@@ -1,6 +1,8 @@
-{ pkgs }:
+{ inputs, system }:
 
 let
+  pkgs = inputs.nixpkgs.legacyPackages.${system};
+
   c-env = pkgs.buildEnv {
     name = "c-env";
     paths = [
@@ -11,6 +13,5 @@ let
     ];
     ignoreCollisions = true;
   };
-
 in
   "${c-env}/bin"
