@@ -26,7 +26,7 @@
               export PATH="${pkgs.coreutils}/bin:${kernels}:$PATH"
               mkdir -p "$VSCODE_USER_DATA/User"
               cp ${settings} "$VSCODE_USER_DATA/User/settings.json"
-              exec ${vscode-base}/bin/code --user-data-dir="$VSCODE_USER_DATA" /home/luvier/NixOS "$@"
+              exec ${vscode-base}/bin/code --user-data-dir="$VSCODE_USER_DATA" "$@"
             '';
           in inputs.flake-utils.lib.mkApp { drv = script; };
       in {

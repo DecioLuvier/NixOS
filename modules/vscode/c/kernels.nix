@@ -11,7 +11,7 @@ let
   c-env = pkgs.buildEnv {
     name = "c-env";
     paths = [
-      pkgs.gcc
+      pkgs.gcc13
       pkgs.gnumake      
       pkgs.perf
       pkgs.clang
