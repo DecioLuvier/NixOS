@@ -81,16 +81,13 @@
       homeDirectory = "/home/luvier";
       stateVersion = "24.11";
       packages = with pkgs; [
-        simulide
         github-desktop
-        melonds
+        claude-code
         brightnessctl
         btop
         gcc
-        discord
         nodejs
         jc
-        qbittorrent
         valgrind
         grimblast
       ];
