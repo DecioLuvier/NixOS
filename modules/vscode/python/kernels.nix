@@ -20,6 +20,8 @@ let
       emx-onnx-cgen-pkg
       (pkgs.python313.withPackages (p: [
         p.ipykernel
+        p.seaborn
+        p.datasets
         p.notebook
         p.tensorflow
         p.sympy
