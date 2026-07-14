@@ -43,6 +43,12 @@
             extensions = import ./c/extensions.nix { inherit inputs system; };
           };
 
+          js = makeCode {
+            kernels = import ./js/kernels.nix { inherit inputs system; };
+            settings = import ./js/settings.nix { inherit inputs system; };
+            extensions = import ./js/extensions.nix { inherit inputs system; };
+          };
+
           default = makeCode {
             kernels = import ./default/kernels.nix { inherit inputs system; };
             settings = import ./default/settings.nix { inherit inputs system; };

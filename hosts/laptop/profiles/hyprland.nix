@@ -66,10 +66,10 @@
   xdg.portal = {
     enable = true;
     extraPortals = [ 
-      pkgs.xdg-desktop-portal-gtk     # Fornece o seletor de arquivos e configurações GTK
-      pkgs.xdg-desktop-portal-hyprland # Fornece o compartilhamento de tela do Hyprland
+      pkgs.xdg-desktop-portal-gtk     
+      pkgs.xdg-desktop-portal-hyprland
     ];
-    config.common.default = "*";      # Diz ao sistema para usar qualquer portal disponível
+    config.common.default = "*";      
   };
 
 
@@ -84,6 +84,7 @@
         github-desktop
         claude-code
         brightnessctl
+        onlyoffice-desktopeditors
         btop
         gcc
         nodejs
@@ -93,7 +94,6 @@
       ];
     };
 
-    
     gtk = {
       enable = true;
       iconTheme = {

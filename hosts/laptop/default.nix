@@ -46,6 +46,14 @@
     fish.generateCompletions = true;
   };
 
+  services.avahi = {
+    enable = true;
+    nssmdns4 = true;
+    openFirewall = true;
+  };
+
+
+
   services = {
     logrotate.enable = false;
     gnome.gnome-keyring.enable = true;
