@@ -10,12 +10,9 @@ let
 in
 with pkgs.vscode-extensions; [
   dracula-theme.theme-dracula
-  dbaeumer.vscode-eslint
-  esbenp.prettier-vscode
   bradlc.vscode-tailwindcss
   prisma.prisma
-  dotenv.dotenv-vscode
-  humao.rest-client
+  astro-build.astro-vscode
 ] ++ pkgs.vscode-utils.extensionsFromVscodeMarketplace [
   {
     name = "es7-react-js-snippets";

@@ -17,19 +17,6 @@ pkgs.writeText "settings.json"
     "workbench.secondarySideBar.defaultVisibility" = "hidden";
     "workbench.colorTheme" = "Dracula Theme";
 
-    # Formatter
-    "editor.defaultFormatter" = "esbenp.prettier-vscode";
-    "editor.formatOnSave" = true;
-    "[javascript]"."editor.defaultFormatter" = "esbenp.prettier-vscode";
-    "[javascriptreact]"."editor.defaultFormatter" = "esbenp.prettier-vscode";
-    "[typescript]"."editor.defaultFormatter" = "esbenp.prettier-vscode";
-    "[typescriptreact]"."editor.defaultFormatter" = "esbenp.prettier-vscode";
-    "[json]"."editor.defaultFormatter" = "esbenp.prettier-vscode";
-
-    # ESLint
-    "eslint.enable" = true;
-    "eslint.validate" = [ "javascript" "javascriptreact" "typescript" "typescriptreact" ];
-
     # Tailwind
     "tailwindCSS.includeLanguages" = {
       "javascriptreact" = "html";

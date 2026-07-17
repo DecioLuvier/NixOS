@@ -86,6 +86,8 @@
         brightnessctl
         onlyoffice-desktopeditors
         btop
+        zip
+        unzip
         gcc
         nodejs
         jc
