@@ -18,6 +18,6 @@ with pkgs.vscode-extensions; [
     name = "es7-react-js-snippets";
     publisher = "dsznajder";
     version = "4.4.3";
-    sha256 = "sha256:1ilzisfykf60a700bbwvpl1a9rcqy6flkzpp8d8knyj86y3amacr";
+    sha256 = "sha256-QF950JhvVIathAygva3wwUOzBLjBm7HE3Sgcp7f20Pc=";
   }
 ]

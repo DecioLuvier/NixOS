@@ -72,6 +72,10 @@
     config.common.default = "*";      
   };
 
+  services.mysql = {
+    enable = true;
+    package = pkgs.mariadb;
+  };
 
   services.pipewire.wireplumber.enable = true;
   
@@ -90,6 +94,7 @@
         unzip
         gcc
         nodejs
+        mysql-workbench
         jc
         valgrind
         grimblast
