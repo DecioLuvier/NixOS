@@ -6,6 +6,7 @@ let
   emx-onnx-cgen-pkg = inputs.emx-onnx-cgen.packages.${system}.default;
   code-carbon-pkg = inputs.code-carbon.packages.${system}.default;
   onnx2pytorch-pkg = inputs.onnx2pytorch.packages.${system}.default;
+  onnx-simplifier-pkg = inputs.onnx-simplifier.packages.${system}.default;
 
   python-env = pkgs.buildEnv {
     name = "python-env";
@@ -36,8 +37,10 @@ let
         p.torchvision
         p.onnxconverter-common
         p.onnxscript
+        p.safetensors
         code-carbon-pkg
         onnx2pytorch-pkg
+        onnx-simplifier-pkg
       ]))
     ];
     ignoreCollisions = true;
