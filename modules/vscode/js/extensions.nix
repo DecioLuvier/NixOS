@@ -11,7 +11,7 @@ in
 with pkgs.vscode-extensions; [
   dracula-theme.theme-dracula
   bradlc.vscode-tailwindcss
-  prisma.prisma
+  biomejs.biome
   astro-build.astro-vscode
 ] ++ pkgs.vscode-utils.extensionsFromVscodeMarketplace [
   {

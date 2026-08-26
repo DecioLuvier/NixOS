@@ -72,6 +72,12 @@
     config.common.default = "*";      
   };
 
+  services.redis.servers."cache" = {
+    enable = true;
+    port = 6380; # Porta alterada para evitar conflito
+  };
+
+
   services.mysql = {
     enable = true;
     package = pkgs.mariadb;
@@ -86,10 +92,16 @@
       stateVersion = "24.11";
       packages = with pkgs; [
         github-desktop
-        claude-code
         brightnessctl
+        bun
         onlyoffice-desktopeditors
+        claude-code
         btop
+        python3
+        gnumake
+        unrar
+        nodePackages.node-gyp
+        sqlite
         zip
         unzip
         gcc

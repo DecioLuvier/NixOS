@@ -6,9 +6,10 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
     ags.url = "github:Aylur/ags";
+    nix-claude-code.url = "github:ryoppippi/nix-claude-code";
   };
 
-  outputs = { self, nixpkgs, home-manager, ags, ... }: {
+  outputs = { self, nixpkgs, home-manager, ags, nix-claude-code, ... }: {
     nixosConfigurations.laptop = nixpkgs.lib.nixosSystem {
       system = "x86_64-linux";
       modules = [
@@ -21,6 +22,8 @@
     nixosConfigurations.desktop = nixpkgs.lib.nixosSystem {
       system = "x86_64-linux";
       modules = [
+        ({ ... }: { nixpkgs.overlays = [ nix-claude-code.overlays.default ]; })
+
         home-manager.nixosModules.home-manager
         ./hosts/desktop/default.nix
         ./hosts/desktop/hardware.nix

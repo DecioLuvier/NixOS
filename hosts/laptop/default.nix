@@ -39,6 +39,10 @@
   environment = {
     defaultPackages = [ ];
     stub-ld.enable = false;
+    systemPackages = [ pkgs.stdenv.cc.cc.lib ];
+    sessionVariables = {
+      LD_LIBRARY_PATH = lib.mkForce "${pkgs.stdenv.cc.cc.lib}/lib:\${LD_LIBRARY_PATH:-}";
+    };
   };
 
   programs = {
