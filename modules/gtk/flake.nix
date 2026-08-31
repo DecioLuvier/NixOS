@@ -40,12 +40,38 @@
             wrapProgram $out/bin/my_app --set GDK_DEBUG no-portals
           '';
         };
+
+        runner = pkgs.writeShellApplication {
+          name = "run-my-app-broadway";
+          runtimeInputs = [ pkgs.gtk4 my-app ];
+          text = ''
+            DISPLAY_NUM="5"
+            PORT="8085"
+
+            gtk4-broadwayd ":$DISPLAY_NUM" &
+            BROADWAY_PID=$!
+
+            cleanup() {
+              echo "Encerrando servidor Broadway..."
+              kill "$BROADWAY_PID" 2>/dev/null || true
+            }
+            trap cleanup EXIT INT TERM
+
+            sleep 0.5
+
+            echo "=================================================="
+            echo " Broadway UI disponível em: http://localhost:$PORT"
+            echo "=================================================="
+
+            GDK_BACKEND=broadway BROADWAY_DISPLAY=":$DISPLAY_NUM" my_app
+          '';
+        };
       in {
         packages.default = my-app;
 
         apps.default = {
           type = "app";
-          program = "${my-app}/bin/my_app";
+          program = "${runner}/bin/run-my-app-broadway";
         };
       });
 }
