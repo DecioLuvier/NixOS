@@ -93,6 +93,7 @@
         zip
         unzip
         gcc
+        notepad-next
         nodejs
         jc
         grimblast
