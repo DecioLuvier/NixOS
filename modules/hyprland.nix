@@ -55,7 +55,7 @@ with lib;
             bind = [
               "$mainMod, Tab, workspace, previous"
               "$mainMod, N, exec, alacritty -e nix run ~/NixOS/modules/vscode"
-              "$mainMod, C, exec, nix run ~/NixOS/packages/godot-mono"
+              "$mainMod, C, exec, $GODOT_PATH"
               "$mainMod, T, exec, alacritty"
               ", F1, exec, wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle"
               ", F2, exec, wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%-"

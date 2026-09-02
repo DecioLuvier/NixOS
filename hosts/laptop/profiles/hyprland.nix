@@ -1,4 +1,8 @@
-{ config, pkgs, ... }:
+{ config, pkgs, godot-mono, ... }:
+
+let
+  godotMonoPkg = godot-mono.packages.${pkgs.system}.default;
+in
 
 {
   imports = [
@@ -74,19 +78,24 @@
 
 
   services.pipewire.wireplumber.enable = true;
-  
+
+  # System-level so non-login / systemd-user sessions (Hyprland, and MCP
+  # servers spawned by editors) see it without sourcing home-manager's
+  # hm-session-vars.sh.
+  environment.sessionVariables.GODOT_PATH = "${godotMonoPkg}/bin/godot-mono";
+
   home-manager.users.luvier = {
     home = {
       username = "luvier";
       homeDirectory = "/home/luvier";
       stateVersion = "24.11";
-      packages = with pkgs; [
+      packages = (with pkgs; [
         github-desktop
         brightnessctl
         bun
         onlyoffice-desktopeditors
         btop
-        python3
+        claude-code
         gnumake
         unrar
         nodePackages.node-gyp
@@ -97,7 +106,7 @@
         nodejs
         jc
         grimblast
-      ];
+      ]) ++ [ godotMonoPkg ];
     };
 
     gtk = {
