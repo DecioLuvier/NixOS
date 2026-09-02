@@ -38,7 +38,6 @@
               "chromium"
               "--executable-path"
               chromiumBin
-              "--headless"
             ];
           };
         });

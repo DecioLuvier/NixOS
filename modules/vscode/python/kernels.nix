@@ -3,10 +3,24 @@
 let
   pkgs = inputs.nixpkgs.legacyPackages.${system};
 
-  emx-onnx-cgen-pkg = inputs.emx-onnx-cgen.packages.${system}.default;
-  code-carbon-pkg = inputs.code-carbon.packages.${system}.default;
-  onnx2pytorch-pkg = inputs.onnx2pytorch.packages.${system}.default;
-  onnx-simplifier-pkg = inputs.onnx-simplifier.packages.${system}.default;
+  # onnx-simplifier 0.4.x has no py313 build (C++ ext, needs cmake, no cp313
+  # wheel). Upstream renamed the project to `onnxsim`, which ships a
+  # cp312-abi3 wheel that runs on py313. Consume that wheel directly.
+  onnx-simplifier-pkg = pkgs.python313Packages.buildPythonPackage rec {
+    pname = "onnxsim";
+    version = "0.7.3";
+    format = "wheel";
+
+    src = pkgs.fetchurl {
+      url = "https://files.pythonhosted.org/packages/12/ce/3bd161619ba6829d8059af3a99e2ca5f2feb2684415b91be72d825e86969/onnxsim-${version}-cp312-abi3-manylinux_2_27_x86_64.manylinux_2_28_x86_64.whl";
+      hash = "sha256-iPQLDT9DTBm/BinBfrWqPI94gIWyAcaujNqdQbg+1+M=";
+    };
+
+    propagatedBuildInputs = with pkgs.python313Packages; [ onnx onnxruntime rich ];
+
+    pythonImportsCheck = [ "onnxsim" ];
+    doCheck = false;
+  };
 
   python-env = pkgs.buildEnv {
     name = "python-env";
@@ -18,7 +32,6 @@ let
       pkgs.gcc-arm-embedded
       pkgs.flamegraph
       pkgs.clang
-      emx-onnx-cgen-pkg
       (pkgs.python313.withPackages (p: [
         p.ipykernel
         p.seaborn
@@ -38,8 +51,6 @@ let
         p.onnxconverter-common
         p.onnxscript
         p.safetensors
-        code-carbon-pkg
-        onnx2pytorch-pkg
         onnx-simplifier-pkg
       ]))
     ];

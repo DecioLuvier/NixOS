@@ -2,11 +2,6 @@
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
     flake-utils.url = "github:numtide/flake-utils";
-    code-carbon.url = "path:../../packages/code-carbon";
-    emx-onnx-cgen.url = "path:../../packages/emx-onnx-cgen";
-    onnx2pytorch.url = "path:../../packages/onnx2pytorch";
-    onnx2torch.url = "path:../../packages/onnx2torch";
-    onnx-simplifier.url = "path:../../packages/onnx-simplifier";
   };
 
   outputs = inputs:

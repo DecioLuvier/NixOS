@@ -20,11 +20,11 @@
     },
     "nixpkgs": {
       "locked": {
-        "lastModified": 1773821835,
-        "narHash": "sha256-TJ3lSQtW0E2JrznGVm8hOQGVpXjJyXY2guAxku2O9A4=",
+        "lastModified": 1788179007,
+        "narHash": "sha256-hn1oU2rue2SYK8dAr8+WNZWtbsz1S2W5mnHlSEuh3bo=",
         "owner": "NixOS",
         "repo": "nixpkgs",
-        "rev": "b40629efe5d6ec48dd1efba650c797ddbd39ace0",
+        "rev": "34ab99075ac4f7e40cf037eef32cb1c360bb85e9",
         "type": "github"
       },
       "original": {
@@ -37,25 +37,7 @@
     "root": {
       "inputs": {
         "flake-utils": "flake-utils",
-        "nixpkgs": "nixpkgs",
-        "src": "src"
-      }
-    },
-    "src": {
-      "flake": false,
-      "locked": {
-        "lastModified": 1773272444,
-        "narHash": "sha256-pMzcVcglQzqz4bYFqF7LeXqy1c6QJQTK3Xl42zDIldc=",
-        "owner": "emmtrix",
-        "repo": "emx-regex-cgen",
-        "rev": "4987e87a09e40b6f01187d568ed5c496fa3186af",
-        "type": "github"
-      },
-      "original": {
-        "owner": "emmtrix",
-        "ref": "v0.2.0",
-        "repo": "emx-regex-cgen",
-        "type": "github"
+        "nixpkgs": "nixpkgs"
       }
     },
     "systems": {
