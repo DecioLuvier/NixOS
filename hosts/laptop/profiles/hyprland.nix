@@ -13,6 +13,7 @@ in
     ../../../modules/wlogout.nix
     ../../../modules/wofi.nix
     ../../../modules/alacritty.nix
+    ../../../modules/jupyter.nix
   ];
 
   time.timeZone = "America/Sao_Paulo";
@@ -90,6 +91,7 @@ in
       homeDirectory = "/home/luvier";
       stateVersion = "24.11";
       packages = (with pkgs; [
+        zed-editor
         github-desktop
         brightnessctl
         bun

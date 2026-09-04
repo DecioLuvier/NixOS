@@ -65,6 +65,7 @@ with lib;
               "$mainMod, E, exec, thunar"
               "$mainMod, B, exec, firefox"
               "$mainMod, G, exec, github-desktop"
+              "$mainMod, Z, exec, zeditor"
 
               "$mainMod, R, exec, alacritty --hold -e sudo nixos-rebuild switch --flake ~/NixOS#$(hostname)"
 
@@ -93,6 +94,8 @@ with lib;
               kb_layout = "br";
               kb_variant = "abnt2";
               follow_mouse = 1;
+              accel_profile = "flat";
+              sensitivity = 0.5;
             };
 
             general = {
@@ -113,9 +116,7 @@ with lib;
               rounding = 4;
 
               blur = {
-                size = 3;
-                passes = 2;
-                xray = true;
+                enabled = false;
               };
 
               shadow = {
@@ -171,11 +172,15 @@ with lib;
               background_color = "rgb(163249)";
               enable_swallow = true;
               focus_on_activate = true;
-              vrr = 2;
+              vrr = 0;
             };
 
             render = {
               direct_scanout = false;
+            };
+
+            cursor = {
+              no_hardware_cursors = true;
             };
 
             binds = {

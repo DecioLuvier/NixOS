@@ -9,9 +9,13 @@
       url = "path:./packages/godot-mono";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    jupyter = {
+      url = "path:./packages/jupyter";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
-  outputs = { self, nixpkgs, home-manager, godot-mono, ... }: {
+  outputs = { self, nixpkgs, home-manager, godot-mono, jupyter, ... }: {
     nixosConfigurations.laptop = nixpkgs.lib.nixosSystem {
       system = "x86_64-linux";
       specialArgs = { inherit godot-mono; };
