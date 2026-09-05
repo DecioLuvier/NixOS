@@ -61,5 +61,14 @@
       {
         packages.default = godot-mono;
         apps.default = flake-utils.lib.mkApp { drv = godot-mono; };
-      });
+      }) // {
+    nixosModules.default = { pkgs, lib, config, ... }:
+      let
+        pkg   = self.packages.${pkgs.system}.default;
+        users = lib.attrNames (lib.filterAttrs (_: u: u.isNormalUser) config.users.users);
+      in {
+        environment.sessionVariables.GODOT_PATH = "${pkg}/bin/godot-mono";
+        home-manager.users = lib.genAttrs users (_: { home.packages = [ pkg ]; });
+      };
+  };
 }

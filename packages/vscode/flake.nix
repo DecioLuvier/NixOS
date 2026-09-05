@@ -1,13 +1,15 @@
 {
+  description = "VSCode profiles";
+
   inputs = {
-    nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
+    nixpkgs.url    = "github:NixOS/nixpkgs/nixos-unstable";
     flake-utils.url = "github:numtide/flake-utils";
   };
 
   outputs = inputs:
     inputs.flake-utils.lib.eachDefaultSystem (system:
       let
-        pkgs = import inputs.nixpkgs { inherit system; config = { allowUnfree = true; }; };
+        pkgs = import inputs.nixpkgs { inherit system; config.allowUnfree = true; };
 
         makeCode = { kernels, settings, extensions }:
           let
@@ -15,7 +17,6 @@
               vscode = pkgs.vscode;
               vscodeExtensions = extensions;
             };
-            
             script = pkgs.writeShellScriptBin "code" ''
               export HOME="$(mktemp -d)"
               export VSCODE_USER_DATA="$(mktemp -d)"
@@ -24,31 +25,29 @@
               cp ${settings} "$VSCODE_USER_DATA/User/settings.json"
               exec ${vscode-base}/bin/code --user-data-dir="$VSCODE_USER_DATA" "$@"
             '';
-          in inputs.flake-utils.lib.mkApp { drv = script; };
+          in
+          inputs.flake-utils.lib.mkApp { drv = script; };
       in {
         apps = {
+          default = makeCode {
+            kernels    = import ./default/kernels.nix    { inherit inputs system; };
+            settings   = import ./default/settings.nix   { inherit inputs system; };
+            extensions = import ./default/extensions.nix { inherit inputs system; };
+          };
           python = makeCode {
-            kernels = import ./python/kernels.nix { inherit inputs system; };
-            settings = import ./python/settings.nix { inherit inputs system; };
+            kernels    = import ./python/kernels.nix    { inherit inputs system; };
+            settings   = import ./python/settings.nix   { inherit inputs system; };
             extensions = import ./python/extensions.nix { inherit inputs system; };
           };
-
           c = makeCode {
-            kernels = import ./c/kernels.nix { inherit inputs system; };
-            settings = import ./c/settings.nix { inherit inputs system; };
+            kernels    = import ./c/kernels.nix    { inherit inputs system; };
+            settings   = import ./c/settings.nix   { inherit inputs system; };
             extensions = import ./c/extensions.nix { inherit inputs system; };
           };
-
           js = makeCode {
-            kernels = import ./js/kernels.nix { inherit inputs system; };
-            settings = import ./js/settings.nix { inherit inputs system; };
+            kernels    = import ./js/kernels.nix    { inherit inputs system; };
+            settings   = import ./js/settings.nix   { inherit inputs system; };
             extensions = import ./js/extensions.nix { inherit inputs system; };
-          };
-
-          default = makeCode {
-            kernels = import ./default/kernels.nix { inherit inputs system; };
-            settings = import ./default/settings.nix { inherit inputs system; };
-            extensions = import ./default/extensions.nix { inherit inputs system; };
           };
         };
       }

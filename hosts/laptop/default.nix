@@ -1,48 +1,52 @@
 { config, pkgs, lib, ... }:
 
 {
-  imports = [
-    ./hardware.nix
-  ];
-
-  nix.settings.warn-dirty = false;
-
-  nix.settings.experimental-features = [ "nix-command" "flakes" ];
-
-  system.stateVersion = "24.11";
-
-  nixpkgs.config = {
-    allowUnfree = true;
+  # ── Nix ─────────────────────────────────────────────────────────────────────
+  nix.settings = {
+    warn-dirty            = false;
+    experimental-features = [ "nix-command" "flakes" ];
   };
 
+  system.stateVersion        = "24.11";
+  nixpkgs.config.allowUnfree = true;
+
+  # ── Boot ────────────────────────────────────────────────────────────────────
   boot = {
     tmp.cleanOnBoot = true;
     loader = {
-      systemd-boot.enable = true;
+      systemd-boot.enable      = true;
       efi.canTouchEfiVariables = true;
     };
   };
-  
+
+  # ── Rede ────────────────────────────────────────────────────────────────────
   networking = {
-    hostName = "laptop";
+    hostName              = "laptop";
     networkmanager.enable = true;
   };
 
+  time.timeZone = "America/Sao_Paulo";
+
+  # ── Utilizador ──────────────────────────────────────────────────────────────
+  users.users.luvier = {
+    isNormalUser = true;
+    extraGroups  = [ "wheel" "networkmanager" "storage" ];
+  };
+
+  # ── Ambiente ────────────────────────────────────────────────────────────────
   documentation = {
-    enable = false;
-    doc.enable = false;
-    info.enable = false;
-    man.enable = false;
+    enable       = false;
+    doc.enable   = false;
+    info.enable  = false;
+    man.enable   = false;
     nixos.enable = false;
   };
 
   environment = {
     defaultPackages = [ ];
-    stub-ld.enable = false;
-    systemPackages = [ pkgs.stdenv.cc.cc.lib ];
-    sessionVariables = {
-      LD_LIBRARY_PATH = lib.mkForce "${pkgs.stdenv.cc.cc.lib}/lib:\${LD_LIBRARY_PATH:-}";
-    };
+    stub-ld.enable  = false;
+    systemPackages  = [ pkgs.stdenv.cc.cc.lib ];
+    sessionVariables.LD_LIBRARY_PATH = lib.mkForce "${pkgs.stdenv.cc.cc.lib}/lib:\${LD_LIBRARY_PATH:-}";
   };
 
   programs = {
@@ -50,50 +54,97 @@
     fish.generateCompletions = true;
   };
 
-  services.avahi = {
-    enable = true;
-    nssmdns4 = true;
-    openFirewall = true;
+  # ── Hardware ────────────────────────────────────────────────────────────────
+  hardware.bluetooth = {
+    enable      = true;
+    powerOnBoot = true;
   };
 
+  security.rtkit.enable = true;
 
-
+  # ── Serviços ────────────────────────────────────────────────────────────────
   services = {
+    avahi            = { enable = true; nssmdns4 = true; openFirewall = true; };
+    blueman.enable   = true;
     logrotate.enable = false;
+    upower.enable    = true;
+    udisks2.enable   = true;
+    gvfs.enable      = true;
+
     gnome.gnome-keyring.enable = true;
-    udisks2.enable = true;
-    gvfs.enable = true;
-    pipewire.enable = true;
+
+    greetd = {
+      enable = true;
+      settings.default_session = { command = "start-hyprland"; user = "luvier"; };
+    };
+
+    pipewire = {
+      enable             = true;
+      alsa.enable        = true;
+      alsa.support32Bit  = true;
+      pulse.enable       = true;
+      jack.enable        = true;
+      wireplumber.enable = true;
+    };
 
     tlp = {
       enable = true;
       settings = {
-        CPU_SCALING_GOVERNOR_ON_AC = "performance";
+        CPU_SCALING_GOVERNOR_ON_AC  = "performance";
         CPU_SCALING_GOVERNOR_ON_BAT = "powersave";
-
-        CPU_MAX_PERF_ON_AC = 100;
-        CPU_MAX_PERF_ON_BAT = 40;
-
-        CPU_BOOST_ON_AC = 1;
-        CPU_BOOST_ON_BAT = 0;
-
-        WIFI_PWR_ON_AC = "off";
-        WIFI_PWR_ON_BAT = "on";
-
-        PCIE_ASPM_ON_AC = "default";
-        PCIE_ASPM_ON_BAT = "powersupersave";
-
-        USB_AUTOSUSPEND = 1;
-
-        RUNTIME_PM_ON_AC = "on";
-        RUNTIME_PM_ON_BAT = "auto";
-
-        SATA_LINKPWR_ON_AC = "med_power_with_dipm";
-        SATA_LINKPWR_ON_BAT = "min_power";
-
-        SOUND_POWER_SAVE_ON_AC = 0;
-        SOUND_POWER_SAVE_ON_BAT = 1;
+        CPU_MAX_PERF_ON_AC          = 100;
+        CPU_MAX_PERF_ON_BAT         = 40;
+        CPU_BOOST_ON_AC             = 1;
+        CPU_BOOST_ON_BAT            = 0;
+        WIFI_PWR_ON_AC              = "off";
+        WIFI_PWR_ON_BAT             = "on";
+        PCIE_ASPM_ON_AC             = "default";
+        PCIE_ASPM_ON_BAT            = "powersupersave";
+        USB_AUTOSUSPEND             = 1;
+        RUNTIME_PM_ON_AC            = "on";
+        RUNTIME_PM_ON_BAT           = "auto";
+        SATA_LINKPWR_ON_AC          = "med_power_with_dipm";
+        SATA_LINKPWR_ON_BAT         = "min_power";
+        SOUND_POWER_SAVE_ON_AC      = 0;
+        SOUND_POWER_SAVE_ON_BAT     = 1;
       };
+    };
+  };
+
+  # ── Home Manager ────────────────────────────────────────────────────────────
+  home-manager.users.luvier = {
+    home = {
+      username      = "luvier";
+      homeDirectory = "/home/luvier";
+      stateVersion  = "24.11";
+      packages = with pkgs; [
+        github-desktop
+        bun
+        onlyoffice-desktopeditors
+        btop
+        claude-code
+        gnumake
+        unrar
+        node-gyp
+        zip
+        unzip
+        gcc
+        notepad-next
+        nodejs
+        jc
+      ];
+    };
+
+    gtk = {
+      enable = true;
+      iconTheme = { name = "Adwaita"; package = pkgs.adwaita-icon-theme; };
+    };
+
+    programs.command-not-found.enable = false;
+
+    programs.git = {
+      enable = true;
+      extraConfig.user = { name = "decioluvier"; email = "decioluvieriii@gmail.com"; };
     };
   };
 }
