@@ -75,9 +75,9 @@
         };
       }) //
     {
-      nixosModules.default = { pkgs, ... }:
+      nixosModules.default = { pkgs, lib, ... }:
         let
-          env = self.packages.${pkgs.system};
+          env = self.packages.${pkgs.stdenv.hostPlatform.system};
         in {
           systemd.user.services.jupyter-ifrs = {
             description = "Jupyter — Pesquisa IFRS";
@@ -91,7 +91,7 @@
               Restart    = "on-failure";
               RestartSec = 5;
             };
-            environment.PATH = "${pkgs.lib.makeBinPath (with pkgs; [ perf gcc util-linux ])}:$PATH";
+            environment.PATH = pkgs.lib.mkForce "${pkgs.lib.makeBinPath (with pkgs; [ perf gcc util-linux ])}:$PATH";
           };
 
           environment.systemPackages = [ env.default ] ++ (with pkgs; [ perf gcc util-linux ]);

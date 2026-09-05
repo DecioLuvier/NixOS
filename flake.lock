@@ -124,6 +124,22 @@
       },
       "parent": []
     },
+    "navbar": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "path": "./packages/navbar",
+        "type": "path"
+      },
+      "original": {
+        "path": "./packages/navbar",
+        "type": "path"
+      },
+      "parent": []
+    },
     "nixpkgs": {
       "locked": {
         "lastModified": 1788531059,
@@ -146,6 +162,7 @@
         "godot-mono": "godot-mono",
         "home-manager": "home-manager",
         "jupyter": "jupyter",
+        "navbar": "navbar",
         "nixpkgs": "nixpkgs"
       }
     },

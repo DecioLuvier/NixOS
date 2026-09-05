@@ -144,7 +144,7 @@
 
     programs.git = {
       enable = true;
-      extraConfig.user = { name = "decioluvier"; email = "decioluvieriii@gmail.com"; };
+      settings.user = { name = "decioluvier"; email = "decioluvieriii@gmail.com"; };
     };
   };
 }

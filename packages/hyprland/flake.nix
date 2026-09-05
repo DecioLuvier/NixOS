@@ -36,6 +36,7 @@
           {
             # Cursor
             home.pointerCursor = {
+              enable  = true;
               name    = "Bibata-Modern-Classic";
               size    = 24;
               package = pkgs.bibata-cursors;
@@ -126,7 +127,8 @@
 
             # Hyprland
             wayland.windowManager.hyprland = {
-              enable = true;
+              enable     = true;
+              configType = "hyprlang";
               settings = {
                 "$mainMod" = "SUPER";
 
