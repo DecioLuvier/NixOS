@@ -1,0 +1,106 @@
+--- a/grub-core/gfxmenu/view.c
++++ b/grub-core/gfxmenu/view.c
+@@ -401,13 +401,102 @@
+     }
+ }
+ 
++/* Try to load assets/background/<class_name>.png relative to the theme
++   directory. On success, replaces view->raw_desktop_image and forces
++   init_background to recompute the scaled copy. Returns 1 on success.  */
++static int
++try_switch_background_for_class (grub_gfxmenu_view_t view,
++                                 const char *class_name)
++{
++  char *theme_dir;
++  char *rel_path;
++  char *abs_path;
++  struct grub_video_bitmap *bitmap;
++
++  if (!view->theme_path)
++    return 0;
++
++  theme_dir = grub_get_dirname (view->theme_path);
++  if (!theme_dir)
++    return 0;
++
++  rel_path = grub_xasprintf ("assets/background/%s.png", class_name);
++  if (!rel_path)
++    {
++      grub_free (theme_dir);
++      return 0;
++    }
++
++  abs_path = grub_resolve_relative_path (theme_dir, rel_path);
++  grub_free (theme_dir);
++  grub_free (rel_path);
++  if (!abs_path)
++    return 0;
++
++  if (grub_video_bitmap_load (&bitmap, abs_path) != GRUB_ERR_NONE)
++    {
++      grub_free (abs_path);
++      grub_errno = GRUB_ERR_NONE;
++      return 0;
++    }
++  grub_free (abs_path);
++
++  grub_video_bitmap_destroy (view->raw_desktop_image);
++  grub_video_bitmap_destroy (view->scaled_desktop_image);
++  view->raw_desktop_image = bitmap;
++  view->scaled_desktop_image = 0;
++  init_background (view);
++  return 1;
++}
++
++/* Search the selected entry's classes and try each one against
++   assets/background/<class>.png. Returns 1 if the background was
++   switched, 0 otherwise (background stays as it was).  */
++static int
++maybe_switch_background_for_selected (grub_gfxmenu_view_t view)
++{
++  grub_menu_entry_t entry;
++  struct grub_menu_entry_class *c;
++
++  if (!view || !view->menu)
++    return 0;
++
++  entry = grub_menu_get_entry (view->menu, view->selected);
++  if (!entry)
++    return 0;
++
++  for (c = entry->classes; c; c = c->next)
++    {
++      if (try_switch_background_for_class (view, c->name))
++       return 1;
++    }
++  return 0;
++}
++
+ void
+ grub_gfxmenu_set_chosen_entry (int entry, void *data)
+ {
+   grub_gfxmenu_view_t view = data;
++  int background_changed;
+ 
+   view->selected = entry;
+-  grub_gfxmenu_redraw_menu (view);
++  background_changed = maybe_switch_background_for_selected (view);
++
++  if (background_changed)
++    {
++      grub_video_set_area_status (GRUB_VIDEO_AREA_ENABLED);
++      grub_gfxmenu_view_redraw (view, &view->screen);
++      grub_video_swap_buffers ();
++      if (view->double_repaint)
++       {
++         grub_video_set_area_status (GRUB_VIDEO_AREA_ENABLED);
++         grub_gfxmenu_view_redraw (view, &view->screen);
++       }
++    }
++  else
++    {
++      grub_gfxmenu_redraw_menu (view);
++    }
+ }
+ 
+ static void

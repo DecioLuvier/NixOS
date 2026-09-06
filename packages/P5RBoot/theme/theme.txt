@@ -1,0 +1,32 @@
+title-text: ""
+desktop-image: "assets/background/1.png"
+desktop-color: "#242424"
+terminal-box: "terminal_box_*.png"
+terminal-left: "0"
+terminal-top: "0"
+terminal-width: "100%"
+terminal-height: "100%"
+terminal-border: "0"
+
++ boot_menu {
+  left = 30%
+  top = 18%
+  width = 40%
+  height = 63%
+  item_font = "Earwig Factory Regular 29"
+  item_color = "#efefef"
+  selected_item_color = "#ffffff"
+  icon_width = 38
+  icon_height = 38
+  item_icon_space = 9
+  item_height = 60
+  item_padding = 4
+  item_spacing = 8
+  selected_item_pixmap_style = "assets/select_*.png"
+}
+
++ image {
+  top = 0%
+  left = 0%
+  file = "assets/info.png"
+}

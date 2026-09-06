@@ -64,7 +64,7 @@
       }) // {
     nixosModules.default = { pkgs, lib, config, ... }:
       let
-        pkg   = self.packages.${pkgs.system}.default;
+        pkg   = self.packages.${pkgs.stdenv.hostPlatform.system}.default;
         users = lib.attrNames (lib.filterAttrs (_: u: u.isNormalUser) config.users.users);
       in {
         environment.sessionVariables.GODOT_PATH = "${pkg}/bin/godot-mono";

@@ -1,5 +1,5 @@
 {
-  description = "GTK4 layer-shell navbar for Hyprland";
+  description = "GTK4 layer-shell navbar for Hyprland (C++)";
 
   inputs.nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
 
@@ -7,26 +7,30 @@
     system = "x86_64-linux";
     pkgs   = nixpkgs.legacyPackages.${system};
 
-    pythonEnv = pkgs.python3.withPackages (ps: with ps; [
-      pygobject3
-      psutil
-    ]);
-
     navbarPkg = pkgs.stdenv.mkDerivation {
-      name    = "navbar";
+      pname   = "navbar";
+      version = "0.2.0";
       src     = self;
-      buildInputs = [ pkgs.gtk4 pkgs.gtk4-layer-shell pkgs.gobject-introspection pythonEnv ];
+
+      nativeBuildInputs = [ pkgs.pkg-config pkgs.wrapGAppsHook4 ];
+      buildInputs = [
+        pkgs.gtk4
+        pkgs.gtk4-layer-shell
+        pkgs.glib
+      ];
+
+      buildPhase = ''
+        runHook preBuild
+        $CXX -std=c++17 -O2 -Wall bar.cpp -o navbar \
+          $(pkg-config --cflags --libs gtk4 gtk4-layer-shell-0) \
+          -lpthread
+        runHook postBuild
+      '';
+
       installPhase = ''
-        mkdir -p $out/share/navbar
-        cp -r . $out/share/navbar/
-        mkdir -p $out/bin
-        cat > $out/bin/navbar <<EOF
-        #!${pkgs.bash}/bin/bash
-        export GI_TYPELIB_PATH="${pkgs.gtk4}/lib/girepository-1.0:${pkgs.gtk4-layer-shell}/lib/girepository-1.0:\''${GI_TYPELIB_PATH:-}"
-        export LD_LIBRARY_PATH="${pkgs.gtk4}/lib:${pkgs.gtk4-layer-shell}/lib:\''${LD_LIBRARY_PATH:-}"
-        exec ${pythonEnv}/bin/python3 $out/share/navbar/bar.py "\$@"
-        EOF
-        chmod +x $out/bin/navbar
+        runHook preInstall
+        install -Dm755 navbar $out/bin/navbar
+        runHook postInstall
       '';
     };
 
@@ -38,20 +42,8 @@
       program = "${navbarPkg}/bin/navbar";
     };
 
-    nixosModules.default = { pkgs, lib, config, ... }: let
-      navbarEnv = pkgs.python3.withPackages (ps: with ps; [ pygobject3 psutil ]);
-      navbarBin = pkgs.writeShellScriptBin "navbar" ''
-        export GI_TYPELIB_PATH="${pkgs.gtk4}/lib/girepository-1.0:${pkgs.gtk4-layer-shell}/lib/girepository-1.0:''${GI_TYPELIB_PATH:-}"
-        export LD_LIBRARY_PATH="${pkgs.gtk4}/lib:${pkgs.gtk4-layer-shell}/lib:''${LD_LIBRARY_PATH:-}"
-        exec ${navbarEnv}/bin/python3 ${self}/bar.py "$@"
-      '';
-    in {
-      environment.systemPackages = [
-        pkgs.gtk4
-        pkgs.gtk4-layer-shell
-        pkgs.gobject-introspection
-        navbarBin
-      ];
+    nixosModules.default = { pkgs, ... }: {
+      environment.systemPackages = [ self.packages.${pkgs.stdenv.hostPlatform.system}.default ];
     };
   };
 }

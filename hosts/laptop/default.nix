@@ -1,4 +1,4 @@
-{ config, pkgs, lib, ... }:
+{ config, pkgs, lib, vscode, ... }:
 
 {
   # ── Nix ─────────────────────────────────────────────────────────────────────
@@ -11,12 +11,10 @@
   nixpkgs.config.allowUnfree = true;
 
   # ── Boot ────────────────────────────────────────────────────────────────────
+  # GRUB (wallpaper, generations, boot sem Hyprland, BIOS): packages/MikuBoot/flake.nix
   boot = {
     tmp.cleanOnBoot = true;
-    loader = {
-      systemd-boot.enable      = true;
-      efi.canTouchEfiVariables = true;
-    };
+    plymouth.enable = false;
   };
 
   # ── Rede ────────────────────────────────────────────────────────────────────
@@ -44,14 +42,16 @@
 
   environment = {
     defaultPackages = [ ];
-    stub-ld.enable  = false;
-    systemPackages  = [ pkgs.stdenv.cc.cc.lib ];
-    sessionVariables.LD_LIBRARY_PATH = lib.mkForce "${pkgs.stdenv.cc.cc.lib}/lib:\${LD_LIBRARY_PATH:-}";
   };
 
   programs = {
     command-not-found.enable = true;
     fish.generateCompletions = true;
+
+    nix-ld = {
+      enable = true;
+      libraries = with pkgs; [ stdenv.cc.cc.lib zlib ];
+    };
   };
 
   # ── Hardware ────────────────────────────────────────────────────────────────
@@ -75,7 +75,10 @@
 
     greetd = {
       enable = true;
-      settings.default_session = { command = "start-hyprland"; user = "luvier"; };
+      settings.default_session = {
+        command = "${pkgs.hyprland}/bin/start-hyprland";
+        user = "luvier";
+      };
     };
 
     pipewire = {
@@ -129,9 +132,13 @@
         zip
         unzip
         gcc
-        notepad-next
         nodejs
         jc
+      ] ++ [
+        vscode.packages.x86_64-linux.default
+        vscode.packages.x86_64-linux.python
+        vscode.packages.x86_64-linux.c
+        vscode.packages.x86_64-linux.js
       ];
     };
 

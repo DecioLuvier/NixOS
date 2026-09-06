@@ -1,0 +1,40 @@
+Window.SetBackgroundTopColor(0, 0, 0);
+Window.SetBackgroundBottomColor(0, 0, 0);
+
+total_frames = 96;
+
+fun pad3(n) {
+    if (n < 10) return "00" + n;
+    if (n < 100) return "0" + n;
+    return "" + n;
+}
+
+for (i = 0; i < total_frames; i++) {
+    img[i] = Image("frame_" + pad3(i + 1) + ".png");
+}
+
+sprite = Sprite();
+sprite.SetImage(img[0]);
+
+screen.w = Window.GetWidth();
+screen.h = Window.GetHeight();
+sprite.SetX(screen.w / 2 - img[0].GetWidth() / 2);
+sprite.SetY(screen.h / 2 - img[0].GetHeight() / 2);
+
+progress = 0;
+
+fun refresh_callback() {
+    frame = Math.Int(progress) % total_frames;
+    sprite.SetImage(img[frame]);
+    progress += 1;
+}
+Plymouth.SetRefreshFunction(refresh_callback);
+
+fun DisplayQuestionCallback(p, e) {}
+Plymouth.SetDisplayQuestionFunction(DisplayQuestionCallback);
+fun DisplayPasswordCallback(n, b) {}
+Plymouth.SetDisplayPasswordFunction(DisplayPasswordCallback);
+fun DisplayNormalCallback() {}
+Plymouth.SetDisplayNormalFunction(DisplayNormalCallback);
+fun MessageCallback(t) {}
+Plymouth.SetMessageFunction(MessageCallback);
