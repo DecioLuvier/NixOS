@@ -22,6 +22,9 @@
           efiSupport   = true;
           device       = "nodev";
           useOSProber  = false;
+          # Fonte normal para linha de comando e tela de edicao do GRUB.
+          # A fonte earwig.pf2 e usada apenas nos menus, via item_font no theme.txt.
+          font           = "${pkgs.grub2}/share/grub/unicode.pf2";
           gfxmodeEfi     = "1366x768,auto";
           gfxmodeBios    = "1366x768,auto";
           gfxpayloadEfi  = "keep";
