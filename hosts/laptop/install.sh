@@ -9,6 +9,8 @@ REPO="${REPO:-https://github.com/DecioLuvier/NixOS}"
 BRANCH="${BRANCH:-main}"
 FLAKE="${FLAKE:-laptop}"
 
+export NIX_CONFIG="experimental-features = nix-command flakes"
+
 case "$DISK" in
   *[0-9]) PART="${DISK}p" ;;
   *)      PART="${DISK}" ;;
@@ -41,8 +43,7 @@ mkdir -p /mnt/boot
 mount "$ESP" /mnt/boot
 
 rm -rf /mnt/etc/nixos
-nix --extra-experimental-features 'nix-command flakes' \
-  run nixpkgs#git -- clone --branch "$BRANCH" "$REPO" /mnt/etc/nixos
+nix run nixpkgs#git -- clone --branch "$BRANCH" "$REPO" /mnt/etc/nixos
 
 nixos-generate-config --root /mnt --show-hardware-config \
   > /mnt/etc/nixos/hosts/laptop/hardware.nix
@@ -50,7 +51,6 @@ nixos-generate-config --root /mnt --show-hardware-config \
 nixos-install \
   --root /mnt \
   --flake "/mnt/etc/nixos#$FLAKE" \
-  --no-root-passwd \
-  --extra-experimental-features 'nix-command flakes'
+  --no-root-passwd
 
 nixos-enter --root /mnt -c 'passwd luvier'
