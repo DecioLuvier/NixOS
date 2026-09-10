@@ -23,16 +23,22 @@ sgdisk -n1:0:+1GiB        -t1:ef00 -c1:BOOT  "$DISK"
 sgdisk -n2:0:+"$SWAP_SIZE" -t2:8200 -c2:swap  "$DISK"
 sgdisk -n3:0:0            -t3:8300 -c3:nixos "$DISK"
 partprobe "$DISK"
-sleep 2
+udevadm settle
+for p in "$ESP" "$SWAP" "$ROOT"; do
+  for _ in $(seq 1 20); do [ -b "$p" ] && break; sleep 0.5; done
+done
+
+wipefs -a "$ESP" "$SWAP" "$ROOT"
 
 mkfs.vfat -F32 -n BOOT "$ESP"
 mkswap -L swap "$SWAP"
 swapon "$SWAP"
 mkfs.ext4 -F -L nixos "$ROOT"
+udevadm settle
 
-mount /dev/disk/by-label/nixos /mnt
+mount "$ROOT" /mnt
 mkdir -p /mnt/boot
-mount /dev/disk/by-label/BOOT /mnt/boot
+mount "$ESP" /mnt/boot
 
 rm -rf /mnt/etc/nixos
 nix --extra-experimental-features 'nix-command flakes' \
