@@ -6,11 +6,6 @@
 
   programs.uwsm.enable = true;
 
-  networking.hosts = {
-    "140.82.121.6" = [ "api.github.com" ];
-    "140.82.121.3" = [ "github.com" ];
-  };
-
   nix.settings = {
     warn-dirty            = false;
     experimental-features = [ "nix-command" "flakes" ];
@@ -160,10 +155,8 @@
 
     programs.git = {
       enable = true;
-      lfs.enable = true;
       settings = {
         user       = { name = "decioluvier"; email = "decioluvieriii@gmail.com"; };
-        credential = { "https://github.com".helper = "!${pkgs.gh}/bin/gh auth git-credential"; };
       };
     };
   };
