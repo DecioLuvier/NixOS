@@ -82,7 +82,7 @@
     greetd = {
       enable = true;
       settings.default_session = {
-        command = "Hyprland";
+        command = "${pkgs.hyprland}/bin/Hyprland";
         user    = "luvier";
       };
     };
