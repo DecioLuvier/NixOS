@@ -14,7 +14,7 @@ pkgs.stdenv.mkDerivation {
     runHook preBuild
     g++ -std=c++20 -o bars \
       src/main.cpp src/bar_window.cpp \
-      $(pkg-config --cflags --libs gtk4 gtk-layer-shell-0)
+      $(pkg-config --cflags --libs gtk4 gtk4-layer-shell-0)
     runHook postBuild
   '';
 
