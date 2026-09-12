@@ -6,6 +6,7 @@
 
   programs.uwsm.enable = true;
 
+
   nix.settings = {
     warn-dirty            = false;
     experimental-features = [ "nix-command" "flakes" ];
@@ -157,6 +158,7 @@
       enable = true;
       settings = {
         user       = { name = "decioluvier"; email = "decioluvieriii@gmail.com"; };
+        credential = { "https://github.com".helper = "!${pkgs.gh}/bin/gh auth git-credential"; };
       };
     };
   };
