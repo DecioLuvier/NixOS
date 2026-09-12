@@ -1,0 +1,12 @@
+.bar {
+    background-color: #0a0a0a;
+    color: #f5f5f5;
+}
+
+.bar-top {
+    border-bottom: 2px solid #e4002b;
+}
+
+.bar-bottom {
+    border-top: 2px solid #e4002b;
+}
