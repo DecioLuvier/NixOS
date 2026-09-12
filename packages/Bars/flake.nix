@@ -57,8 +57,7 @@
           systemd.user.services.bars = {
             description = "Custom GTK status bars";
             unitConfig = {
-              StartLimitIntervalSec = 30;
-              StartLimitBurst = 20;
+              StartLimitIntervalSec = 0;
             };
             serviceConfig = {
               ExecStart = "${bars}/bin/bars";

@@ -135,13 +135,14 @@
       stateVersion  = "24.11";
       packages = with pkgs; [
         gh
-        github-desktop
+        brave
         claude-code
         vscode
         onlyoffice-desktopeditors
         btop
         jc
         gnumake
+        lazygit
         gcc
         node-gyp
         nodejs

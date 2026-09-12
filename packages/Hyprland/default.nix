@@ -19,7 +19,7 @@
       grimblast brightnessctl playerctl pavucontrol
       networkmanagerapplet alsa-utils
       udiskie kdePackages.polkit-kde-agent-1
-      thunar wofi firefox alacritty swaybg
+      thunar wofi alacritty swaybg
       wl-clipboard wl-clip-persist cliphist
       papirus-icon-theme bibata-cursors
     ];
@@ -77,7 +77,7 @@
               "$mainMod, Tab,   workspace, previous"
               "$mainMod, T,     exec, alacritty"
               "$mainMod, E,     exec, thunar"
-              "$mainMod, B,     exec, firefox"
+              "$mainMod, B,     exec, brave"
               "$mainMod, N,     exec, code"
               "$mainMod, SPACE, exec, wofi --show drun"
               "$mainMod, Q,     killactive"
