@@ -1,8 +1,15 @@
-{ pkgs, ... }:
+{ pkgs, lib, ... }:
 
 {
   system.stateVersion        = "24.11";
   nixpkgs.config.allowUnfree = true;
+
+  programs.uwsm.enable = true;
+
+  networking.hosts = {
+    "140.82.121.6" = [ "api.github.com" ];
+    "140.82.121.3" = [ "github.com" ];
+  };
 
   nix.settings = {
     warn-dirty            = false;
@@ -69,6 +76,7 @@
   };
 
   security.rtkit.enable = true;
+  security.pam.services.greetd.enableGnomeKeyring = true;
 
   services = {
     avahi          = { enable = true; nssmdns4 = true; openFirewall = true; };
@@ -82,7 +90,7 @@
     greetd = {
       enable = true;
       settings.default_session = {
-        command = "${pkgs.hyprland}/bin/Hyprland";
+        command = "${pkgs.uwsm}/bin/uwsm start -e -D Hyprland hyprland.desktop";
         user    = "luvier";
       };
     };
@@ -126,8 +134,8 @@
       homeDirectory = "/home/luvier";
       stateVersion  = "24.11";
       packages = with pkgs; [
+        gh
         github-desktop
-        github-copilot-cli
         claude-code
         vscode
         onlyoffice-desktopeditors
@@ -151,7 +159,11 @@
 
     programs.git = {
       enable = true;
-      settings.user = { name = "decioluvier"; email = "decioluvieriii@gmail.com"; };
+      lfs.enable = true;
+      settings = {
+        user       = { name = "decioluvier"; email = "decioluvieriii@gmail.com"; };
+        credential = { "https://github.com".helper = "!${pkgs.gh}/bin/gh auth git-credential"; };
+      };
     };
   };
 }

@@ -1,8 +1,5 @@
 { pkgs, lib, config, ... }:
 
-let
-  bars = pkgs.callPackage ../Bars {};
-in
 {
   options.programs.hyprland-desktop.wallpaper = lib.mkOption {
     type    = lib.types.path;
@@ -25,7 +22,6 @@ in
       thunar wofi firefox alacritty swaybg
       wl-clipboard wl-clip-persist cliphist
       papirus-icon-theme bibata-cursors
-      bars
     ];
 
     fonts.packages = with pkgs; [
@@ -52,15 +48,8 @@ in
           QT_WAYLAND_DISABLE_WINDOWDECORATION = 1;
           SDL_VIDEODRIVER = "wayland";
           CLUTTER_BACKEND = "wayland";
-          XDG_CURRENT_DESKTOP = "Hyprland";
-          XDG_SESSION_TYPE = "wayland";
-          XDG_SESSION_DESKTOP = "Hyprland";
           WLR_NO_HARDWARE_CURSORS = 1;
         };
-
-        systemd.user.targets.hyprland-session.Unit.Wants = [
-          "xdg-desktop-autostart.target"
-        ];
 
         wayland.windowManager.hyprland = {
           enable = true;
@@ -68,21 +57,20 @@ in
           portalPackage = null;
           configType = "hyprlang";
           xwayland.enable = true;
-          systemd.enable = true;
+          systemd.enable = false;
 
           settings = {
             "$mainMod" = "SUPER";
 
             exec-once = [
-              "dbus-update-activation-environment --all --systemd WAYLAND_DISPLAY XDG_CURRENT_DESKTOP"
-              "systemctl --user import-environment WAYLAND_DISPLAY XDG_CURRENT_DESKTOP"
+              "${pkgs.gnome-keyring}/bin/gnome-keyring-daemon --start --components=pkcs11,secrets,ssh &"
               "nm-applet --indicator &"
               "wl-clip-persist --clipboard both &"
               "wl-paste --watch cliphist store &"
               "udiskie --automount --notify --smart-tray &"
               "${pkgs.kdePackages.polkit-kde-agent-1}/libexec/polkit-kde-authentication-agent-1 &"
               "${pkgs.swaybg}/bin/swaybg -i ${config.programs.hyprland-desktop.wallpaper} -m fill &"
-              "${bars}/bin/bars &"
+              "systemctl --user import-environment WAYLAND_DISPLAY XDG_CURRENT_DESKTOP HYPRLAND_INSTANCE_SIGNATURE && systemctl --user start bars.service"
             ];
 
             bind = [
@@ -90,8 +78,10 @@ in
               "$mainMod, T,     exec, alacritty"
               "$mainMod, E,     exec, thunar"
               "$mainMod, B,     exec, firefox"
+              "$mainMod, N,     exec, code"
               "$mainMod, SPACE, exec, wofi --show drun"
               "$mainMod, Q,     killactive"
+              "$mainMod, R,     exec, alacritty --hold -e sudo nixos-rebuild switch --flake ~/NixOS#$(hostname)"
               "$mainMod, F,     fullscreen"
               "$mainMod, left,  movefocus, l"
               "$mainMod, right, movefocus, r"
@@ -128,6 +118,8 @@ in
             input = {
               kb_layout = "br";
               kb_variant = "abnt2";
+
+              sensitivity = 0.5;
 
               repeat_delay = 300;
               numlock_by_default = true;

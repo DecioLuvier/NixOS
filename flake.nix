@@ -13,9 +13,13 @@
       url = "path:./packages/P5RBoot";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    Bars = {
+      url = "path:./packages/Bars";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
-  outputs = { self, nixpkgs, home-manager, jupyter, P5RBoot, ... }: {
+  outputs = { self, nixpkgs, home-manager, jupyter, P5RBoot, Bars, ... }: {
     nixosConfigurations.laptop = nixpkgs.lib.nixosSystem {
       modules = [
         ./hosts/laptop/hardware.nix
@@ -24,6 +28,7 @@
         home-manager.nixosModules.home-manager
         jupyter.nixosModules.default
         P5RBoot.nixosModules.default
+        Bars.nixosModules.default
       ];
     };
   };

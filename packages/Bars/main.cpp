@@ -1,10 +1,12 @@
 #include <gtk/gtk.h>
-#include "bar_window.h"
+#include "modules/topbar.h"
+#include "modules/bottombar.h"
+#include "modules/hyprland.h"
 
 static void load_css() {
     const char* css_path = g_getenv("BARS_CSS_PATH");
     if (!css_path) {
-        css_path = "style.css";
+        css_path = "main.css";
     }
 
     GtkCssProvider* provider = gtk_css_provider_new();
@@ -20,10 +22,19 @@ static void load_css() {
     g_object_unref(provider);
 }
 
+static void update_bottom_visibility(GtkWidget* bottom_widget) {
+    gtk_widget_set_visible(bottom_widget, hyprland::active_workspace_window_count() == 0);
+}
+
 static void on_activate(GtkApplication* app, gpointer) {
     load_css();
-    static BarWindow* top    = new BarWindow(app, BarEdge::Top, 32);
-    static BarWindow* bottom = new BarWindow(app, BarEdge::Bottom, 32);
+    topbar::create(app);
+    GtkWidget* bottom_widget = bottombar::create(app);
+
+    update_bottom_visibility(bottom_widget);
+    hyprland::on_window_count_changed([bottom_widget] {
+        update_bottom_visibility(bottom_widget);
+    });
 }
 
 int main(int argc, char** argv) {
